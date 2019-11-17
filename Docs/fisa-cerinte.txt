@@ -1,0 +1,40 @@
+Fisa cerintelor Echipa Racheta
+	1) Register as a trainer
+		1.1) As a fresh trainer, you have to choose your first pokemon
+	2) Login
+	3) Discover pokemons
+		Move on a map
+		Pokemons pop up randomly
+		Try to catch pokemons
+	4) Fight in an arena
+		Enter arena
+		Leave arena
+		List arena fights
+		List arena fight details
+		List arena enrolled trainers
+	5) Pokemon definitions
+		Abilities
+			Type
+			Required Level
+			Damage
+			Cooldown
+		Base health
+		Base damage
+		Base resistance
+		Base dodge chance
+			If physical attack, can be dodged
+		Etc...
+	6) Tamed Pokemon
+		They have stats: Health, Damage, Critical Strike Chance
+		They have a level
+		They have experience
+		On fight end, they gain experience
+		On experience full, they level up
+		On level up, they gain 3 stats points to spend
+		On level up, they may learn new abilities
+	7) (Async) Fights
+		Start fight
+		Turn based and round based (1 round = 2 turns)
+	8) Auto mode
+	
+	Pokens
