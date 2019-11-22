@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Pokens.Identity.Api
+namespace Pokens.Trainers.Api
 {
     public class Startup
     {
