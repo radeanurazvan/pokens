@@ -50,7 +50,8 @@ namespace Pokens.Trainers.Infrastructure
                 new Claim(JwtRegisteredClaimNames.Iss, settings.Issuer),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(PokensClaims.TrainerId, user.Trainer.Id.ToString()),
+                new Claim(PokensClaims.TrainerName, user.Trainer.Name)
             };
         }
     }

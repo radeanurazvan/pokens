@@ -12,7 +12,7 @@ namespace Pokens.Trainers.Persistence.EntityFramework.Configurations
             builder.HasKey(t => t.Id);
 
             builder.HasOne(t => t.User)
-                .WithOne()
+                .WithOne(u => u.Trainer)
                 .HasPrincipalKey<User>(u => u.Id)
                 .HasForeignKey<Trainer>(t => t.UserId);
         }

@@ -10,6 +10,11 @@ namespace Pokens.Trainers.Persistence.EntityFramework
         {
             builder.ToTable("Users");
             builder.HasKey(u => u.Id);
+
+            builder.HasOne(u => u.Trainer)
+                .WithOne(t => t.User)
+                .HasPrincipalKey<User>(u => u.Id)
+                .HasForeignKey<Trainer>(t => t.UserId);
         }
     }
 }

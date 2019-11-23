@@ -11,5 +11,7 @@ namespace Pokens.Trainers.Domain
             Email = email;
             UserName = email;
         }
+
+        public Trainer Trainer { get; set; }
     }
 }

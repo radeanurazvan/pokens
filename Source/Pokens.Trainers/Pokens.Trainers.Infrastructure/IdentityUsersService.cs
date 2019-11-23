@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Pokens.Trainers.Domain;
 
 namespace Pokens.Trainers.Infrastructure
@@ -28,8 +29,10 @@ namespace Pokens.Trainers.Infrastructure
         public Task<Result<User>> GetByCredentials(string email, string password)
         {
             var invalidCredentials = "Invalid credentials";
+            var userTask = manager.Users.Include(u => u.Trainer)
+                .FirstOrDefaultAsync(u => u.Email == email);
 
-            return Result.Try(() => manager.FindByEmailAsync(email))
+            return Result.Try(() => userTask)
                 .Ensure(c => c != null, invalidCredentials)
                 .Ensure(c => manager.CheckPasswordAsync(c, password), invalidCredentials);
         }
