@@ -20,9 +20,9 @@ namespace Pomelo.Kernel.EntityFramework
             this.eventStore = eventStore;
         }
 
-        public Task Add(T aggregate)
+        public async Task Add(T aggregate)
         {
-            return this.context.Set<T>().AddAsync(aggregate);
+            await this.context.Set<T>().AddAsync(aggregate);
         }
 
         public async Task Save()

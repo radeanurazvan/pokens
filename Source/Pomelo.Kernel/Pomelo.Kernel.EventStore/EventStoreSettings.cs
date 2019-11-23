@@ -4,16 +4,6 @@ namespace Pomelo.Kernel.EventStore
 {
     public sealed class EventStoreSettings
     {
-        private EventStoreSettings() { }
-
-        public EventStoreSettings(string user, string password, string server, int port)
-        {
-            User = user;
-            Password = password;
-            Server = server;
-            Port = port;
-        }
-
         public string User { get; private set; }
 
         public string Password { get; private set; }

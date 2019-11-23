@@ -7,7 +7,7 @@ namespace Pomelo.Kernel.EventStore
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEventStore(this IServiceCollection services)
+        public static IServiceCollection AddPomeloEventStore(this IServiceCollection services)
         {
             return services
                 .AddScoped<EventStoreContext>()

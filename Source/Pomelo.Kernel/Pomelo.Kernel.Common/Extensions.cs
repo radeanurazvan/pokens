@@ -25,7 +25,7 @@ namespace Pomelo.Kernel.Common
 
         public static Result<string> EnsureValidString(this string subject, string error)
         {
-            return Maybe<string>.From(subject).ToResult(error).Ensure(x => !string.IsNullOrEmpty(x), error);
+            return Result.FailureIf(string.IsNullOrEmpty(subject?.Trim()), subject, error);
         }
 
         public static Result<string> EnsureValidRegex(this string pattern, string error)
@@ -91,23 +91,7 @@ namespace Pomelo.Kernel.Common
                 var configuration = ctx.GetService<IConfiguration>();
                 var section = configuration.GetSection(typeof(T).Name);
 
-                var instance = Activator.CreateInstance(typeof(T), true);
-
-                foreach (var propertyInfo in typeof(T).GetProperties().Where(p => p.CanWrite))
-                {
-                    var stringValue = section[propertyInfo.Name];
-
-                    if (propertyInfo.PropertyType == typeof(int))
-                    {
-                        propertyInfo.SetValue(instance, int.Parse(stringValue));
-                    }
-                    else
-                    {
-                        propertyInfo.SetValue(instance, stringValue);
-                    }
-                }
-
-                return instance as T;
+                return section.Get<T>(o => o.BindNonPublicProperties = true);
             });
         }
 

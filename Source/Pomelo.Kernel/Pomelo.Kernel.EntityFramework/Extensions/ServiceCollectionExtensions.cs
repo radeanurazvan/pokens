@@ -5,7 +5,7 @@ namespace Pomelo.Kernel.EntityFramework
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
+        public static IServiceCollection AddPomeloEntityFrameworkRepositories(this IServiceCollection services)
         {
             return services.AddScoped(typeof(IReadRepository<>), typeof(EntityFrameworkReadRepository<>))
                 .AddScoped(typeof(IWriteRepository<>), typeof(EntityFrameworkWriteRepository<>));

@@ -8,5 +8,11 @@ namespace Pomelo.Kernel.Infrastructure
         {
             return app.UseCors("PomeloCors");
         }
+
+        public static IApplicationBuilder UsePomeloSwagger(this IApplicationBuilder app, string title)
+        {
+            return app.UseSwagger()
+                .UseSwaggerUI(c => { c.SwaggerEndpoint("../swagger/v1/swagger.json", title); });
+        }
     }
 }
