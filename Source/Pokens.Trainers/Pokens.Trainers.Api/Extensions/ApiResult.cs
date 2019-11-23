@@ -18,10 +18,10 @@ namespace Pokens.Trainers.Api.Extensions
         public string Error { get; set; }
     }
 
-    public class ApiResult<T>
+    public class GenericApiResult<T>
         where T : class
     {
-        public ApiResult(Result<T> result)
+        public GenericApiResult(Result<T> result)
         {
             IsSuccess = result.IsSuccess;
             IsFailure = result.IsFailure;

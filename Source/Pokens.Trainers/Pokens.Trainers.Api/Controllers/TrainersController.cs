@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pokemons.Trainers.Business;
 using Pokens.Trainers.Api.Extensions;
 using Pokens.Trainers.Api.Models;
+using Pokens.Trainers.Domain;
 
 namespace Pokens.Trainers.Api.Controllers
 {
@@ -33,7 +34,7 @@ namespace Pokens.Trainers.Api.Controllers
             var command = new AuthenticateTrainerCommand(model.Email, model.Password);
             var result = await mediator.Send(command);
 
-            return result.ToActionResult(() => Ok(new ApiResult(result)));
+            return result.ToActionResult(() => Ok(new GenericApiResult<AuthenticationToken>(result)));
         }
     }
 }

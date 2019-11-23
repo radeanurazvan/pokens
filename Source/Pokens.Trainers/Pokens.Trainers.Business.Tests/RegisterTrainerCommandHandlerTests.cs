@@ -14,12 +14,12 @@ namespace Pokens.Trainers.Business.Tests
     public class RegisterTrainerCommandHandlerTests
     {
         private readonly Mock<IWriteRepository<Trainer>> repositoryMock;
-        private readonly Mock<ICredentialsService> credentialsServiceMock;
+        private readonly Mock<IUsersService> usersServiceMock;
 
         public RegisterTrainerCommandHandlerTests()
         {
             repositoryMock = new Mock<IWriteRepository<Trainer>>();
-            credentialsServiceMock = new Mock<ICredentialsService>();
+            usersServiceMock = new Mock<IUsersService>();
         }
 
         [Fact]
@@ -44,14 +44,14 @@ namespace Pokens.Trainers.Business.Tests
             var result = sut.Handle(command, CancellationToken.None).GetAwaiter().GetResult();
 
             result.IsFailure.Should().BeTrue();
-            credentialsServiceMock.Verify(cs => cs.Create(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            usersServiceMock.Verify(cs => cs.Create(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
         public void When_TrainerCreatedButCreateCredentialsFail_Then_ShouldNotAddTrainer()
         {
             var command = new RegisterTrainerCommand("Ash", "", "");
-            this.credentialsServiceMock.Setup(cs => cs.Create(It.IsAny<Guid>(), command.Email, command.Password)).ReturnsAsync(Result.Failure("Failure"));
+            this.usersServiceMock.Setup(cs => cs.Create(It.IsAny<User>(), command.Password)).ReturnsAsync(Result.Failure("Failure"));
             var sut = GetHandler();
 
             var result = sut.Handle(command, CancellationToken.None).GetAwaiter().GetResult();
@@ -66,7 +66,7 @@ namespace Pokens.Trainers.Business.Tests
         {
 
             var command = new RegisterTrainerCommand("Ash", "ash@hotmail.com", "AshThebest123!23#@!");
-            this.credentialsServiceMock.Setup(cs => cs.Create(It.IsAny<Guid>(), command.Email, command.Password)).ReturnsAsync(Result.Ok);
+            this.usersServiceMock.Setup(cs => cs.Create(It.IsAny<User>(), command.Password)).ReturnsAsync(Result.Ok);
             this.repositoryMock.Setup(rm => rm.Add(It.IsAny<Trainer>())).Returns(Task.CompletedTask);
             var sut = GetHandler();
 
@@ -77,6 +77,6 @@ namespace Pokens.Trainers.Business.Tests
             repositoryMock.Verify(rm => rm.Save(), Times.Once);
         }
 
-        private RegisterTrainerCommandHandler GetHandler() => new RegisterTrainerCommandHandler(this.credentialsServiceMock.Object, this.repositoryMock.Object);
+        private RegisterTrainerCommandHandler GetHandler() => new RegisterTrainerCommandHandler(this.usersServiceMock.Object, this.repositoryMock.Object);
     }
 }

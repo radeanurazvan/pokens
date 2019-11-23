@@ -5,6 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokemons.Trainers.Business;
+using Pokens.Trainers.Infrastructure;
+using Pokens.Trainers.Persistence.EntityFramework;
+using Pomelo.Kernel.EntityFramework;
+using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pokens.Trainers.Api
 {
@@ -21,6 +26,14 @@ namespace Pokens.Trainers.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddTrainersContext(Configuration)
+                .AddTrainersInfrastructure()
+                .AddTrainersIdentity()
+                .AddTrainersJwtAuthentication(Configuration)
+                .AddPomeloEntityFrameworkRepositories()
+                .AddPomeloEventStore()
+                .AddPomeloSwagger("Pokens Trainers Api")
+                .AddPomeloCors(Configuration)
                 .AddMediatR(typeof(BusinessLayer))
                 .AddControllers();
         }
@@ -34,13 +47,17 @@ namespace Pokens.Trainers.Api
             }
 
             app
+                .UseAuthentication()
+                .UsePomeloCors()
+                .UsePomeloSwagger("Pokens Trainers v1")
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                });
+                })
+                .UseTrainersMigrations();
         }
     }
 }

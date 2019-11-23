@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -7,10 +7,19 @@
   <ItemGroup>
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EntityFramework\Pomelo.Kernel.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
     <ProjectReference Include="..\Pokemons.Trainers.Business\Pokemons.Trainers.Business.csproj" />
+    <ProjectReference Include="..\Pokens.Trainers.Infrastructure\Pokens.Trainers.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pokens.Trainers.Persistence.EntityFramework\Pokens.Trainers.Persistence.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

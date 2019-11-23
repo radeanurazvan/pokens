@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
     <ProjectReference Include="..\Pokens.Trainers.Domain\Pokens.Trainers.Domain.csproj" />
   </ItemGroup>
 

@@ -27,25 +27,25 @@ namespace Pokemons.Trainers.Business
 
     internal sealed class RegisterTrainerCommandHandler : IRequestHandler<RegisterTrainerCommand, Result>
     {
-        private readonly ICredentialsService credentialsService;
+        private readonly IUsersService usersService;
         private readonly IWriteRepository<Trainer> writeRepository;
 
-        public RegisterTrainerCommandHandler(ICredentialsService credentialsService, IWriteRepository<Trainer> writeRepository)
+        public RegisterTrainerCommandHandler(IUsersService usersService, IWriteRepository<Trainer> writeRepository)
         {
-            EnsureArg.IsNotNull(credentialsService);
+            EnsureArg.IsNotNull(usersService);
             EnsureArg.IsNotNull(writeRepository);
-            this.credentialsService = credentialsService;
+            this.usersService = usersService;
             this.writeRepository = writeRepository;
         }
 
         public async Task<Result> Handle(RegisterTrainerCommand request, CancellationToken cancellationToken)
         {
             EnsureArg.IsNotNull(request);
+            var user = new User(request.Email);
 
-            var trainerResult = Trainer.Create(request.Name);
-            return await trainerResult
-                .Bind(t => this.credentialsService.Create(t.Id, request.Email, request.Password))
-                .Bind(() => trainerResult)
+            return await Trainer.Create(request.Name, user)
+                .Bind(_ => this.usersService.Create(user, request.Password))
+                .Bind(() => Trainer.Create(request.Name, user))
                 .Tap(t => this.writeRepository.Add(t))
                 .Tap(_ => this.writeRepository.Save());
         }

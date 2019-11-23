@@ -23,21 +23,21 @@ namespace Pokemons.Trainers.Business
 
     internal sealed class AuthenticateTrainerCommandHandler : IRequestHandler<AuthenticateTrainerCommand, Result<AuthenticationToken>>
     {
-        private readonly ICredentialsService credentialsService;
+        private readonly IUsersService usersService;
         private readonly ITokenService tokenService;
 
-        public AuthenticateTrainerCommandHandler(ICredentialsService credentialsService, ITokenService tokenService)
+        public AuthenticateTrainerCommandHandler(IUsersService usersService, ITokenService tokenService)
         {
-            EnsureArg.IsNotNull(credentialsService);
+            EnsureArg.IsNotNull(usersService);
             EnsureArg.IsNotNull(tokenService);
-            this.credentialsService = credentialsService;
+            this.usersService = usersService;
             this.tokenService = tokenService;
         }
 
         public Task<Result<AuthenticationToken>> Handle(AuthenticateTrainerCommand request, CancellationToken cancellationToken)
         {
             EnsureArg.IsNotNull(request);
-            return this.credentialsService.GetByTuple(request.Email, request.Password)
+            return this.usersService.GetByCredentials(request.Email, request.Password)
                 .Bind(c => this.tokenService.Exchange(c));
         }
     }

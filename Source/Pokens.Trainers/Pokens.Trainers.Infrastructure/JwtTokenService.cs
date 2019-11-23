@@ -18,13 +18,13 @@ namespace Pokens.Trainers.Infrastructure
             this.settings = settings;
         }
 
-        public Result<AuthenticationToken> Exchange(Credentials credentials)
+        public Result<AuthenticationToken> Exchange(User user)
         {
-            return credentials.EnsureExists("Invalid credentials!")
+            return user.EnsureExists("Invalid credentials!")
                 .Map(CreateToken);
         }
 
-        private AuthenticationToken CreateToken(Credentials user)
+        private AuthenticationToken CreateToken(User user)
         {
             var now = DateTime.Now;
             var expirationTime = now.Add(settings.TokenValidity);
@@ -43,7 +43,7 @@ namespace Pokens.Trainers.Infrastructure
             return new AuthenticationToken(encodedToken, expirationTime);
         }
 
-        private IEnumerable<Claim> GetClaims(Credentials user)
+        private IEnumerable<Claim> GetClaims(User user)
         {
             return new List<Claim>
             {

@@ -7,26 +7,25 @@ using Pokens.Trainers.Domain;
 
 namespace Pokens.Trainers.Infrastructure
 {
-    internal sealed class IdentityCredentialsService : ICredentialsService
+    internal sealed class IdentityUsersService : IUsersService
     {
-        private readonly UserManager<Credentials> manager;
+        private readonly UserManager<User> manager;
 
-        public IdentityCredentialsService(UserManager<Credentials> manager)
+        public IdentityUsersService(UserManager<User> manager)
         {
             this.manager = manager;
         }
 
-        public async Task<Result> Create(Guid trainerId, string email, string password)
+        public async Task<Result> Create(User user, string password)
         {
-            var credentials = new Credentials(email, trainerId);
-            var identityResult = await manager.CreateAsync(credentials, password);
+            var identityResult = await manager.CreateAsync(user, password);
             var error = identityResult.Errors.FirstOrDefault()?.Description ?? "Cannot create";
 
             return Result.Ok(identityResult)
                 .Ensure(r => !r.Errors.Any(), error);
         }
 
-        public Task<Result<Credentials>> GetByTuple(string email, string password)
+        public Task<Result<User>> GetByCredentials(string email, string password)
         {
             var invalidCredentials = "Invalid credentials";
 

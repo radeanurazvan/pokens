@@ -68,5 +68,14 @@ namespace Pokens.Trainers.Common {
                 return ResourceManager.GetString("InvalidName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user is invalid!.
+        /// </summary>
+        public static string InvalidUser {
+            get {
+                return ResourceManager.GetString("InvalidUser", resourceCulture);
+            }
+        }
     }
 }
