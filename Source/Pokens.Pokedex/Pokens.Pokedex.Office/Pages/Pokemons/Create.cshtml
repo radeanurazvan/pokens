@@ -1,0 +1,57 @@
+﻿@page
+@model Pokens.Pokedex.Office.Pages.Pokemons.CreatePokemonModel
+@{
+    ViewData["Title"] = "Craete";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create pokemon</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Pokemon.Name" class="control-label"></label>
+                <input asp-for="Pokemon.Name" class="form-control" />
+                <span asp-validation-for="Pokemon.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.Health" class="control-label"></label>
+                <input asp-for="Pokemon.Health" class="form-control" />
+                <span asp-validation-for="Pokemon.Health" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.Defense" class="control-label"></label>
+                <input asp-for="Pokemon.Defense" class="form-control" />
+                <span asp-validation-for="Pokemon.Defense" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.DodgeChance" class="control-label"></label>
+                <input asp-for="Pokemon.DodgeChance" class="form-control" />
+                <span asp-validation-for="Pokemon.DodgeChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.AttackPower" class="control-label"></label>
+                <input asp-for="Pokemon.AttackPower" class="form-control" />
+                <span asp-validation-for="Pokemon.AttackPower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.CriticalStrikeChance" class="control-label"></label>
+                <input asp-for="Pokemon.CriticalStrikeChance" class="form-control" />
+                <span asp-validation-for="Pokemon.CriticalStrikeChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.Abilities" class="control-label"></label>
+                @Html.DropDownListFor(m => m.Pokemon.Abilities, Model.Abilities, new { @class = "form-group", multiple = "true" })
+                <span asp-validation-for="Pokemon.Abilities" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="/Abilities/All">Back to List</a>
+</div>

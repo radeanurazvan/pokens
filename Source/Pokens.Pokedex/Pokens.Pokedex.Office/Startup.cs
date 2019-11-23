@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Pokens.Pokedex.Business;
+using Pokens.Pokedex.Infrastructure;
+using Pomelo.Kernel.Messaging;
 
-namespace Pokens.Pokedex.Write.Api
+namespace Pokens.Pokedex.Office
 {
     public class Startup
     {
@@ -25,7 +21,11 @@ namespace Pokens.Pokedex.Write.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddPokedexServices()
+                .AddPokedexInfrastructure()
+                .AddPomeloNoopMessaging()
+                .AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,17 +35,21 @@ namespace Pokens.Pokedex.Write.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            else
             {
-                endpoints.MapControllers();
-            });
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app
+                .UseHttpsRedirection()
+                .UseStaticFiles()
+                .UseRouting()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapRazorPages();
+                });
         }
     }
 }

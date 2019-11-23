@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj" />
   </ItemGroup>
 
