@@ -1,4 +1,6 @@
-﻿using Pokens.Pokedex.Domain;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Pokens.Pokedex.Domain;
 
 namespace Pokens.Pokedex.Business
 {
@@ -9,6 +11,11 @@ namespace Pokens.Pokedex.Business
         public AbilityService(IPokedexRepository repository)
         {
             this.repository = repository;
+        }
+
+        public IEnumerable<AbilityModel> GetAll()
+        {
+            return this.repository.GetAll<Ability>().Select(a => new AbilityModel(a));
         }
 
         public void Create(string name, string description, int damage, int requiredLevel, int cooldown)

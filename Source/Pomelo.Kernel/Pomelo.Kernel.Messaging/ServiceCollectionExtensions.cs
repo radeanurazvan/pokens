@@ -5,9 +5,14 @@ namespace Pomelo.Kernel.Messaging
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMessaging(this IServiceCollection services)
+        public static IServiceCollection AddPomeloMockMessaging(this IServiceCollection services)
         {
             return services.AddScoped<IMessageBus, MockBus>();
+        }
+
+        public static IServiceCollection AddPomeloNoopMessaging(this IServiceCollection services)
+        {
+            return services.AddScoped<IMessageBus, NoopBus>();
         }
     }
 }

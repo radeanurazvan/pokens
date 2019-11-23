@@ -1,0 +1,46 @@
+﻿@page
+@model Pokens.Pokedex.Office.Pages.Abilities.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Create ability</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ability.Name" class="control-label"></label>
+                <input asp-for="Ability.Name" class="form-control" />
+                <span asp-validation-for="Ability.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ability.Description" class="control-label"></label>
+                <textarea asp-for="Ability.Description" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ability.RequiredLevel" class="control-label"></label>
+                <input asp-for="Ability.RequiredLevel" class="form-control" />
+                <span asp-validation-for="Ability.Damage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ability.Damage" class="control-label"></label>
+                <input asp-for="Ability.Damage" class="form-control" />
+                <span asp-validation-for="Ability.Damage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ability.Cooldown" class="control-label"></label>
+                <input asp-for="Ability.Cooldown" class="form-control" />
+                <span asp-validation-for="Ability.Cooldown" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="/Abilities/All">Back to List</a>
+</div> 

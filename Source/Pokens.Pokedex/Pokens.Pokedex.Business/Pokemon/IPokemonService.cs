@@ -6,6 +6,8 @@ namespace Pokens.Pokedex.Business
 {
     public interface IPokemonService
     {
+        IEnumerable<PokemonModel> GetAll();
+
         Task Create(string name, Stats stats, IEnumerable<string> abilities);
         
         Task ChangeStats(string pokemonId, Stats newStats);

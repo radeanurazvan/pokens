@@ -17,6 +17,11 @@ namespace Pokens.Pokedex.Business
             this.bus = bus;
         }
 
+        public IEnumerable<PokemonModel> GetAll()
+        {
+            return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
+        }
+
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
             var abilities = repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));

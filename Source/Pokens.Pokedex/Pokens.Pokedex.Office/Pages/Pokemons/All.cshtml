@@ -1,0 +1,60 @@
+﻿@page
+@model Pokens.Pokedex.Office.Pages.Pokemons.AllPokemonsModel
+@{
+    ViewData["Title"] = "AllPokemons";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>All Pokemons</h2>
+
+<p>
+    <a asp-page="/Pokemons/Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Stats
+        </th>
+        <th>
+            Abilities
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Pokemons)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stats.Summary)
+            </td>
+            <td>
+                <ul>
+                    @foreach (var ability in item.Abilities)
+                    {
+                        { <li>@ability.Summary</li>}
+                    }
+                </ul>
+            </td>
+            <td>
+                <a asp-page="./ChangeStats" asp-route-id="@item.Id">Change stats</a> |
+                <a asp-page="./Change abilities" asp-route-id="@item.Id">Change abilities</a> |
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
