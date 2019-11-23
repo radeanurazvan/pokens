@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Trainers.Common", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Trainers.Business.Tests", "Pokens.Trainers.Business.Tests\Pokens.Trainers.Business.Tests.csproj", "{688E6D1E-7D71-402E-B138-1C195D09A0B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Trainers.Persistence.EntityFramework", "Pokens.Trainers.Persistence.EntityFramework\Pokens.Trainers.Persistence.EntityFramework.csproj", "{1FD1BCC9-CA10-4D19-874A-2C5A05605FD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Trainers.Persistence.EntityFramework", "Pokens.Trainers.Persistence.EntityFramework\Pokens.Trainers.Persistence.EntityFramework.csproj", "{1FD1BCC9-CA10-4D19-874A-2C5A05605FD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
