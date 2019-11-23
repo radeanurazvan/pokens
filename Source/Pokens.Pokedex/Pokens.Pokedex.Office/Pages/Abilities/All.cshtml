@@ -1,0 +1,62 @@
+﻿@page
+@model Pokens.Pokedex.Office.Pages.Abilities.AllAbilitiesModel
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>All Abilities</h2>
+
+<p>
+    <a asp-page="/Abilities/Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Damage
+            </th>
+            <th>
+                Cooldown
+            </th>
+            <th>
+                Required Level
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Abilities)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Damage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cooldown)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequiredLevel)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

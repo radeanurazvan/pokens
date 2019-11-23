@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.DataSynchroni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.EntityFramework", "..\Pomelo.Kernel\Pomelo.Kernel.EntityFramework\Pomelo.Kernel.EntityFramework.csproj", "{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Pokedex.Domain", "Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj", "{27E4C4D1-207E-4BBD-BB2F-30DD08EEDC25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Pokedex.Domain", "Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj", "{27E4C4D1-207E-4BBD-BB2F-30DD08EEDC25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Pokedex.Business", "Pokens.Pokedex.Business\Pokens.Pokedex.Business.csproj", "{6CBFC86E-70DA-43E5-B6EA-CD54FB508FA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Pokedex.Business", "Pokens.Pokedex.Business\Pokens.Pokedex.Business.csproj", "{6CBFC86E-70DA-43E5-B6EA-CD54FB508FA3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{F646865D-5C03-46AA-B22F-7E4C77EAC017}"
 EndProject
@@ -35,7 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Infrastructure", "2. Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Core", "3. Core", "{A8E8FA0D-FC48-40C0-AC52-26925D0ED05D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Pokedex.Write.Api", "Pokens.Pokedex.Write.Api\Pokens.Pokedex.Write.Api.csproj", "{375459DF-D980-4E8A-93F2-3BA1A85E0E85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Pokedex.Infrastructure", "Pokens.Pokedex.Infrastructure\Pokens.Pokedex.Infrastructure.csproj", "{B66AD580-A135-4837-9471-148BE031AD83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Pokedex.Office", "Pokens.Pokedex.Office\Pokens.Pokedex.Office.csproj", "{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,10 +89,14 @@ Global
 		{6CBFC86E-70DA-43E5-B6EA-CD54FB508FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CBFC86E-70DA-43E5-B6EA-CD54FB508FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CBFC86E-70DA-43E5-B6EA-CD54FB508FA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{375459DF-D980-4E8A-93F2-3BA1A85E0E85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{375459DF-D980-4E8A-93F2-3BA1A85E0E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{375459DF-D980-4E8A-93F2-3BA1A85E0E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{375459DF-D980-4E8A-93F2-3BA1A85E0E85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B66AD580-A135-4837-9471-148BE031AD83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B66AD580-A135-4837-9471-148BE031AD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B66AD580-A135-4837-9471-148BE031AD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B66AD580-A135-4837-9471-148BE031AD83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,7 +116,8 @@ Global
 		{F646865D-5C03-46AA-B22F-7E4C77EAC017} = {38BFD5C1-63C2-40EB-8B79-F99A29A943F6}
 		{58F999BA-A1A6-4225-8AC2-12BC51754905} = {38BFD5C1-63C2-40EB-8B79-F99A29A943F6}
 		{A8E8FA0D-FC48-40C0-AC52-26925D0ED05D} = {38BFD5C1-63C2-40EB-8B79-F99A29A943F6}
-		{375459DF-D980-4E8A-93F2-3BA1A85E0E85} = {F646865D-5C03-46AA-B22F-7E4C77EAC017}
+		{B66AD580-A135-4837-9471-148BE031AD83} = {58F999BA-A1A6-4225-8AC2-12BC51754905}
+		{AF7874DD-C7D9-4214-BDB2-22F553CC0B6F} = {F646865D-5C03-46AA-B22F-7E4C77EAC017}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ECE8988-FF48-4185-8C48-543F9AC74BB2}
