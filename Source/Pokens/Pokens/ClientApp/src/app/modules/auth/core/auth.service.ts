@@ -19,6 +19,6 @@ export class AuthService {
   }
 
   public register(registerModel: RegisterModel): Observable<any> {
-    return this.http.post(`${this.endPointBase}/token`, registerModel);
+    return this.http.post(`${this.endPointBase}`, registerModel);
   }
 }
