@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { LoginService } from '../../core/login.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +15,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginPageService: LoginService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private loginPageService: AuthService,
+    private router: Router) { }
 
   public ngOnInit(): void {
     this.initForm();
@@ -25,14 +24,17 @@ export class LoginComponent implements OnInit {
 
   public login(): void {
     if (this.loginFormGroup.valid) {
-      if (this.loginPageService.login(this.loginFormGroup.getRawValue())) {
-        this.loggedIn();
-      }
+      this.loginPageService.login(this.loginFormGroup.getRawValue()).subscribe(
+        () => {
+          this.loggedIn();
+        },
+        () => {
+          console.log('Fail!');
+        });
     }
   }
 
   public loggedIn(): void {
-    // this.activatedRoute.
     this.router.navigateByUrl('/home');
   }
 
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   private initForm(): void {
     this.loginFormGroup = this.formBuilder.group({
-      username: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required])
     });
   }
