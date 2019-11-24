@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
-import { LoginService } from './core/login.service';
+import { AuthService } from './core/auth.service';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 
@@ -22,7 +22,7 @@ import { RegisterComponent } from './pages/register/register.component';
     RegisterComponent
   ],
   providers: [
-    LoginService
+    AuthService
   ]
 })
 export class AuthPageModule { }
