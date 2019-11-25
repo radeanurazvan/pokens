@@ -1,10 +1,12 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
+import { AuthGuard } from './core/auth.guard';
 
 @NgModule({
   declarations: [],
@@ -26,4 +28,11 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  public static forChild(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [AuthGuard]
+    };
+  }
+}

@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
   public register() {
     this.authService.register(this.registerFormGroup.getRawValue()).subscribe(
       () => {
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/auth/login');
       },
       () => {
         console.log("Fail!");
