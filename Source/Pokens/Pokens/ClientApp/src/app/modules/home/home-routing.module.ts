@@ -7,5 +7,5 @@ import { routes } from './home-routing.const';
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomePageRoutingModule { }
+export class HomeRoutingModule { }
 
