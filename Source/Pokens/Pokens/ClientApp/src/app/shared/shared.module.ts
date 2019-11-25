@@ -1,12 +1,15 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AuthGuard } from './core/auth.guard';
+import { ErrorInterceptor } from './core/error.interceptor';
+import { ToastrService } from './core/toastr.service';
 
 @NgModule({
   declarations: [],
@@ -17,7 +20,8 @@ import { AuthGuard } from './core/auth.guard';
     FormsModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   exports: [
     MatInputModule,
@@ -25,14 +29,19 @@ import { AuthGuard } from './core/auth.guard';
     ReactiveFormsModule,
     MatCardModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 export class SharedModule {
   public static forChild(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [AuthGuard]
+      providers: [
+        AuthGuard,
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        ToastrService
+      ]
     };
   }
 }

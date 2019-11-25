@@ -22,12 +22,12 @@ export class AuthService {
     return !this.jwtHelperService.isTokenExpired(token);
   }
 
-  public login(loginModel: LoginModel): Observable<any> {
-    return this.http.post<LoginModel>(`${this.endPointBase}/token`, loginModel);
-  }
-
   public logout(): void {
     localStorage.removeItem('currentUserToken');
+  }
+
+  public login(loginModel: LoginModel): Observable<any> {
+    return this.http.post<LoginModel>(`${this.endPointBase}/token`, loginModel);
   }
 
   public register(registerModel: RegisterModel): Observable<any> {

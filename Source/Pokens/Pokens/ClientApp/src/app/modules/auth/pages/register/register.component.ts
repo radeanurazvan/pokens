@@ -32,14 +32,14 @@ export class RegisterComponent implements OnInit {
   }
 
   public register() {
-    this.authService.register(this.registerFormGroup.getRawValue()).subscribe(
-      () => {
-        this.router.navigateByUrl('/auth/login');
-      },
-      () => {
-        console.log("Fail!");
-      }
-    )
+    if (this.registerFormGroup.valid) {
+      this.authService.register(this.registerFormGroup.getRawValue()).subscribe(
+        () => {
+          this.router.navigateByUrl('/auth/login');
+        },
+        () => {
+        }
+      )
+    }
   }
-
 }
