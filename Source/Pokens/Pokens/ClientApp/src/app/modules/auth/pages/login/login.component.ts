@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
           this.loggedIn();
         },
         () => {
-          console.log('Fail!');
         });
     }
   }
