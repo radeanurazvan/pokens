@@ -1,0 +1,48 @@
+﻿@page
+@model Pokens.Pokedex.Office.Pages.Pokemons.ChangeStatsModel
+@{
+    ViewData["Title"] = "ChangeStats";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Change Stats To @Model.PokemonChosen.Name</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Pokemon.Health" class="control-label"></label>
+                <input asp-for="Pokemon.Health" value="@Model.PokemonChosen.Stats.Health" class="form-control" />
+                <span asp-validation-for="Pokemon.Health" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.Defense" class="control-label"></label>
+                <input asp-for="Pokemon.Defense" value="@Model.PokemonChosen.Stats.Defense" class="form-control" />
+                <span asp-validation-for="Pokemon.Defense" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.DodgeChance" class="control-label"></label>
+                <input asp-for="Pokemon.DodgeChance" value="@Model.PokemonChosen.Stats.DodgeChance" class="form-control" />
+                <span asp-validation-for="Pokemon.DodgeChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.AttackPower" class="control-label"></label>
+                <input asp-for="Pokemon.AttackPower" value="@Model.PokemonChosen.Stats.AttackPower" class="form-control" />
+                <span asp-validation-for="Pokemon.AttackPower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pokemon.CriticalStrikeChance" class="control-label"></label>
+                <input asp-for="Pokemon.CriticalStrikeChance" value="@Model.PokemonChosen.Stats.CriticalStrikeChance" class="form-control" />
+                <span asp-validation-for="Pokemon.CriticalStrikeChance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Change Stats" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="/Pokemons/All">Back to List</a>
+</div>
