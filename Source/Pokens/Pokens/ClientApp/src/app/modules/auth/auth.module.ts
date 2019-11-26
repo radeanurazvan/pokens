@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
@@ -15,14 +16,15 @@ import { RegisterComponent } from './pages/register/register.component';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    SharedModule
+    [SharedModule.forChild()]
   ],
   exports: [
     LoginComponent,
     RegisterComponent
   ],
   providers: [
-    AuthService
+    AuthService,
+    JwtHelperService
   ]
 })
-export class AuthPageModule { }
+export class AuthModule { }

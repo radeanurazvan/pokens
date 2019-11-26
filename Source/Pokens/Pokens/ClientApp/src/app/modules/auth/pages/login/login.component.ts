@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
+import { LoginModel } from '../../models/login.model';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginPageService: AuthService,
+    private authService: AuthService,
     private router: Router) { }
 
   public ngOnInit(): void {
@@ -24,12 +25,12 @@ export class LoginComponent implements OnInit {
 
   public login(): void {
     if (this.loginFormGroup.valid) {
-      this.loginPageService.login(this.loginFormGroup.getRawValue()).subscribe(
-        () => {
+      this.authService.login(this.loginFormGroup.getRawValue()).subscribe(
+        (data: any) => {
+          localStorage.setItem('currentUserToken', JSON.stringify(data.value.token));
           this.loggedIn();
         },
         () => {
-          console.log('Fail!');
         });
     }
   }
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   public goToRegister(): void {
-    this.router.navigateByUrl('/register');
+    this.router.navigateByUrl('/auth/register');
   }
 
   private initForm(): void {
