@@ -24,18 +24,18 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         public ChangePokemonAbilitiesModel Pokemon { get; set; }
         public PokemonModel PokemonChosen { get; set; }
 
-        public string Id { get; set; }
         public IEnumerable<SelectListItem> Abilities { get; set; }
         public void OnGet()
         {
-            Id = HttpContext.Request.Query["id"];
-            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == this.Id).FirstOrDefault();
+            var id = HttpContext.Request.Query["id"];
+            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == id).FirstOrDefault();
 
             this.Abilities = this.abilityService.GetAll().Select(a => new SelectListItem(a.Name, a.Id));
         }
         public IActionResult OnPost()
         {
-            this.pokemonService.ChangeAbilities(Id, Pokemon.Abilities);
+            var id = HttpContext.Request.Query["id"];
+            this.pokemonService.ChangeAbilities(id, Pokemon.Abilities);
             return RedirectToPage("/Pokemons/All");
         }
 

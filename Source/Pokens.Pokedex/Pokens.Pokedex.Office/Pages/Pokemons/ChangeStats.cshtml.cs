@@ -16,7 +16,6 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         {
             this.pokemonService = pokemonService;
         }
-        public string Id { get; set; }
         public PokemonModel PokemonChosen { get; set; }
 
         [BindProperty]
@@ -24,11 +23,12 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
 
         public void OnGet()
         {
-            Id = HttpContext.Request.Query["id"];
-            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == this.Id).FirstOrDefault();
+            var id = HttpContext.Request.Query["id"];
+            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == id).FirstOrDefault();
         }
         public IActionResult OnPost()
         {
+        var id = HttpContext.Request.Query["id"];
             var stats = new Stats
             {
                 Health = Pokemon.Health,
@@ -37,7 +37,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                 Defense = Pokemon.Defense,
                 DodgeChance = Pokemon.DodgeChance
             };
-            this.pokemonService.ChangeStats(Id, stats);
+            this.pokemonService.ChangeStats(id, stats);
 
             return RedirectToPage("/Pokemons/All");
         }
