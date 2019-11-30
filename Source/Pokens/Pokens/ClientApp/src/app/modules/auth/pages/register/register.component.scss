@@ -1,19 +1,47 @@
 .container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-}
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url('../../../../shared/assets/pictures/wallpaper-382851.jpg');
+  background-position: 0;
 
-.register-card {
-    width: 30%;
+  .register-card {
+    width: 25%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: none;
-}
+    background-color: #94D26F;
+    border: 2px solid green;
 
-.register-form-container {
-    display: flex;
-    flex-direction: column;
+    .pokeball-image {
+      align-self: center;
+      margin-top: -65px !important;
+    }
+
+    .register-form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .form-title {
+        font-weight: bold;
+      }
+
+      mat-form-field {
+        width: 65%;
+      }
+
+      .register-button {
+        width: 150px;
+        align-self: center;
+        margin: 10px 0;
+        background-color: #B0E46A;
+        font-weight: bold;
+      }
+    }
+  }
 }
