@@ -10,7 +10,8 @@ export class ToastrService {
 
   openToastr(message: string): void {
     this.snackBar.open(message, 'Ok', {
-      duration: 5000
+      duration: 5000,
+      panelClass: 'toast'
     });
   }
 }

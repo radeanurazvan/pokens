@@ -1,5 +1,10 @@
 <div class="container">
     <mat-card class="register-card">
+        <div class="pokeball-image">
+            <img src="pokeball.jpg"
+                 width="100"
+                 height="100">
+        </div>
         <form class="register-form-container"
               [formGroup]="registerFormGroup"
               (ngSubmit)="register()">
@@ -23,7 +28,8 @@
                        formControlName="password">
             </mat-form-field>
             <button mat-button
-                    type="submit">Enter</button>
+                    class="register-button"
+                    type="submit">Create account</button>
         </form>
     </mat-card>
 

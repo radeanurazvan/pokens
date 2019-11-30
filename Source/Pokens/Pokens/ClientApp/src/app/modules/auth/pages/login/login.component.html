@@ -1,5 +1,10 @@
 <div class="container">
   <mat-card class="login-card">
+    <div class="pokeball-image">
+      <img src="pokeball.jpg"
+           width="100"
+           height="100">
+    </div>
     <form class="login-form-container"
           [formGroup]="loginFormGroup"
           (ngSubmit)="login()">
@@ -22,11 +27,19 @@
       </mat-form-field>
 
       <button mat-button
+              class="login-button"
               type="submit">Enter</button>
     </form>
+    <mat-card-footer>
+      <div class="login-footer">
+        <h5 class="footer-text">
+          Don't have an account yet?
+        </h5>
+        <button mat-button
+                class="create-account-button"
+                type="button"
+                (click)="goToRegister()">Create Account</button>
+      </div>
+    </mat-card-footer>
   </mat-card>
-
-  <button mat-button
-          type="button"
-          (click)="goToRegister()">Create Account</button>
 </div>
