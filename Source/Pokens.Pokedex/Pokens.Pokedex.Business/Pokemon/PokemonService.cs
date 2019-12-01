@@ -29,6 +29,7 @@ namespace Pokens.Pokedex.Business
             {
                 Name = name,
                 Stats = stats,
+                IsStarter = false,
                 Abilities = abilities.ToList()
             };
 
@@ -65,6 +66,21 @@ namespace Pokens.Pokedex.Business
 
             this.repository.Update(pokemon);
             return this.bus.Publish(new PokemonAbilitiesChanged(pokemon));
+        }
+
+        public Task ChangeStarter(string pokemonId)
+        {
+            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            if (pokemonOrNothing.HasNoValue)
+            {
+                return Task.CompletedTask;
+            }
+
+            var pokemon = pokemonOrNothing.Value;
+            pokemon.IsStarter = ! pokemon.IsStarter;
+
+            this.repository.Update(pokemon);
+            return this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
     }
 }

@@ -13,21 +13,22 @@
 
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            ID
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Stats
-        </th>
-        <th>
-            Abilities
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Stats
+            </th>
+            <th>
+                Abilities
+            </th>
+            <th></th>
+            <th>Starter</th>
+        </tr>
     </thead>
     <tbody>
     @foreach (var item in Model.Pokemons)
@@ -46,13 +47,19 @@
                 <ul>
                     @foreach (var ability in item.Abilities)
                     {
-                        { <li>@ability.Summary</li>}
+                        {
+                            <li>@ability.Summary</li>
+}
                     }
                 </ul>
             </td>
             <td>
                 <a asp-page="./ChangeStats" asp-route-id="@item.Id">Change stats</a> |
                 <a asp-page="./ChangeAbilities" asp-route-id="@item.Id">Change abilities</a> |
+            </td>
+            <td>
+                @item.IsStarter
+                <a asp-page="./ChangeStarter" asp-route-id="@item.Id">Change IsStarter</a>
             </td>
         </tr>
     }
