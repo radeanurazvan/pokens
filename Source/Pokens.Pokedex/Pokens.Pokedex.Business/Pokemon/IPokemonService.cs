@@ -8,6 +8,8 @@ namespace Pokens.Pokedex.Business
     {
         IEnumerable<PokemonModel> GetAll();
 
+        IEnumerable<PokemonModel> GetStarters();
+
         Task Create(string name, Stats stats, IEnumerable<string> abilities);
         
         Task ChangeStats(string pokemonId, Stats newStats);
@@ -16,5 +18,6 @@ namespace Pokens.Pokedex.Business
 
         Task ChangeStarter(string pokemonId);
 
+        Task ChangeImages(string pokemonId, byte[] contentImage, string imageName);
     }
 }

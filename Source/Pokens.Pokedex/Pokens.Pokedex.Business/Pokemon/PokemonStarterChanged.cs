@@ -14,6 +14,7 @@ namespace Pokens.Pokedex.Business
         }
 
         public PokemonStarterChanged(Pokemon pokemon)
+            : this()
         {
             PokemonId = pokemon.Id;
             PokemonIsStarter = pokemon.IsStarter;

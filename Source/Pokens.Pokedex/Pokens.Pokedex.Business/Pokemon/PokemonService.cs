@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EnsureThat;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Messaging.Abstractions;
 
@@ -21,6 +22,8 @@ namespace Pokens.Pokedex.Business
         {
             return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
         }
+
+        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter == true);
 
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
@@ -82,5 +85,6 @@ namespace Pokens.Pokedex.Business
             this.repository.Update(pokemon);
             return this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
+
     }
 }
