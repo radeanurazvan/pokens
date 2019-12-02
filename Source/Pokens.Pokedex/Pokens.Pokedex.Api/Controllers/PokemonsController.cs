@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Pokedex.Business;
-using Pokens.Pokedex.Api.Extensions;
-using CSharpFunctionalExtensions;
 
 namespace Pokens.Pokedex.Api.Controllers
 {
