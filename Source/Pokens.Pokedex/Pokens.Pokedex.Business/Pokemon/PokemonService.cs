@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EnsureThat;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Messaging.Abstractions;
 
