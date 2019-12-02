@@ -22,7 +22,7 @@ namespace Pokens.Pokedex.Business
             return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
         }
 
-        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter == true);
+        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter);
 
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
@@ -93,17 +93,11 @@ namespace Pokens.Pokedex.Business
             }
             var pokemon = pokemonOrNothing.Value;
 
-            var imgName = imageName;
-            var contentImg = contentImage.ToArray();
-            var img = new Image(imgName, contentImage);
-            if (pokemon.Images == null)
-            {
-                pokemon.Images = new List<Image> { };
-            }
+            var img = new Image(imageName, contentImage);
             pokemon.Images.Add(img);
 
             this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonStarterChanged(pokemon));
+            return this.bus.Publish(new PokemonImagesChanged(pokemon));
         }
     }
 }

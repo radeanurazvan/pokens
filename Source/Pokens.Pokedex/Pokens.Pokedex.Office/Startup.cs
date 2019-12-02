@@ -24,7 +24,7 @@ namespace Pokens.Pokedex.Office
             services
                 .AddPokedexServices()
                 .AddPokedexInfrastructure()
-                .AddPomeloNoopMessaging()
+                .AddPomeloRabbitMqBus()
                 .AddRazorPages();
         }
 

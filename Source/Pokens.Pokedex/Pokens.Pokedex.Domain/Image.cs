@@ -1,9 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pokens.Pokedex.Domain
+﻿namespace Pokens.Pokedex.Domain
 {
     public sealed class Image : PokedexEntity
     {

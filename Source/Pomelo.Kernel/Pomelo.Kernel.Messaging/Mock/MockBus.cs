@@ -19,5 +19,10 @@ namespace Pomelo.Kernel.Messaging
         {
             return this.mediator.Publish(message);
         }
+
+        public void Subscribe<T>() where T : IBusMessage
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

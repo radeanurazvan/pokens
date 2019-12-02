@@ -1,8 +1,5 @@
 ﻿using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Messaging.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pokens.Pokedex.Business
 {
@@ -19,6 +16,7 @@ namespace Pokens.Pokedex.Business
             PokemonId = pokemon.Id;
             PokemonIsStarter = pokemon.IsStarter;
         }
+        
         public string PokemonId { get; private set; }
 
         public bool PokemonIsStarter { get; private set; }

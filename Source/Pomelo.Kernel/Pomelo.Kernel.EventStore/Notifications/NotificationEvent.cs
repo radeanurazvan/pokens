@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Messaging.Abstractions;
 
-namespace Pomelo.Kernel.Messaging.Abstractions
+namespace Pomelo.Kernel.EventStore
 {
     public sealed class NotificationEvent<T> : IBusMessage, INotification
         where T : IDomainEvent

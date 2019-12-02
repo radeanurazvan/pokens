@@ -10,9 +10,9 @@ namespace Pokens.Pokedex.Domain
 
         public bool IsStarter { get; set; }
 
-        public ICollection<Image> Images { get; set; } 
+        public ICollection<Image> Images { get; set; } = new List<Image>();
 
-        public ICollection<Ability> Abilities { get; set; }
+        public ICollection<Ability> Abilities { get; set; } = new List<Ability>();
     }
 
 }

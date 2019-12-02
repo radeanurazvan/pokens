@@ -4,7 +4,6 @@ using CSharpFunctionalExtensions;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pomelo.Kernel.EventStore
 {

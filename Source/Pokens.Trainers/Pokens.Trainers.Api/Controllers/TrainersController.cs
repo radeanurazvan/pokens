@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokemons.Trainers.Business;
 using Pokens.Trainers.Api.Extensions;
-using Pokens.Trainers.Api.Models;
 using Pokens.Trainers.Domain;
 
 namespace Pokens.Trainers.Api.Controllers
@@ -29,7 +28,7 @@ namespace Pokens.Trainers.Api.Controllers
         }
 
         [HttpPost("token")]
-        public async Task<IActionResult> Authenticate([FromBody] RegisterTrainerModel model)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateTrainerModel model)
         {
             var command = new AuthenticateTrainerCommand(model.Email, model.Password);
             var result = await mediator.Send(command);
