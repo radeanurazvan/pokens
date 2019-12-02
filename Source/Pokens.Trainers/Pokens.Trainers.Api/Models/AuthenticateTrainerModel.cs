@@ -1,4 +1,4 @@
-﻿namespace Pokens.Trainers.Api.Models
+﻿namespace Pokens.Trainers.Api
 {
     public class AuthenticateTrainerModel
     {

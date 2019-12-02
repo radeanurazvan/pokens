@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pomelo.Kernel.Messaging.Abstractions
+namespace Pomelo.Kernel.EventStore
 {
     public sealed class NotificationEventMetadata
     {
