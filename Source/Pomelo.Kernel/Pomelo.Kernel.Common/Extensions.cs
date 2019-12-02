@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -49,6 +51,11 @@ namespace Pomelo.Kernel.Common
         public static Result<T> EnsureExists<T>(this T subject, string error)
         {
             return Result.Create(subject != null, subject, error);
+        }
+
+        public static Result<Guid> EnsureNotEmpty(this Guid subject, string error)
+        {
+            return Result.FailureIf(subject == Guid.Empty, subject, error);
         }
 
         public static Maybe<T> ToMaybe<T>(this T x)
@@ -143,6 +150,11 @@ namespace Pomelo.Kernel.Common
         {
             return results.Where(r => r.IsSuccess)
                 .Select(r => r.Value);
+        }
+
+        public static string ToJson<T>(this T x)
+        {
+            return JsonSerializer.Serialize(x);
         }
     }
 }

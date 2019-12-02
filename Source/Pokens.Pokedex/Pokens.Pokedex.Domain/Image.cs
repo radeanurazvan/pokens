@@ -1,6 +1,8 @@
-﻿namespace Pokens.Pokedex.Domain
+﻿using Pomelo.Kernel.Domain;
+
+namespace Pokens.Pokedex.Domain
 {
-    public sealed class Image : PokedexEntity
+    public sealed class Image : DocumentEntity
     {
         public Image(string imageName, byte[] contectImage)
         {

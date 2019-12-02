@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Pomelo.Kernel.Common\Pomelo.Kernel.Common.csproj" />
     <ProjectReference Include="..\Pomelo.Kernel.DataSynchronization\Pomelo.Kernel.DataSynchronization.csproj" />
+    <ProjectReference Include="..\Pomelo.Kernel.Domain\Pomelo.Kernel.Domain.csproj" />
   </ItemGroup>
 
 </Project>

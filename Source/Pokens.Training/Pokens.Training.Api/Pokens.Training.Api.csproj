@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>84ea48a6-105d-4ed0-a563-03533681fb9b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
+    <ProjectReference Include="..\Pokens.Training.Business\Pokens.Training.Business.csproj" />
+    <ProjectReference Include="..\Pokens.Training.Infrastructure\Pokens.Training.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

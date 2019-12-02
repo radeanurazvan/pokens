@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Pokens.Pokedex.Business;
 using Pokens.Pokedex.Infrastructure;
 using Pomelo.Kernel.Infrastructure;
-using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Pokedex.Api
 {
@@ -25,7 +24,6 @@ namespace Pokens.Pokedex.Api
             services
                 .AddPokedexInfrastructure()
                 .AddPokedexServices()
-                .AddPomeloRabbitMqBus()
                 .AddPomeloSwagger("Pokens Pokemons Api")
                 .AddPomeloCors(Configuration)
                 .AddControllers();

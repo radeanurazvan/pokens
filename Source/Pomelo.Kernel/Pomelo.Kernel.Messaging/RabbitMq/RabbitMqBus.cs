@@ -68,11 +68,14 @@ namespace Pomelo.Kernel.Messaging
             {
                 var jsonEvent = JsonConvert.DeserializeObject<T>(args.Body.ToUtf8String());
 
-                using (var scope = provider.CreateScope())
+                using var scope = provider.CreateScope();
+                var handler = scope.ServiceProvider.GetService(handlerType) as IBusMessageHandler<T>;
+                if (handler == null)
                 {
-                    var handler = scope.ServiceProvider.GetService(handlerType) as IBusMessageHandler<T>;
-                    await handler.Handle(jsonEvent);
+                    throw new InvalidOperationException($"No RabbitMQ handler {handlerType}");
                 }
+
+                await handler.Handle(jsonEvent);
             };
         }
     }

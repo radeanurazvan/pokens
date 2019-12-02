@@ -1,6 +1,8 @@
-﻿namespace Pokens.Pokedex.Domain
+﻿using Pomelo.Kernel.Domain;
+
+namespace Pokens.Pokedex.Domain
 {
-    public sealed class Ability : PokedexEntity
+    public sealed class Ability : DocumentEntity
     {
         public string Name { get; set; }
 

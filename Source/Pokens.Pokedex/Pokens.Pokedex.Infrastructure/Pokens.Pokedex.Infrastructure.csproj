@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
     <ProjectReference Include="..\Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj" />
   </ItemGroup>
 

@@ -7,8 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Pokemons.Trainers.Business;
 using Pokens.Trainers.Infrastructure;
 using Pokens.Trainers.Persistence.EntityFramework;
-using Pomelo.Kernel.EntityFramework;
-using Pomelo.Kernel.EventStore;
 using Pomelo.Kernel.Infrastructure;
 using Pomelo.Kernel.Messaging;
 
@@ -31,9 +29,6 @@ namespace Pokens.Trainers.Api
                 .AddTrainersInfrastructure()
                 .AddTrainersIdentity()
                 .AddTrainersJwtAuthentication(Configuration)
-                .AddPomeloEntityFrameworkRepositories()
-                .AddPomeloEventStore()
-                .AddPomeloRabbitMqBus()
                 .AddPomeloSwagger("Pokens Trainers Api")
                 .AddPomeloCors(Configuration)
                 .AddMediatR(typeof(BusinessLayer))

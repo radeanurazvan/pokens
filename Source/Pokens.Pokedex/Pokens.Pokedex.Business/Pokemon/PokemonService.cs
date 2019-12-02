@@ -2,16 +2,17 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Pokens.Pokedex.Domain;
+using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pokens.Pokedex.Business
 {
     internal sealed class PokemonService : IPokemonService
     {
-        private readonly IPokedexRepository repository;
+        private readonly ICollectionRepository repository;
         private readonly IMessageBus bus;
 
-        public PokemonService(IPokedexRepository repository, IMessageBus bus)
+        public PokemonService(ICollectionRepository repository, IMessageBus bus)
         {
             this.repository = repository;
             this.bus = bus;

@@ -2,8 +2,6 @@
 {
     internal sealed class MongoSettings
     {
-        private MongoSettings() { }
-
         public string Server { get; private set; }
 
         public int Port { get; private set; }
