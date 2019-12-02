@@ -21,6 +21,7 @@ namespace Pokens.Pokedex.Business
             DodgeChance = pokemon.Stats.DodgeChance;
             AttackPower = pokemon.Stats.AttackPower;
             CriticalStrikeChance = pokemon.Stats.CriticalStrikeChance;
+            IsStarter = pokemon.IsStarter;
             Abilities = pokemon.Abilities.Select(a => new CreatedPokemonAbility(a));
         }
 
@@ -37,6 +38,8 @@ namespace Pokens.Pokedex.Business
         public int AttackPower { get; private set; }
 
         public float CriticalStrikeChance { get; private set; }
+
+        public bool IsStarter { get; private set; }
 
         public IEnumerable<CreatedPokemonAbility> Abilities { get; private set; }
 

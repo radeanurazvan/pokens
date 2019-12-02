@@ -8,6 +8,8 @@ namespace Pokens.Pokedex.Domain
 
         public Stats Stats { get; set; }
 
+        public bool IsStarter { get; set; }
+
         public ICollection<Ability> Abilities { get; set; }
     }
 }

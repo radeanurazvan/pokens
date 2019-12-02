@@ -13,5 +13,8 @@ namespace Pokens.Pokedex.Business
         Task ChangeStats(string pokemonId, Stats newStats);
         
         Task ChangeAbilities(string pokemonId, IEnumerable<string> abilitiesIds);
+
+        Task ChangeStarter(string pokemonId);
+
     }
 }
