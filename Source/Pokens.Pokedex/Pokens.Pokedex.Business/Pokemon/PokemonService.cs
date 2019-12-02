@@ -22,6 +22,8 @@ namespace Pokens.Pokedex.Business
             return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
         }
 
+        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter == true);
+
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
             var abilities = repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
@@ -82,5 +84,6 @@ namespace Pokens.Pokedex.Business
             this.repository.Update(pokemon);
             return this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
+
     }
 }
