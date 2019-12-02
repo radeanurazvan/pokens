@@ -1,16 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ensure.That" Version="8.1.2" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Common\Pomelo.Kernel.Common.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
+    <ProjectReference Include="..\Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
-    <ProjectReference Include="..\Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj" />
+    <Folder Include="Pokemon\Commands\" />
+    <Folder Include="Pokemon\Queries\" />
   </ItemGroup>
 
 </Project>

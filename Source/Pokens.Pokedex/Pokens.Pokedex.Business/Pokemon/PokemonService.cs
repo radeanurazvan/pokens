@@ -23,6 +23,8 @@ namespace Pokens.Pokedex.Business
             return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
         }
 
+        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter == true);
+
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
             var abilities = repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
@@ -84,27 +86,5 @@ namespace Pokens.Pokedex.Business
             return this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
 
-        public Task ChangeImages(string pokemonId, byte[] contentImage, string imageName)
-        {
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
-            if (pokemonOrNothing.HasNoValue)
-            {
-                return Task.CompletedTask;
-            }
-            EnsureArg.IsNotNull(contentImage);
-            var pokemon = pokemonOrNothing.Value;
-            
-            var imgName = imageName;
-            var contentImg = contentImage.ToArray();
-            var img = new Image(imgName, contentImage);
-            if (pokemon.Images == null)
-            {
-                pokemon.Images = new List<Image> { };
-            }
-            pokemon.Images.Add(img);
-
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonStarterChanged(pokemon));
-        }
     }
 }
