@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 
-namespace Pokens.Pokedex.Domain
+namespace Pomelo.Kernel.Domain
 {
-    public interface IPokedexRepository
+    public interface ICollectionRepository
     {
         IEnumerable<T> GetAll<T>();
 
@@ -16,6 +16,9 @@ namespace Pokens.Pokedex.Domain
         void Add<T>(T aggregate);
         
         void Update<T>(T aggregate)
-            where T : PokedexEntity;
+            where T : DocumentEntity;
+
+        void Delete<T>(string id)
+            where T : DocumentEntity;
     }
 }

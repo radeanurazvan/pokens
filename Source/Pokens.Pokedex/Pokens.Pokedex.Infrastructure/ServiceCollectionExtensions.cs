@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Pokens.Pokedex.Domain;
-using Pomelo.Kernel.Common;
+using Pomelo.Kernel.Messaging;
+using Pomelo.Kernel.Mongo;
 
 namespace Pokens.Pokedex.Infrastructure
 {
@@ -8,8 +8,8 @@ namespace Pokens.Pokedex.Infrastructure
     {
         public static IServiceCollection AddPokedexInfrastructure(this IServiceCollection services)
         {
-            return services.AddScoped<IPokedexRepository, PokedexMongoRepository>()
-                .AddSingletonSettings<PokedexMongoSettings>();
+            return services.AddPomeloMongoCollectionRepository()
+                .AddPomeloRabbitMqBus();
         }
     }
 }

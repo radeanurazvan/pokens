@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Pomelo.Kernel.Domain;
 
 namespace Pokens.Pokedex.Domain
 {
-    public sealed class Pokemon : PokedexEntity
+    public sealed class Pokemon : DocumentEntity
     {
         public string Name { get; set; }
 

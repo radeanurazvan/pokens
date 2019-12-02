@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
     <ProjectReference Include="..\Pokens.Pokedex.Business\Pokens.Pokedex.Business.csproj" />
     <ProjectReference Include="..\Pokens.Pokedex.Infrastructure\Pokens.Pokedex.Infrastructure.csproj" />
   </ItemGroup>

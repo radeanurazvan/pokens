@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Pokens.Pokedex.Domain;
+using Pomelo.Kernel.Domain;
 
 namespace Pokens.Pokedex.Business
 {
     internal sealed class AbilityService : IAbilityService
     {
-        private readonly IPokedexRepository repository;
+        private readonly ICollectionRepository repository;
 
-        public AbilityService(IPokedexRepository repository)
+        public AbilityService(ICollectionRepository repository)
         {
             this.repository = repository;
         }

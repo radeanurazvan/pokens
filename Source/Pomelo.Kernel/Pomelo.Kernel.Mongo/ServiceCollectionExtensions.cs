@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.DataSynchronization;
+using Pomelo.Kernel.Domain;
 
 namespace Pomelo.Kernel.Mongo
 {
@@ -17,6 +18,12 @@ namespace Pomelo.Kernel.Mongo
                 })
                 .AddScoped<ISyncStorage, MongoSyncStorage>()
                 .AddScoped(typeof(ISyncReadRepository<>), typeof(MongoSyncReadRepository<>));
+        }
+
+        public static IServiceCollection AddPomeloMongoCollectionRepository(this IServiceCollection services)
+        {
+            return services.AddSingletonSettings<MongoSettings>()
+                .AddScoped<ICollectionRepository, MongoCollectionRepository>();
         }
     }
 }

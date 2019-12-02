@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 using MongoDB.Driver;
-using Pokens.Pokedex.Domain;
+using Pomelo.Kernel.Domain;
 
-namespace Pokens.Pokedex.Infrastructure
+namespace Pomelo.Kernel.Mongo
 {
-    internal sealed class PokedexMongoRepository : IPokedexRepository
+    internal sealed class MongoCollectionRepository : ICollectionRepository
     {
         private readonly IMongoDatabase database;
 
-        public PokedexMongoRepository(PokedexMongoSettings settings)
+        public MongoCollectionRepository(MongoSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             this.database = client.GetDatabase(settings.Database);
@@ -38,9 +38,15 @@ namespace Pokens.Pokedex.Infrastructure
         }
 
         public void Update<T>(T aggregate)
-            where T : PokedexEntity
+            where T : DocumentEntity
         {
             GetCollection<T>().ReplaceOne(a => a.Id == aggregate.Id, aggregate);
+        }
+
+        public void Delete<T>(string id)
+            where T : DocumentEntity
+        {
+            GetCollection<T>().FindOneAndDelete(x => x.Id == id);
         }
 
         private IMongoCollection<T> GetCollection<T>() => database.GetCollection<T>(typeof(T).Name);
