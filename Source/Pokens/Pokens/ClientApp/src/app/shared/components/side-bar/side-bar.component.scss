@@ -1,0 +1,54 @@
+.trainer-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  margin: 20px;
+}
+
+.side-bar-container {
+  height: 100vh;
+  width: 10%;
+  border-right: 2px solid #F5F2F0;
+}
+
+.trainer-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 2px solid #F5F2F0;
+  padding-bottom: 15px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.side-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  font-size: 18px;
+
+  &:hover {
+    background-color: rgb(197, 233, 177);
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: rgba(125, 179, 94, 0.808);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &.selected {
+    background-color: #94D26F;
+  }
+}
+
+.trainer-name {
+  width: 80%;
+  text-align: center;
+}
