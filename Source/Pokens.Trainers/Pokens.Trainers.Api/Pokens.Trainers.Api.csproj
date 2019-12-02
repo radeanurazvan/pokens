@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
     <ProjectReference Include="..\Pokemons.Trainers.Business\Pokemons.Trainers.Business.csproj" />
     <ProjectReference Include="..\Pokens.Trainers.Infrastructure\Pokens.Trainers.Infrastructure.csproj" />
     <ProjectReference Include="..\Pokens.Trainers.Persistence.EntityFramework\Pokens.Trainers.Persistence.EntityFramework.csproj" />

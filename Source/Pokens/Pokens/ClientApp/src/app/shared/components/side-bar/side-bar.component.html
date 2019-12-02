@@ -1,0 +1,19 @@
+<div class="side-bar-container">
+  <div class="trainer-details">
+    <img class="trainer-image"
+         src="../../../../assets/pictures/pikachu.jpeg">
+    <div class="trainer-name">
+      {{userName}}
+    </div>
+  </div>
+
+  <div class="side-menu-items">
+    <div class="side-menu-item"
+         *ngFor="let item of sideMenuItems; let i=index"
+         [ngClass]="item.isSelected ? 'selected' : ''"
+         [routerLink]="[item.route]"
+         (click)="selectItem(i)">
+      {{item.name}}
+    </div>
+  </div>
+</div>

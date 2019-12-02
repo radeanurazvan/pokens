@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
-import { LoginModel } from '../../models/login.model';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +20,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initForm();
+    this.authService.logout();
   }
 
   public login(): void {

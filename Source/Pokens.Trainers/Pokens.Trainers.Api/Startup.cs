@@ -8,6 +8,7 @@ using Pokemons.Trainers.Business;
 using Pokens.Trainers.Infrastructure;
 using Pokens.Trainers.Persistence.EntityFramework;
 using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Trainers.Api
 {

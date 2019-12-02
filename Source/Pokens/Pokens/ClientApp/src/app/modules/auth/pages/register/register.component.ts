@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
 
   public ngOnInit() {
     this.formInit();
+    this.authService.logout();
   }
 
   public formInit() {
