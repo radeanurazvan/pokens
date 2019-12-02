@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EnsureThat;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Messaging.Abstractions;
 
@@ -78,6 +79,29 @@ namespace Pokens.Pokedex.Business
 
             var pokemon = pokemonOrNothing.Value;
             pokemon.IsStarter = ! pokemon.IsStarter;
+
+            this.repository.Update(pokemon);
+            return this.bus.Publish(new PokemonStarterChanged(pokemon));
+        }
+
+        public Task ChangeImages(string pokemonId, byte[] contentImage, string imageName)
+        {
+            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            if (pokemonOrNothing.HasNoValue)
+            {
+                return Task.CompletedTask;
+            }
+            EnsureArg.IsNotNull(contentImage);
+            var pokemon = pokemonOrNothing.Value;
+            
+            var imgName = imageName;
+            var contentImg = contentImage.ToArray();
+            var img = new Image(imgName, contentImage);
+            if (pokemon.Images == null)
+            {
+                pokemon.Images = new List<Image> { };
+            }
+            pokemon.Images.Add(img);
 
             this.repository.Update(pokemon);
             return this.bus.Publish(new PokemonStarterChanged(pokemon));
