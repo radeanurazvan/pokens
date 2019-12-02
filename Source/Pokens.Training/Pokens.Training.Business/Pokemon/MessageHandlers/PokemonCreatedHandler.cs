@@ -32,7 +32,7 @@ namespace Pokens.Training.Business
         {
             var stats = new Stats(message.Health, message.Defense, message.AttackPower, message.CriticalStrikeChance, message.DodgeChance);
 
-            PokemonDefinition.Create(message.Name, stats)
+            PokemonDefinition.Create(message.Id, message.Name, stats)
                 .OnFailure(e => this.logger.LogError($"Integrating pokemon definition failed with error {e}, for message {message.ToJson()}"))
                 .Tap(p => this.repository.Add(p));
         }

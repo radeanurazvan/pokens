@@ -38,6 +38,11 @@ namespace Pokens.Training.Domain
 
         public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons;
 
+        public Result ChooseStarter(PokemonDefinition definition)
+        {
+            return Result.Failure("Not implemented");
+        }
+
         public static class Expressions
         {
             public const string CaughtPokemons = nameof(caughtPokemons);
