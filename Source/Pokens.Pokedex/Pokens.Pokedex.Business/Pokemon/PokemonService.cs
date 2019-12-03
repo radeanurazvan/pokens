@@ -23,7 +23,10 @@ namespace Pokens.Pokedex.Business
             return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
         }
 
-        public IEnumerable<PokemonModel> GetStarters() => GetAll().Where(p => p.IsStarter);
+        public IEnumerable<StarterPokemonModel> GetStarters()
+        {
+            return this.repository.GetAll<Pokemon>().Where(p => p.IsStarter).Select(p => new StarterPokemonModel(p));
+        }
 
         public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
