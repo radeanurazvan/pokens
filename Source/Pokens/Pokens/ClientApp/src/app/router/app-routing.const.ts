@@ -10,6 +10,10 @@ export const routes: Routes = [
         loadChildren: () => import('../modules/home/home.module').then(m => m.HomeModule)
     },
     {
+        path: 'starter',
+        loadChildren: () => import('../modules/starter-pokemons/starter-pokemons.module').then(m => m.StarterPokemonsModule)
+    },
+    {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full'

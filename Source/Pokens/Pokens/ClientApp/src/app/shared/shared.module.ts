@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatListModule, MatSidenavModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatIconModule, MatListModule, MatSidenavModule, MatTabsModule, MatToolbarModule, MatDialogModule, MatDialogContent } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,9 +11,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard } from './core/auth.guard';
 import { ErrorInterceptor } from './core/error.interceptor';
 import { ToastrService } from './core/toastr.service';
+import { PopupComponent } from './components/popup/popup.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    PopupComponent
+  ],
   imports: [
     HttpClientModule,
     MatInputModule,
@@ -22,6 +25,7 @@ import { ToastrService } from './core/toastr.service';
     MatCardModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatDialogModule,
     MatSnackBarModule,
     MatTabsModule,
     MatSidenavModule,
@@ -39,6 +43,7 @@ import { ToastrService } from './core/toastr.service';
     MatCardModule,
     FormsModule,
     MatButtonModule,
+    MatDialogModule,
     MatSnackBarModule,
     MatTabsModule,
     MatSidenavModule,
@@ -48,6 +53,9 @@ import { ToastrService } from './core/toastr.service';
     MatListModule,
     MatButtonModule,
     MatIconModule
+  ],
+  entryComponents: [
+    PopupComponent
   ]
 })
 export class SharedModule {

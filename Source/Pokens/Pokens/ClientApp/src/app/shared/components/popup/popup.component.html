@@ -1,0 +1,6 @@
+<h2 mat-dialog-title>{{this.data.title}}</h2>
+<mat-dialog-content> {{this.data.content}}</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button [mat-dialog-close]="false">No</button>
+    <button mat-button [mat-dialog-close]=this.data.value cdkFocusInitial>Yes!</button>
+</mat-dialog-actions>
