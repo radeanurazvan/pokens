@@ -12,31 +12,15 @@ import { PopupComponent } from 'src/app/shared/components/popup/popup.component'
 })
 export class StarterPokemonsComponent implements OnInit {
 
-  private data: any;
-  private pokemons: StarterPokemonModel[] = [];
+  public pokemons: StarterPokemonModel[] = [];
 
   constructor(
     private starterService: StarterPokemonsService,
-    private dialog: MatDialog
-  ) {
-    // this.starterService.getPokemons().subscribe((data: StarterPokemonModel[]) => {
-    //   this.pokemons = data;
-    // });
-    this.pokemons.push({
-      id: Guid.EMPTY,
-      name: 'Charmander'
-    });
-    this.pokemons.push({
-      id: Guid.EMPTY,
-      name: 'Bulbasaur'
-    });
-    this.pokemons.push({
-      id: Guid.EMPTY,
-      name: 'Squirtle'
-    });
+    private dialog: MatDialog) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
+    this.starterService.getPokemons().subscribe((data: StarterPokemonModel[]) => this.pokemons = data);
   }
 
   public openPopup(pokemon: StarterPokemonModel): void {
@@ -51,3 +35,4 @@ export class StarterPokemonsComponent implements OnInit {
     popupRef.afterClosed().subscribe(result => console.log(result));
   }
 }
+

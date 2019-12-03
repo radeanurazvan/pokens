@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StarterPokemonsRoutingModule } from './starter-pokemons-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+
 import { SharedModule } from 'src/app/shared/shared.module';
+
 import { StarterPokemonsComponent } from './pages/starter-pokemons/starter-pokemons.component';
 import { StarterPokemonsService } from './core/starter-pokemons.service';
-
-
+import { StarterPokemonsRoutingModule } from './starter-pokemons-routing.module';
 
 @NgModule({
   declarations: [
@@ -13,9 +14,9 @@ import { StarterPokemonsService } from './core/starter-pokemons.service';
   ],
   imports: [
     CommonModule,
-    [SharedModule.forChild()],
-    StarterPokemonsRoutingModule,
-    // AuthModule
+    HttpClientModule,
+    SharedModule.forChild(),
+    StarterPokemonsRoutingModule
   ],
   providers: [StarterPokemonsService]
 })

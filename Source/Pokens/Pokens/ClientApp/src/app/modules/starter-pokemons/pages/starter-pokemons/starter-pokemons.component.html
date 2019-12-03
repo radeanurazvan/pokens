@@ -1,8 +1,11 @@
 <div class="starters-container">
-    <div class="cards-container">
         <mat-card *ngFor="let pokemon of pokemons" class="starter-card">
+            <div class="image-container">
+                    <img class="pokemon-image" mat-card-image [src]="'data:image/png;base64,'+ pokemon.image" [alt]="pokemon.name">
+            </div>
+
             <mat-card-title>{{pokemon.name}}</mat-card-title>
-            <button mat-button (click)="openPopup(pokemon)">Choose!</button>
+
+            <button mat-raised-button (click)="openPopup(pokemon)">Choose!</button>
         </mat-card>
-    </div>
 </div>

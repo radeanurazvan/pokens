@@ -18,7 +18,6 @@ import { PopupComponent } from './components/popup/popup.component';
     PopupComponent
   ],
   imports: [
-    HttpClientModule,
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
