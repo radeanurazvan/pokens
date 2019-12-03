@@ -1,0 +1,8 @@
+<div class="starters-container">
+    <div class="cards-container">
+        <mat-card *ngFor="let pokemon of pokemons" class="starter-card">
+            <mat-card-title>{{pokemon.name}}</mat-card-title>
+            <button mat-button (click)="openPopup(pokemon)">Choose!</button>
+        </mat-card>
+    </div>
+</div>
