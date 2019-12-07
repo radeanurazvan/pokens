@@ -15,7 +15,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         {
             var id = HttpContext.Request.Query["id"];
             var imageId = HttpContext.Request.Query["imageId"];
-            this.pokemonService.DeleteImageToPokemon(id, imageId);
+            this.pokemonService.DeleteImage(id, imageId);
             return RedirectToPage("/Pokemons/All");
         }
     }

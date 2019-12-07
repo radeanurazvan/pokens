@@ -104,7 +104,7 @@ namespace Pokens.Pokedex.Business
             return this.bus.Publish(new PokemonImagesChanged(pokemon));
         }
 
-        public Task DeleteImageToPokemon(string pokemonId, string imageId)
+        public Task DeleteImage(string pokemonId, string imageId)
         {
             var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
@@ -113,7 +113,7 @@ namespace Pokens.Pokedex.Business
             }
             var pokemon = pokemonOrNothing.Value;
 
-            var image = pokemon.Images.Where(i => i.Id == imageId).FirstOrDefault();
+            var image = pokemon.Images.FirstOrDefault(i => i.Id == imageId);
 
             if (image == null)
             {
