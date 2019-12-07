@@ -12,6 +12,7 @@ namespace Pokens.Pokedex.Business
             Name = pokemon.Name;
             Stats = new StatsModel(pokemon.Stats);
             IsStarter = pokemon.IsStarter;
+            Images = pokemon.Images;
             Abilities = pokemon.Abilities.Select(a => new AbilityModel(a));
         }
 
@@ -22,6 +23,8 @@ namespace Pokens.Pokedex.Business
         public StatsModel Stats { get; set; }
 
         public bool IsStarter { get; set; }
+
+        public IEnumerable<Image> Images { get; set; }
 
         public IEnumerable<AbilityModel> Abilities { get; set; }
     }
