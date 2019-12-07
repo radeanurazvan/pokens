@@ -19,5 +19,8 @@ namespace Pokens.Pokedex.Business
         Task ChangeStarter(string pokemonId);
 
         Task ChangeImages(string pokemonId, byte[] contentImage, string imageName);
+
+        Task DeleteImageToPokemon(string pokemonId, string imageId);
+
     }
 }
