@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class HomeService {
 
-  private endPointBase = environment.apiUrl + '/api/v1/trainers/me/pokemons';
+  private endPointBase = environment.apiTrainersUrl + '/trainers/me/pokemons';
 
   constructor(private http: HttpClient) { }
 

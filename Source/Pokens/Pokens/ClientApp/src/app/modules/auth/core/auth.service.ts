@@ -11,7 +11,7 @@ import { RegisterModel } from '../models/register.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private endPointBase = environment.apiUrl + '/api/v1/trainers';
+  private endPointBase = environment.apiTrainersUrl + '/trainers';
 
   constructor(
     private http: HttpClient,

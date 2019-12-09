@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000'
+  apiTrainersUrl: 'http://localhost:5000/api/v1/',
+  apiPokensUrl: 'http://localhost:5000/api/v1/',
+  apiTrainingUrl: 'http://localhost:5000/api/v1/'
 };
 
 /*
