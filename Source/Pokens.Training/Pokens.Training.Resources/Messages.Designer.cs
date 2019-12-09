@@ -79,6 +79,15 @@ namespace Pokens.Training.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Pokemon definition!.
+        /// </summary>
+        public static string InvalidPokemonDefinition {
+            get {
+                return ResourceManager.GetString("InvalidPokemonDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stats should not be null!.
         /// </summary>
         public static string NullStats {
@@ -93,6 +102,33 @@ namespace Pokens.Training.Resources {
         public static string PokemonNotFound {
             get {
                 return ResourceManager.GetString("PokemonNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Pokemon is not for starters!.
+        /// </summary>
+        public static string PokemonNotStarter {
+            get {
+                return ResourceManager.GetString("PokemonNotStarter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already have a starter Pokemon!.
+        /// </summary>
+        public static string TrainerAlreadyHasStarter {
+            get {
+                return ResourceManager.GetString("TrainerAlreadyHasStarter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trainer does not exist!.
+        /// </summary>
+        public static string TrainerNotFound {
+            get {
+                return ResourceManager.GetString("TrainerNotFound", resourceCulture);
             }
         }
     }

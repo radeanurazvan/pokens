@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Pokens.Trainers.Api.Extensions
+namespace Pomelo.Kernel.Infrastructure
 {
     public static class FunctionalExtensions
     {
