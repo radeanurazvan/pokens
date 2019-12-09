@@ -18,19 +18,19 @@ namespace Pokens.Pokedex.Business
             this.bus = bus;
         }
 
-        public IEnumerable<PokemonModel> GetAll()
+        public async Task<IEnumerable<PokemonModel>> GetAll()
         {
-            return this.repository.GetAll<Pokemon>().Select(p => new PokemonModel(p));
+            return ( await this.repository.GetAll<Pokemon>()).Select(p => new PokemonModel(p));
         }
 
-        public IEnumerable<StarterPokemonModel> GetStarters()
+        public async Task<IEnumerable<StarterPokemonModel>> GetStarters()
         {
-            return this.repository.GetAll<Pokemon>().Where(p => p.IsStarter).Select(p => new StarterPokemonModel(p));
+            return (await this.repository.Find<Pokemon>(p => p.IsStarter)).Select(p => new StarterPokemonModel(p));
         }
 
-        public Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
+        public async Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
         {
-            var abilities = repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
+            var abilities = await repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
             var pokemon = new Pokemon
             {
                 Name = name,
@@ -39,77 +39,76 @@ namespace Pokens.Pokedex.Business
                 Abilities = abilities.ToList()
             };
 
-            this.repository.Add(pokemon);
-            return this.bus.Publish(new PokemonCreated(pokemon));
+            await this.repository.Add(pokemon);
+            await this.bus.Publish(new PokemonCreated(pokemon));
         }
 
-        public Task ChangeStats(string pokemonId, Stats newStats)
+        public async Task ChangeStats(string pokemonId, Stats newStats)
         {
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             var pokemon = pokemonOrNothing.Value;
             pokemon.Stats = newStats;
 
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonStatsChanged(pokemon));
+            await this.repository.Update(pokemon);
+            await this.bus.Publish(new PokemonStatsChanged(pokemon));
         }
 
-        public Task ChangeAbilities(string pokemonId, IEnumerable<string> abilitiesIds)
+        public async Task ChangeAbilities(string pokemonId, IEnumerable<string> abilitiesIds)
         {
-
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             var pokemon = pokemonOrNothing.Value;
-            pokemon.Abilities = this.repository.Find<Ability>(a => abilitiesIds.Contains(a.Id)).ToList();
+            pokemon.Abilities = (await this.repository.Find<Ability>(a => abilitiesIds.Contains(a.Id))).ToList();
 
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonAbilitiesChanged(pokemon));
+            await this.repository.Update(pokemon);
+            await this.bus.Publish(new PokemonAbilitiesChanged(pokemon));
         }
 
-        public Task ChangeStarter(string pokemonId)
+        public async Task ChangeStarter(string pokemonId)
         {
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             var pokemon = pokemonOrNothing.Value;
             pokemon.IsStarter = ! pokemon.IsStarter;
 
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonStarterChanged(pokemon));
+            await this.repository.Update(pokemon);
+            await this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
-        public Task ChangeImages(string pokemonId, byte[] contentImage, string imageName)
+        public async Task ChangeImages(string pokemonId, byte[] contentImage, string imageName)
         {
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
             {
-                return Task.CompletedTask;
+                return;
             }
             var pokemon = pokemonOrNothing.Value;
 
             var img = new Image(imageName, contentImage);
             pokemon.Images.Add(img);
 
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonImagesChanged(pokemon));
+            await this.repository.Update(pokemon);
+            await this.bus.Publish(new PokemonImagesChanged(pokemon));
         }
 
-        public Task DeleteImage(string pokemonId, string imageId)
+        public async Task DeleteImage(string pokemonId, string imageId)
         {
-            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)
             {
-                return Task.CompletedTask;
+                return;
             }
             var pokemon = pokemonOrNothing.Value;
 
@@ -117,11 +116,11 @@ namespace Pokens.Pokedex.Business
 
             if (image == null)
             {
-                return Task.CompletedTask;
+                return;
             }
             pokemon.Images.Remove(image);
-            this.repository.Update(pokemon);
-            return this.bus.Publish(new PokemonImagesChanged(pokemon));
+            await this.repository.Update(pokemon);
+            await this.bus.Publish(new PokemonImagesChanged(pokemon));
         }
     }
 }

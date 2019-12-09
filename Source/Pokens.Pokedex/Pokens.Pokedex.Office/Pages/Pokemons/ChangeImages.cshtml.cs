@@ -25,11 +25,12 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         [BindProperty]
         public ChangePokemonImageModel PokemonImage { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             var id = HttpContext.Request.Query["id"];
-            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == id).FirstOrDefault();
+            this.PokemonChosen = (await this.pokemonService.GetAll()).FirstOrDefault(p => p.Id == id);
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
             var id = HttpContext.Request.Query["id"];
