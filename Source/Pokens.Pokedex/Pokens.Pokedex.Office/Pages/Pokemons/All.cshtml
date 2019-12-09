@@ -15,9 +15,6 @@
     <thead>
         <tr>
             <th>
-                ID
-            </th>
-            <th>
                 Name
             </th>
             <th>
@@ -35,9 +32,6 @@
     @foreach (var item in Model.Pokemons)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -60,7 +54,7 @@
             </td>
             <td>
                 @item.IsStarter
-                <a asp-page="./ChangeStarter" asp-route-id="@item.Id">Change IsStarter</a>
+                <form asp-action="@item.Id" method="post"> <button type="submit">Change IsStarter</button> </form>
             </td>
             <td>
                 <a asp-page="./ChangeImages" asp-route-id="@item.Id">Change Images</a>

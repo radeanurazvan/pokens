@@ -103,5 +103,25 @@ namespace Pokens.Pokedex.Business
             this.repository.Update(pokemon);
             return this.bus.Publish(new PokemonImagesChanged(pokemon));
         }
+
+        public Task DeleteImage(string pokemonId, string imageId)
+        {
+            var pokemonOrNothing = this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            if (pokemonOrNothing.HasNoValue)
+            {
+                return Task.CompletedTask;
+            }
+            var pokemon = pokemonOrNothing.Value;
+
+            var image = pokemon.Images.FirstOrDefault(i => i.Id == imageId);
+
+            if (image == null)
+            {
+                return Task.CompletedTask;
+            }
+            pokemon.Images.Remove(image);
+            this.repository.Update(pokemon);
+            return this.bus.Publish(new PokemonImagesChanged(pokemon));
+        }
     }
 }
