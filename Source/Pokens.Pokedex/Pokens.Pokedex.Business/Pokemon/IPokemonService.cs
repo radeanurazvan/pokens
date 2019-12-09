@@ -10,6 +10,8 @@ namespace Pokens.Pokedex.Business
 
         Task<IEnumerable<StarterPokemonModel>> GetStarters();
 
+        Task<IEnumerable<PokemonModel>> GetPokemonRoulette();
+
         Task Create(string name, Stats stats, IEnumerable<string> abilities);
         
         Task ChangeStats(string pokemonId, Stats newStats);
