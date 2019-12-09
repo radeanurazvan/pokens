@@ -23,6 +23,7 @@ namespace Pomelo.Kernel.Messaging
                 return new ConnectionFactory
                 {
                     HostName = settings.Server,
+                    VirtualHost = settings.VirtualHost,
                     Port = settings.Port,
                     UserName = settings.Username,
                     Password = settings.Password
