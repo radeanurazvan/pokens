@@ -1,10 +1,26 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/shared/core/auth.guard';
 
-import { HomeComponent } from './pages/home/home.component';
+import { MapComponent } from './pages/map/map.component';
+import { PokedexComponent } from './pages/pokedex/pokedex.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [{
-  path: '',
-  component: HomeComponent,
+  path: 'map',
+  component: MapComponent,
   canActivate: [AuthGuard]
+},
+{
+  path: 'profile',
+  component: ProfileComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: 'pokedex',
+  component: PokedexComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: '',
+  redirectTo: 'map'
 }]
