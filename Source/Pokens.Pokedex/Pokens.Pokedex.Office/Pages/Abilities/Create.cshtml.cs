@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pokens.Pokedex.Business;
 
@@ -16,9 +17,9 @@ namespace Pokens.Pokedex.Office.Pages.Abilities
         [BindProperty]
         public CreateAbilityViewModel Ability { get; set; } = new CreateAbilityViewModel();
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            this.service.Create(Ability.Name, Ability.Description, Ability.Damage, Ability.RequiredLevel, Ability.Cooldown);
+            await this.service.Create(Ability.Name, Ability.Description, Ability.Damage, Ability.RequiredLevel, Ability.Cooldown);
             return RedirectToPage("/Abilities/All");
         }
     }

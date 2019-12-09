@@ -123,10 +123,22 @@
   <data name="InvalidName" xml:space="preserve">
     <value>Name is invalid!</value>
   </data>
+  <data name="InvalidPokemonDefinition" xml:space="preserve">
+    <value>Invalid Pokemon definition!</value>
+  </data>
   <data name="NullStats" xml:space="preserve">
     <value>Stats should not be null!</value>
   </data>
   <data name="PokemonNotFound" xml:space="preserve">
     <value>Pokemon not found!</value>
+  </data>
+  <data name="PokemonNotStarter" xml:space="preserve">
+    <value>This Pokemon is not for starters!</value>
+  </data>
+  <data name="TrainerAlreadyHasStarter" xml:space="preserve">
+    <value>You already have a starter Pokemon!</value>
+  </data>
+  <data name="TrainerNotFound" xml:space="preserve">
+    <value>Trainer does not exist!</value>
   </data>
 </root>

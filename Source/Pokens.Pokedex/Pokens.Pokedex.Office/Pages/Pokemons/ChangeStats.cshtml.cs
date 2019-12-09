@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pokens.Pokedex.Business;
@@ -18,14 +19,15 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         [BindProperty]
         public CreatePokemonViewModel Pokemon { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             var id = HttpContext.Request.Query["id"];
-            this.PokemonChosen = this.pokemonService.GetAll().Where(p => p.Id == id).FirstOrDefault();
+            this.PokemonChosen = (await this.pokemonService.GetAll()).FirstOrDefault(p => p.Id == id);
         }
-        public IActionResult OnPost()
+
+        public async Task<IActionResult> OnPost()
         {
-        var id = HttpContext.Request.Query["id"];
+            var id = HttpContext.Request.Query["id"];
             var stats = new Stats
             {
                 Health = Pokemon.Health,
@@ -34,7 +36,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                 Defense = Pokemon.Defense,
                 DodgeChance = Pokemon.DodgeChance
             };
-            this.pokemonService.ChangeStats(id, stats);
+            await this.pokemonService.ChangeStats(id, stats);
 
             return RedirectToPage("/Pokemons/All");
         }

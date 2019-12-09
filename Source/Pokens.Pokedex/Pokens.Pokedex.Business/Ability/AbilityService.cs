@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Domain;
 
@@ -14,12 +15,12 @@ namespace Pokens.Pokedex.Business
             this.repository = repository;
         }
 
-        public IEnumerable<AbilityModel> GetAll()
+        public async Task<IEnumerable<AbilityModel>> GetAll()
         {
-            return this.repository.GetAll<Ability>().Select(a => new AbilityModel(a));
+            return (await this.repository.GetAll<Ability>()).Select(a => new AbilityModel(a));
         }
 
-        public void Create(string name, string description, int damage, int requiredLevel, int cooldown)
+        public Task Create(string name, string description, int damage, int requiredLevel, int cooldown)
         {
             var ability = new Ability
             {
@@ -30,7 +31,7 @@ namespace Pokens.Pokedex.Business
                 Cooldown = cooldown
             };
 
-            this.repository.Add(ability);
+            return this.repository.Add(ability);
         }
     }
 }

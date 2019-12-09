@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace Pokens.Trainers.Api.Extensions
+namespace Pomelo.Kernel.Infrastructure
 {
     public class ApiResult
     {

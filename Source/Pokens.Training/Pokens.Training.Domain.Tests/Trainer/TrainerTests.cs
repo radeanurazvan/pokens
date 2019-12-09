@@ -55,7 +55,7 @@ namespace Pokens.Training.Domain.Tests
             var result = sut.ChooseStarter(pikachu);
 
             // Assert
-            result.IsFailure.Should().BeTrue();
+            result.IsSuccess.Should().BeTrue();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Pokens.Training.Domain
     public sealed class Trainer : DocumentAggregate
     {
         private readonly ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
-        private readonly Pokemon starterPokemon;
+        private Pokemon starterPokemon;
 
         private Trainer()
         {
@@ -40,7 +40,11 @@ namespace Pokens.Training.Domain
 
         public Result ChooseStarter(PokemonDefinition definition)
         {
-            return Result.Failure("Not implemented");
+            return definition.EnsureExists(Messages.InvalidPokemonDefinition)
+                .Ensure(d => d.IsStarter, Messages.PokemonNotStarter)
+                .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
+                .Bind(Pokemon.From)
+                .Tap(p => this.starterPokemon = p);
         }
 
         public static class Expressions

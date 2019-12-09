@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pokens.Pokedex.Business;
 
@@ -15,9 +16,9 @@ namespace Pokens.Pokedex.Office.Pages.Abilities
 
         public IEnumerable<AbilityModel> Abilities { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            this.Abilities = this.service.GetAll();
+            this.Abilities = await this.service.GetAll();
         }
     }
 }

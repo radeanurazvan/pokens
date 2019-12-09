@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pokens.Pokedex.Business
 {
     public interface IAbilityService
     {
-        IEnumerable<AbilityModel> GetAll();
+        Task<IEnumerable<AbilityModel>> GetAll();
 
-        void Create(string name, string description, int damage, int requiredLevel, int cooldown);
+        Task Create(string name, string description, int damage, int requiredLevel, int cooldown);
     }
 }
