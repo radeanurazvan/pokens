@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Primitives;
 using Pokens.Pokedex.Business;
 
 namespace Pokens.Pokedex.Office.Pages.Pokemons
@@ -31,9 +32,24 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            var changePokemonImageModel = new ChangePokemonImageModel();
-            changePokemonImageModel.Id = HttpContext.Request.Query["id"];
+            var id = HttpContext.Request.Query["id"];
+
+            var imageId = HttpContext.Request.Query["action"];
+            if(imageId.Count != 0)
+            {
+                await this.pokemonService.DeleteImage(id, imageId);
+                return RedirectToPage("/Pokemons/All");
+            }
             var files = HttpContext.Request.Form.Files;
+            if (files.Count != 0)
+                await CreateImage(id, files);
+            return RedirectToPage("/Pokemons/All");
+        }
+
+        private async Task CreateImage(StringValues id, Microsoft.AspNetCore.Http.IFormFileCollection files)
+        {
+            var changePokemonImageModel = new ChangePokemonImageModel();
+            changePokemonImageModel.Id = id;
             foreach (var Image in files)
             {
                 if (Image != null && Image.Length > 0)
@@ -56,10 +72,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                     }
                 }
             }
-
-            return RedirectToPage("/Pokemons/All");
         }
-
         public class ChangePokemonImageModel
         {
             public string Id { get; set; }

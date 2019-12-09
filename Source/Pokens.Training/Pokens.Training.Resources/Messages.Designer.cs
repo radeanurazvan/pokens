@@ -86,5 +86,14 @@ namespace Pokens.Training.Resources {
                 return ResourceManager.GetString("NullStats", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pokemon not found!.
+        /// </summary>
+        public static string PokemonNotFound {
+            get {
+                return ResourceManager.GetString("PokemonNotFound", resourceCulture);
+            }
+        }
     }
 }

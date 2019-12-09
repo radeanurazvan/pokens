@@ -126,4 +126,7 @@
   <data name="NullStats" xml:space="preserve">
     <value>Stats should not be null!</value>
   </data>
+  <data name="PokemonNotFound" xml:space="preserve">
+    <value>Pokemon not found!</value>
+  </data>
 </root>

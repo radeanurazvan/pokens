@@ -10,7 +10,7 @@ import { RegisterModel } from '../models/register.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private endPointBase = 'http://localhost:5000/api/v1/trainers';
+  private endPointBase = 'https://localhost:44338/api/v1/trainers';
 
   constructor(
     private http: HttpClient,
