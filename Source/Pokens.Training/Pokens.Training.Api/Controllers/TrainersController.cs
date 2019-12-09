@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Training.Business;
 using Pomelo.Kernel.Domain;
@@ -7,6 +8,7 @@ using Pomelo.Kernel.Domain;
 namespace Pokens.Training.Api.Controllers
 {
     [Route("api/v1/trainers")]
+    [Authorize]
     public sealed class TrainersController : ControllerBase
     {
         private readonly IIdentifiedUser user;

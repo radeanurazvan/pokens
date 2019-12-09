@@ -6,6 +6,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.IdentityModel.Tokens;
 using Pokens.Trainers.Domain;
 using Pomelo.Kernel.Common;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pokens.Trainers.Infrastructure
 {

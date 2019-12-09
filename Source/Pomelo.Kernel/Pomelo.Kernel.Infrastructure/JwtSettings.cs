@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Pomelo.Kernel.Infrastructure;
 
-namespace Pokens.Trainers.Infrastructure
+namespace Pomelo.Kernel.Infrastructure
 {
     public class JwtSettings : IJwtSettings
     {
