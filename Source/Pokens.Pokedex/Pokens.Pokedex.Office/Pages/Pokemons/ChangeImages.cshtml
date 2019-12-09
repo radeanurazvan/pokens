@@ -20,9 +20,9 @@
             {
                 <tr>
                     <td>
-                        <img src="@String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.ContentImage))"/>
+                        <img src="@String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.ContentImage))" />
                         <br />
-                        <a asp-page="./DeleteImage" asp-route-id="@Model.PokemonChosen.Id" asp-route-imageId="@item.Id">Delete Image</a>
+                        <form asp-action="@item.Id" asp-route-id="@Model.PokemonChosen.Id" method="post"> <button type="submit">Delete Image</button> </form>
                     </td>
                 </tr>
             }
