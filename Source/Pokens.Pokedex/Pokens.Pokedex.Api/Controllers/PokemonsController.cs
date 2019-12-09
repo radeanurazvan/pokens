@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Pokens.Pokedex.Business;
 
 namespace Pokens.Pokedex.Api.Controllers
@@ -14,11 +15,17 @@ namespace Pokens.Pokedex.Api.Controllers
             this.pokemonService = pokemonService;
         }
 
-        // GET: api/Pokemons/starters
         [HttpGet("starters")]
-        public IActionResult GetStarterPokemons()
+        public async Task<IActionResult> GetStarterPokemons()
         {
-            var result = pokemonService.GetStarters();
+            var result = await pokemonService.GetStarters();
+            return Ok(result);
+        }
+
+        [HttpGet("roulette")]
+        public async Task<IActionResult> GetPokemonRoulette()
+        {
+            var result = await pokemonService.GetPokemonRoulette();
             return Ok(result);
         }
     }

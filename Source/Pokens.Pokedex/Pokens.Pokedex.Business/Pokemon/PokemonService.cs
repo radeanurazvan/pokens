@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Pokens.Pokedex.Domain;
@@ -26,6 +27,15 @@ namespace Pokens.Pokedex.Business
         public async Task<IEnumerable<StarterPokemonModel>> GetStarters()
         {
             return (await this.repository.Find<Pokemon>(p => p.IsStarter)).Select(p => new StarterPokemonModel(p));
+        }
+
+        public async Task<IEnumerable<PokemonModel>> GetPokemonRoulette()
+        {
+            var rouletteResult = PokemonRoulette.SpinRoulette();
+            return (await repository.GetAll<Pokemon>())
+                .OrderBy(p => Guid.NewGuid())
+                .Take(rouletteResult)
+                .Select(p => new PokemonModel(p));
         }
 
         public async Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
