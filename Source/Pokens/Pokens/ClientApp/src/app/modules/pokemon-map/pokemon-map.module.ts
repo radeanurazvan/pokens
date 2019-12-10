@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PokemonMapRoutingModule } from './pokemon-map-routing.module';
 import { PokemonMapComponent } from './pages/pokemon-map/pokemon-map.component';
-import { LocationService } from './pages/core/location.service';
+import { LocationService } from './core/location.service';
 import { MatProgressSpinnerModule } from '@angular/material';
 
 
