@@ -6,7 +6,8 @@ import { Tile as TileLayer } from 'ol/layer';
 import { View } from 'ol';
 
 import * as proj from 'ol/proj'
-import { element } from 'protractor';
+
+import { LocationService } from '../core/location.service';
 
 @Component({
   selector: 'app-pokemon-map',
@@ -17,10 +18,12 @@ export class PokemonMapComponent implements OnInit {
 
   public map: Map;
 
-  constructor() { }
+  constructor(
+    private locationService: LocationService
+  ) { }
 
   public ngOnInit() {
-    this.getPosition().then(pos => {
+    this.locationService.getPosition().then(pos => {
       this.map = new Map({
         target: 'map',
         layers: [
@@ -39,19 +42,6 @@ export class PokemonMapComponent implements OnInit {
 
   }
 
-  private getPosition(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      navigator.geolocation.getCurrentPosition(resp => {
-
-        resolve({ lng: resp.coords.longitude, lat: resp.coords.latitude });
-      },
-        err => {
-          reject(err);
-        });
-    });
-
-  }
 
   public get olMap(): Map {
     return this.map;
