@@ -14,7 +14,7 @@ export const routes: Routes = [
         loadChildren: () => import('../modules/starter-pokemons/starter-pokemons.module').then(m => m.StarterPokemonsModule)
     },
     {
-        path: '**',
+        path: '',
         redirectTo: 'home',
         pathMatch: 'full'
     }

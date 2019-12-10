@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { LoginModel } from '../models/login.model';
 import { RegisterModel } from '../models/register.model';
@@ -10,7 +11,7 @@ import { RegisterModel } from '../models/register.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private endPointBase = 'https://localhost:44338/api/v1/trainers';
+  private endPointBase = environment.apiTrainersUrl + '/trainers';
 
   constructor(
     private http: HttpClient,
