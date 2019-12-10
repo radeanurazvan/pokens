@@ -4,6 +4,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PokemonMapRoutingModule } from './pokemon-map-routing.module';
 import { PokemonMapComponent } from './pages/pokemon-map/pokemon-map.component';
 import { LocationService } from './pages/core/location.service';
+import { MatProgressSpinnerModule } from '@angular/material';
 
 
 
@@ -14,7 +15,8 @@ import { LocationService } from './pages/core/location.service';
   imports: [
     CommonModule,
     SharedModule.forChild(),
-    PokemonMapRoutingModule
+    PokemonMapRoutingModule,
+    MatProgressSpinnerModule
   ],
   providers: [LocationService]
 })

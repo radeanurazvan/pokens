@@ -18,6 +18,8 @@ export class PokemonMapComponent implements OnInit {
 
   public map: Map;
 
+  private loaded = false;
+
   constructor(
     private locationService: LocationService
   ) { }
@@ -38,12 +40,12 @@ export class PokemonMapComponent implements OnInit {
           maxZoom: 20
         })
       });
-    })
 
+      this.loaded = true;
+    })
   }
 
-
-  public get olMap(): Map {
-    return this.map;
+  public get isLoaded(): boolean {
+    return this.loaded;
   }
 }
