@@ -7,7 +7,7 @@
 
 .side-bar-container {
   height: 100vh;
-  width: 10%;
+  width: 13%;
   border-right: 2px solid #F5F2F0;
 }
 
@@ -29,14 +29,13 @@
   justify-content: center;
   height: 40px;
   font-size: 18px;
+  color: #646464;
+  font-weight: 600;
+  text-transform: uppercase;
 
   &:hover {
-    background-color: rgb(197, 233, 177);
+    color: #00d793;
     cursor: pointer;
-  }
-
-  &:active {
-    background-color: rgba(125, 179, 94, 0.808);
   }
 
   &:focus {
@@ -44,11 +43,13 @@
   }
 
   &.selected {
-    background-color: #94D26F;
+    color: #fff;
+    background-color: #00d793;
   }
 }
 
 .trainer-name {
   width: 80%;
   text-align: center;
+  color: #646464;
 }
