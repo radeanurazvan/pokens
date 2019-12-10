@@ -35,4 +35,3 @@ export class StarterPokemonsComponent implements OnInit {
     popupRef.afterClosed().subscribe(result => console.log(result));
   }
 }
-
