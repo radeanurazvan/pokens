@@ -24,10 +24,8 @@ namespace Pokens.Trainers.Infrastructure
         public static IServiceCollection AddTrainersJwtAuthentication(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection(nameof(JwtSettings))
-                .Get<JwtSettings>(o => o.BindNonPublicProperties = true);
             return services
-                .AddPomeloJwtAuthentication(jwtSettings);
+                .AddPomeloJwtAuthentication(configuration.GetJwtSettings());
         }
     }
 }

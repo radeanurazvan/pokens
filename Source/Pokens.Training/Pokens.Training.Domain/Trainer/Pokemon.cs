@@ -1,4 +1,7 @@
-﻿using Pomelo.Kernel.Domain;
+﻿using CSharpFunctionalExtensions;
+using Pokens.Training.Resources;
+using Pomelo.Kernel.Common;
+using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Domain
 {
@@ -6,6 +9,17 @@ namespace Pokens.Training.Domain
     {
         private Pokemon()
         {
+        }
+
+        private Pokemon(PokemonDefinition definition)
+        {
+            Name = definition.Name;
+        }
+
+        public static Result<Pokemon> From(PokemonDefinition definition)
+        {
+            return definition.EnsureExists(Messages.InvalidPokemonDefinition)
+                .Map(d => new Pokemon(d));
         }
 
         public string Name { get; private set; }

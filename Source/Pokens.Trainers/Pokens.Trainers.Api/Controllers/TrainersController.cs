@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokemons.Trainers.Business;
-using Pokens.Trainers.Api.Extensions;
 using Pokens.Trainers.Domain;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pokens.Trainers.Api.Controllers
 {

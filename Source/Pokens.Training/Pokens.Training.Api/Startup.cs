@@ -22,11 +22,13 @@ namespace Pokens.Training.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtSettings = Configuration.GetJwtSettings();
             services
                 .AddDefaultJsonSettings()
                 .AddLogging(c => c.AddDebug().AddConsole())
                 .AddTrainingBusiness()
                 .AddTrainingInfrastructure()
+                .AddPomeloJwtAuthentication(jwtSettings)
                 .AddPomeloSwagger("Pokens Training Api")
                 .AddPomeloCors(Configuration)
                 .AddControllers();
