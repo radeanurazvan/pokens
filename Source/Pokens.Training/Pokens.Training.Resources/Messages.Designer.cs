@@ -124,6 +124,15 @@ namespace Pokens.Training.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You already have this Pokemon!.
+        /// </summary>
+        public static string TrainerAlreadyHasThisPokemon {
+            get {
+                return ResourceManager.GetString("TrainerAlreadyHasThisPokemon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trainer does not exist!.
         /// </summary>
         public static string TrainerNotFound {

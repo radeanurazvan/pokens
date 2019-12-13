@@ -4,7 +4,7 @@ using CSharpFunctionalExtensions;
 using Pokens.Training.Resources;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
-
+using System.Linq;
 namespace Pokens.Training.Domain
 {
     public sealed class Trainer : DocumentAggregate
@@ -45,6 +45,14 @@ namespace Pokens.Training.Domain
                 .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
                 .Bind(Pokemon.From)
                 .Tap(p => this.starterPokemon = p);
+        }
+
+        public Result CatchPokemon(PokemonDefinition definition)
+        {
+            return definition.EnsureExists(Messages.InvalidPokemonDefinition)
+                .Bind(Pokemon.From)
+                .Ensure(p => caughtPokemons.Where(c => c.Name == p.Name).Count() == 0, Messages.TrainerAlreadyHasThisPokemon)
+                .Tap(p => this.caughtPokemons.Add(p));
         }
 
         public static class Expressions
