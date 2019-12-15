@@ -18,7 +18,7 @@ export const routes: Routes = [
         loadChildren: () => import('../modules/pokemon-map/pokemon-map.module').then(m => m.PokemonMapModule)
     },
     {
-        path: '**',
+        path: '',
         redirectTo: 'home',
         pathMatch: 'full'
     }
