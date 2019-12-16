@@ -1,55 +1,52 @@
 .trainer-image {
-  height: 100px;
-  width: 100px;
-  border-radius: 100%;
-  margin: 20px;
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    margin: 20px;
 }
 
 .side-bar-container {
-  height: 100vh;
-  width: 13%;
-  border-right: 2px solid #F5F2F0;
+    height: 100vh;
+    width: 225px;
+    border-right: 2px solid #F5F2F0;
 }
 
 .trainer-details {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border-bottom: 2px solid #F5F2F0;
-  padding-bottom: 15px;
-  font-size: 22px;
-  font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid #F5F2F0;
+    padding-bottom: 15px;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .side-menu-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  font-size: 18px;
-  color: #646464;
-  font-weight: 600;
-  text-transform: uppercase;
-
-  &:hover {
-    color: #00d793;
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: 0;
-  }
-
-  &.selected {
-    color: #fff;
-    background-color: #00d793;
-  }
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 18px;
+    color: #646464;
+    font-weight: 600;
+    text-transform: uppercase;
+    &:hover {
+        color: #00d793;
+        cursor: pointer;
+    }
+    &:focus {
+        outline: 0;
+    }
+    &.selected {
+        color: #fff;
+        background-color: #00d793;
+    }
 }
 
 .trainer-name {
-  width: 80%;
-  text-align: center;
-  color: #646464;
+    width: 80%;
+    text-align: center;
+    color: #646464;
 }

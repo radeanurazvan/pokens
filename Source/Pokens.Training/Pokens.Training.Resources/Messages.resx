@@ -138,6 +138,9 @@
   <data name="TrainerAlreadyHasStarter" xml:space="preserve">
     <value>You already have a starter Pokemon!</value>
   </data>
+  <data name="TrainerAlreadyHasThisPokemon" xml:space="preserve">
+    <value>You already have this Pokemon!</value>
+  </data>
   <data name="TrainerNotFound" xml:space="preserve">
     <value>Trainer does not exist!</value>
   </data>

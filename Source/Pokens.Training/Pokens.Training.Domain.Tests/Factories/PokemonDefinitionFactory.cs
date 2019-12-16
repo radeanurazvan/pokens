@@ -14,6 +14,11 @@ namespace Pokens.Training.Domain.Tests
             return definition;
         }
 
+        public static PokemonDefinition GetPokemonDefinition(string name)
+        {
+            return PokemonDefinition.Create(Guid.NewGuid(), name, StatsFactory.Empty()).Value;
+        }
+
         public static PokemonDefinition NotStarter() => PokemonDefinition.Create(Guid.NewGuid(), "Not starter", StatsFactory.Empty()).Value;
     }
 }
