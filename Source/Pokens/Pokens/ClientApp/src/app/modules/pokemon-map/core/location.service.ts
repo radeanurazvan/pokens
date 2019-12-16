@@ -21,8 +21,8 @@ export class LocationService {
   }
 
   public getRandomCoordinates(long: number, lat: number): CoordinatesModel {
-    const longitude = ((Math.random() * (0.1)) + long - 0.1) * 1;
-    const latitude = ((Math.random() * (0.1)) + lat - 0.1) * 1;
+    const longitude = ((Math.random() * (0.0015)) + long - 0.0015);
+    const latitude = ((Math.random() * (0.0015)) + lat - 0.0015);
     return new CoordinatesModel(longitude, latitude);
   }
 }

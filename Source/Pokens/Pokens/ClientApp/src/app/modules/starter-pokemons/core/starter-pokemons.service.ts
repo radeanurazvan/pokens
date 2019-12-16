@@ -10,7 +10,7 @@ import { StarterPokemonModel } from '../models/starter-pokemon.model';
   providedIn: 'root'
 })
 export class StarterPokemonsService {
-  private pokemonEndPoint = environment.apiPokensUrl + '/pokemons/starters';
+  private pokemonEndPoint = environment.apiPokensUrl + '/starters';
 
   constructor(private http: HttpClient) { }
 

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Feature } from 'ol';
-import { Map } from 'ol';
+import { Feature, Map, View } from 'ol';
 import { OSM, Vector as SourceVector } from 'ol/source';
 import { Point } from 'ol/geom';
 import { Tile as TileLayer, Vector as LayerVector } from 'ol/layer';
-import { View } from 'ol';
 
 import * as proj from 'ol/proj'
 
 import { LocationService } from '../../core/location.service';
-import { CoordinatesModel } from '../../models/coordinates.model';
+import { MapPokemonsService } from '../../core/map-pokemons.service';
+import { Subscription } from 'rxjs';
+import { MapPokemonModel } from '../../models/map-pokemon.model';
 
 @Component({
   selector: 'app-pokemon-map',
@@ -19,12 +19,15 @@ import { CoordinatesModel } from '../../models/coordinates.model';
 })
 export class PokemonMapComponent implements OnInit {
 
+  private subscription = new Subscription();
+  private loaded = false;
+  private roulettePokemons: MapPokemonModel[];
+
   public map: Map;
 
-  private loaded = false;
-
   constructor(
-    private locationService: LocationService
+    private locationService: LocationService,
+    private mapPokemonsService: MapPokemonsService
   ) { }
 
   public ngOnInit() {
@@ -43,29 +46,54 @@ export class PokemonMapComponent implements OnInit {
           maxZoom: 20
         })
       });
-        this.setMarkers(pos.lng, pos.lat);
+
+      this.setMarkers(pos.lng, pos.lat);
 
       this.loaded = true;
     })
+
+    this.subscription.add(this.mapPokemonsService.getRandomPokemons().subscribe((res: MapPokemonModel[]) => {
+      this.roulettePokemons = res;
+    }));
+
   }
 
   private setMarkers(long: number, lat: number): void {
-    for (let i = 0; i < 5; i++) {
-      // const coordinates = this.locationService.getRandomCoordinates(long, lat);
-      const coordinates = new CoordinatesModel(long - 0.1, lat - 0.1);
+    for (let i = 0; i < this.roulettePokemons.length; i++) {
+      const coordinates = this.locationService.getRandomCoordinates(long, lat);
       let marker = new Feature({
         geometry: new Point(
           proj.fromLonLat([coordinates.longitudue, coordinates.latitude])
-        ),
+        )
       });
+
+      marker.setId(this.roulettePokemons[i].id);
+
       let vectorSource = new SourceVector({
         features: [marker]
       });
 
-      this.map.addLayer(new LayerVector({
-        source: vectorSource
-      }));
+      let layerVector = new LayerVector({
+        source: vectorSource,
+      });
+
+      this.map.addLayer(layerVector);
     }
+
+    this.setPokemonsToMarkers();
+  }
+
+  private setPokemonsToMarkers(): void {
+    this.map.on('singleclick', (evt) => {
+      var feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+          return feature;
+          });
+      if (feature) {
+          console.log(feature.getId());
+      } else {
+        console.log('Clicked outside');
+      }
+  });
   }
 
   public get isLoaded(): boolean {
