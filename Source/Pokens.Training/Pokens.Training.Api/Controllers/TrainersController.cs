@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,15 @@ namespace Pokens.Training.Api.Controllers
         public async Task<IActionResult> ChooseStarter([FromBody] ChooseStarterModel model)
         {
             var query = new ChooseStarterCommand(user.Id.Value.ToString(), model.PokemonId.ToString());
+            var result = await this.mediator.Send(query);
+
+            return result.ToActionResult(NoContent);
+        }
+
+        [HttpPatch("me/catch-pokemon")]
+        public async Task<IActionResult> CatchPokemon([FromBody] CatchPokemonModel model)
+        {
+            var query = new CatchPokemonCommand(user.Id.Value.ToString(), model.PokemonId.ToString());
             var result = await this.mediator.Send(query);
 
             return result.ToActionResult(NoContent);
