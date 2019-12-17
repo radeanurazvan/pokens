@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiTrainersUrl: 'http://localhost:5000/api/v1/',
-  apiPokensUrl: 'http://localhost:5000/api/v1/',
-  apiTrainingUrl: 'http://localhost:5000/api/v1/'
+  apiTrainersUrl: 'https://localhost:44338/api/v1',
+  apiPokensUrl: 'https://localhost:44379/api/v1/pokemons',
+  apiTrainingUrl: 'https://localhost:44369/api/v1/trainers'
 };
 
 /*
