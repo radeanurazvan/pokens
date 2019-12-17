@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/shared/core/auth.guard';
 
-import { MapComponent } from './pages/map/map.component';
-import { PokedexComponent } from './pages/pokedex/pokedex.component';
-import { ProfileComponent } from './pages/profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   {

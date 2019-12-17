@@ -9,13 +9,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MapPokemonsService {
 
-  private pokemonEndPoint = environment.apiPokensUrl + '/roulette';
+  private pokemonRouletteEndPoint = environment.apiPokensUrl + '/roulette';
+  private trainingCatchEndPoint = environment.apiTrainingUrl + '/me/catch-pokemon'
 
   constructor(
     private http: HttpClient
   ) { }
-  
+
   public getRandomPokemons(): Observable<MapPokemonModel[]> {
-    return this.http.get<MapPokemonModel[]>(this.pokemonEndPoint);
+    return this.http.get<MapPokemonModel[]>(this.pokemonRouletteEndPoint);
+  }
+
+  public catchPokemon(id: string | number): Observable<string | number> {
+    return this.http.patch<string | number>(this.trainingCatchEndPoint, { pokemonId: id });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Feature, Map, View } from 'ol';
+import { Feature, Map, Overlay, View } from 'ol';
 import { OSM, Vector as SourceVector } from 'ol/source';
 import { Point } from 'ol/geom';
 import { Tile as TileLayer, Vector as LayerVector } from 'ol/layer';
@@ -55,7 +55,6 @@ export class PokemonMapComponent implements OnInit {
     this.subscription.add(this.mapPokemonsService.getRandomPokemons().subscribe((res: MapPokemonModel[]) => {
       this.roulettePokemons = res;
     }));
-
   }
 
   private setMarkers(long: number, lat: number): void {
@@ -68,6 +67,10 @@ export class PokemonMapComponent implements OnInit {
       });
 
       marker.setId(this.roulettePokemons[i].id);
+
+      marker.setProperties({
+        name: this.roulettePokemons[i].name
+      });
 
       let vectorSource = new SourceVector({
         features: [marker]
@@ -84,16 +87,34 @@ export class PokemonMapComponent implements OnInit {
   }
 
   private setPokemonsToMarkers(): void {
+
+    const tooltip = document.getElementById('pokemon-tooltip');
+    const overlay = new Overlay({
+      element: tooltip,
+      offset: [10, 0]
+    });
+    this.map.addOverlay(overlay);
+
     this.map.on('singleclick', (evt) => {
-      var feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-          return feature;
-          });
+      const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+        return feature;
+      })
+
+      tooltip.style.display = feature ? 'flex' : 'none';
+
       if (feature) {
-          console.log(feature.getId());
-      } else {
-        console.log('Clicked outside');
+        overlay.setPosition(evt.coordinate);
+        tooltip.innerHTML = feature.get('name');
+        tooltip['value'] = feature.getId();
       }
-  });
+
+    });
+  }
+
+  public catch(): void {
+    const tooltip = document.getElementById('pokemon-tooltip');
+
+    console.log(tooltip['value']);
   }
 
   public get isLoaded(): boolean {
