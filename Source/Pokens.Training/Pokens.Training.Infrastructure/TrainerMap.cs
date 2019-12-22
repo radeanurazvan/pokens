@@ -3,7 +3,7 @@ using Pokens.Training.Domain;
 
 namespace Pokens.Training.Infrastructure
 {
-    public class TrainerMap : BsonClassMap<Trainer>
+    internal class TrainerMap : BsonClassMap<Trainer>
     {
         public TrainerMap()
         {

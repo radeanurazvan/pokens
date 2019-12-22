@@ -24,8 +24,10 @@ namespace Pokens.Training.Business
             var trainerResult = await repository.FindOne<Trainer>(t => t.Id == request.TrainerId).ToResult(Messages.TrainerNotFound);
             var definitionResult = await repository.FindOne<PokemonDefinition>(d => d.Id == request.PokemonId).ToResult(Messages.PokemonNotFound);
 
-            return Result.FirstFailureOrSuccess(trainerResult, definitionResult)
-                .Bind(() => trainerResult.Value.CatchPokemon(definitionResult.Value));
+            return await Result.FirstFailureOrSuccess(trainerResult, definitionResult)
+                .Bind(() => trainerResult.Value.CatchPokemon(definitionResult.Value))
+                .Tap(() => repository.Update(trainerResult.Value))
+                .Tap(() => repository.Commit());
         }
 
     }

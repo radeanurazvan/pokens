@@ -18,6 +18,7 @@ namespace Pokens.Training.Infrastructure
         private static IServiceCollection AddMongoMaps(this IServiceCollection services)
         {
             BsonClassMap.RegisterClassMap<TrainerMap>();
+            BsonClassMap.RegisterClassMap<PokemonDefinitionMap>();
             return services;
         }
     }

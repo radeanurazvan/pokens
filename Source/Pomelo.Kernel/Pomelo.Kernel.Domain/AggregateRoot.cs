@@ -6,11 +6,13 @@ using Pomelo.Kernel.Common;
 
 namespace Pomelo.Kernel.Domain
 {
-    public abstract class AggregateRoot : Entity
+    public abstract class AggregateRoot : Entity, IAggregateRoot
     {
         private readonly List<IDomainEvent> events = new List<IDomainEvent>();
 
         public IReadOnlyList<IDomainEvent> Events => events;
+        
+        public Guid GetId() => Id;
 
         protected Result AddDomainEvent(IDomainEvent @event)
         {
