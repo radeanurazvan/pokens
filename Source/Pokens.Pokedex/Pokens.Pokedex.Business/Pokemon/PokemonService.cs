@@ -38,7 +38,7 @@ namespace Pokens.Pokedex.Business
                 .Select(p => new PokemonModel(p));
         }
 
-        public async Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds)
+        public async Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds, double catchRate)
         {
             var abilities = await repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
             var pokemon = new Pokemon
@@ -46,7 +46,8 @@ namespace Pokens.Pokedex.Business
                 Name = name,
                 Stats = stats,
                 IsStarter = false,
-                Abilities = abilities.ToList()
+                Abilities = abilities.ToList(),
+                CatchRate = catchRate
             };
 
             await this.repository.Add(pokemon);

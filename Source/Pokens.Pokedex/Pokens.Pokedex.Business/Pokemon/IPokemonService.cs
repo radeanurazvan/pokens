@@ -12,7 +12,7 @@ namespace Pokens.Pokedex.Business
 
         Task<IEnumerable<PokemonModel>> GetPokemonRoulette();
 
-        Task Create(string name, Stats stats, IEnumerable<string> abilities);
+        Task Create(string name, Stats stats, IEnumerable<string> abilities, double catchRate);
         
         Task ChangeStats(string pokemonId, Stats newStats);
         

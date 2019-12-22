@@ -14,6 +14,8 @@ namespace Pokens.Pokedex.Domain
         public ICollection<Image> Images { get; set; } = new List<Image>();
 
         public ICollection<Ability> Abilities { get; set; } = new List<Ability>();
+
+        public Rate CatchRate { get; set; }
     }
 
 }

@@ -50,7 +50,7 @@ namespace Pomelo.Kernel.Common
 
         public static Result<T> EnsureExists<T>(this T subject, string error)
         {
-            return Result.Create(subject != null, subject, error);
+            return Result.SuccessIf(subject != null, subject, error);
         }
 
         public static Result<Guid> EnsureNotEmpty(this Guid subject, string error)
