@@ -12,14 +12,18 @@ namespace Pomelo.Kernel.Domain
 
         Task<IEnumerable<T>> Find<T>(Expression<Func<T, bool>> predicate);
 
-        Task<Maybe<T>> FindOne<T>(Expression<Func<T, bool>> predicate);
+        Task<Maybe<T>> FindOne<T>(Expression<Func<T, bool>> predicate)
+            where T : DocumentAggregate;
 
-        Task Add<T>(T aggregate);
+        Task Add<T>(T aggregate)
+            where T : DocumentAggregate;
         
         Task Update<T>(T aggregate)
-            where T : DocumentEntity;
+            where T : DocumentAggregate;
 
-        Task Delete<T>(string id)
-            where T : DocumentEntity;
+        Task Delete<T>(T aggregate)
+            where T : DocumentAggregate;
+
+        Task Commit();
     }
 }

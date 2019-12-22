@@ -6,7 +6,7 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Domain
 {
-    public class PokemonDefinition : DocumentEntity
+    public class PokemonDefinition : DocumentAggregate
     {
         private PokemonDefinition()
         {
