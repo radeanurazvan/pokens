@@ -8,7 +8,7 @@ namespace Pomelo.Kernel.EventStore
     {
         public string GetStreamFor(Guid aggregateId)
         {
-            return $"{typeof(T).Name}-{aggregateId}";
+            return $"{typeof(T).FullName}-{aggregateId}";
         }
     }
 }
