@@ -12,22 +12,23 @@ namespace Pokens.Training.Domain
         {
         }
 
-        private PokemonDefinition(Guid id, string name, Stats stats)
+        private PokemonDefinition(Guid id, string name, Stats stats, double catchRate)
             : this()
         {
             Id = id.ToString();
             Name = name;
             Stats = stats;
+            CatchRate = catchRate;
         }
 
-        public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats)
+        public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats, double catchRate)
         {
             var idResult = id.EnsureNotEmpty(Messages.InvalidId);
             var nameResult = name.EnsureValidString(Messages.InvalidName);
             var statsResult = stats.EnsureExists(Messages.NullStats);
 
             return Result.FirstFailureOrSuccess(idResult, nameResult, statsResult)
-                .Map(() => new PokemonDefinition(id, name, stats));
+                .Map(() => new PokemonDefinition(id, name, stats, catchRate));
         }
 
         public string Name { get; private set; }
@@ -35,6 +36,8 @@ namespace Pokens.Training.Domain
         public Stats Stats { get; private set; }
 
         public bool IsStarter { get; private set; }
+
+        public Rate CatchRate { get; private set; }
 
         public void ChangeIsStarter(bool isStarter)
         {

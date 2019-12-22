@@ -5,27 +5,41 @@ namespace Pomelo.Kernel.Domain
 {
     public sealed class Rate : ValueObject
     {
+        private const double MinRate = 0;
+        private const double MaxRate = 100;
+
+        private Rate()
+        {
+        }
+
         private Rate(double value)
+            : this()
         {
             Value = value;
         }
 
         public static Rate Create(double value)
         {
-            if (value <= 0)
+            if (value <= MinRate)
             {
-                value = 0;
+                value = MinRate;
             }
 
-            if (value >= 100)
+            if (value >= MaxRate)
             {
-                value = 100;
+                value = MaxRate;
             }
 
             return new Rate(value);
         }
 
         public double Value { get; private set; }
+
+        public bool Test()
+        {
+            var testRate = RandomProvider.Instance().NextDouble() * 100;
+            return testRate >= MinRate && testRate < Value;
+        }
 
         public static implicit operator double(Rate rate) => rate.Value;
         

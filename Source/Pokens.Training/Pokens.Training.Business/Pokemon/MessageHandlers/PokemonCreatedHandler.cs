@@ -28,11 +28,11 @@ namespace Pokens.Training.Business
             return Task.Run(() => HandleCore(message));
         }
 
-        private void HandleCore(PokemonCreated message)
+        private Task HandleCore(PokemonCreated message)
         {
             var stats = new Stats(message.Health, message.Defense, message.AttackPower, message.CriticalStrikeChance, message.DodgeChance);
 
-            PokemonDefinition.Create(message.Id, message.Name, stats)
+            return PokemonDefinition.Create(message.Id, message.Name, stats, message.CatchRate)
                 .OnFailure(e => this.logger.LogError($"Integrating pokemon definition failed with error {e}, for message {message.ToJson()}"))
                 .Tap(p => this.repository.Add(p));
         }

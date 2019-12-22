@@ -50,8 +50,9 @@ namespace Pokens.Training.Domain
         public Result CatchPokemon(PokemonDefinition definition)
         {
             return definition.EnsureExists(Messages.InvalidPokemonDefinition)
+                .Ensure(d => d.CatchRate.Test(), Messages.CatchFailed)
+                .Ensure(d => caughtPokemons.All(p => p.DefinitionId != d.Id), Messages.TrainerAlreadyHasThisPokemon)
                 .Bind(Pokemon.From)
-                .Ensure(p => caughtPokemons.Where(c => c.Name == p.Name).Count() == 0, Messages.TrainerAlreadyHasThisPokemon)
                 .Tap(p => this.caughtPokemons.Add(p));
         }
 

@@ -61,6 +61,15 @@ namespace Pokens.Training.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You didn&apos;t succeed into catching this Pokemon. Try again later!.
+        /// </summary>
+        public static string CatchFailed {
+            get {
+                return ResourceManager.GetString("CatchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The id is invalid!.
         /// </summary>
         public static string InvalidId {

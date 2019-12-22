@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CatchFailed" xml:space="preserve">
+    <value>You didn't succeed into catching this Pokemon. Try again later!</value>
+  </data>
   <data name="InvalidId" xml:space="preserve">
     <value>The id is invalid!</value>
   </data>

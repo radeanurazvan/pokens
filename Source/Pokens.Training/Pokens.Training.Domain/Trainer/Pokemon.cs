@@ -14,6 +14,7 @@ namespace Pokens.Training.Domain
         private Pokemon(PokemonDefinition definition)
         {
             Name = definition.Name;
+            DefinitionId = definition.Id;
         }
 
         public static Result<Pokemon> From(PokemonDefinition definition)
@@ -21,6 +22,8 @@ namespace Pokens.Training.Domain
             return definition.EnsureExists(Messages.InvalidPokemonDefinition)
                 .Map(d => new Pokemon(d));
         }
+
+        public string DefinitionId { get; private set; }
 
         public string Name { get; private set; }
     }

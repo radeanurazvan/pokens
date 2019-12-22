@@ -22,5 +22,7 @@ namespace Pokens.Training.Business
         public int AttackPower { get; private set; }
 
         public float CriticalStrikeChance { get; private set; }
+
+        public double CatchRate { get; private set; }
     }
 }
