@@ -27,11 +27,5 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
             this.service.ChangeStarter(id);
             return RedirectToPage("/Pokemons/All");
         }
-        public IActionResult OnPost()
-        {
-            var id = HttpContext.Request.Query["action"];
-            this.service.ChangeStarter(id);
-            return RedirectToPage("/Pokemons/All");
-        }
     }
 }

@@ -23,6 +23,7 @@ namespace Pokens.Pokedex.Business
             CriticalStrikeChance = pokemon.Stats.CriticalStrikeChance;
             IsStarter = pokemon.IsStarter;
             Abilities = pokemon.Abilities.Select(a => new CreatedPokemonAbility(a));
+            CatchRate = pokemon.CatchRate;
         }
 
         public string Id { get; private set; }
@@ -42,6 +43,8 @@ namespace Pokens.Pokedex.Business
         public bool IsStarter { get; private set; }
 
         public IEnumerable<CreatedPokemonAbility> Abilities { get; private set; }
+
+        public double CatchRate { get; private set; }
 
         internal sealed class CreatedPokemonAbility
         {

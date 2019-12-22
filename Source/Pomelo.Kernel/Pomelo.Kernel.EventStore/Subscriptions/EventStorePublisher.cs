@@ -71,8 +71,8 @@ namespace Pomelo.Kernel.EventStore
                 this.settings.Credentials).ToMaybe();
 
             return checkpointReadOrNothing.Where(cr => cr.Events.Any())
-                .Select(cr => cr.Events[0])
-                .Select(e => e.OriginalEvent.ToDecodedMessage<CheckpointRegistered>());
+                .Map(cr => cr.Events[0])
+                .Bind(e => e.OriginalEvent.ToDecodedMessage<CheckpointRegistered>());
         }
 
         private async Task StoreCheckpoint(ResolvedEvent @event)
