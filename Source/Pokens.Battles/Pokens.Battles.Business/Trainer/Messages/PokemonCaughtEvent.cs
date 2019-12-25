@@ -1,23 +1,11 @@
 ﻿using Pomelo.Kernel.Domain;
 
-namespace Pokens.Training.Domain
+namespace Pokens.Battles.Business
 {
     internal sealed class PokemonCaughtEvent : IDomainEvent
     {
         private PokemonCaughtEvent()
         {
-        }
-
-        public PokemonCaughtEvent(string pokemonId, PokemonDefinition definition)
-            : this()
-        {
-            PokemonId = pokemonId;
-            DefinitionName = definition.Name;
-            Health = definition.Stats.Health;
-            Defense = definition.Stats.Defense;
-            DodgeChance = definition.Stats.DodgeChance;
-            AttackPower = definition.Stats.AttackPower;
-            CriticalStrikeChance = definition.Stats.CriticalStrikeChance;
         }
 
         public string PokemonId { get; private set; }

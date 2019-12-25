@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Business\Pokens.Battles.Business.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
