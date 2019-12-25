@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Battles", "0. Battles", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Tests", "99. Tests", "{D8294EE0-7D3D-4CB1-9823-7E903F6A5C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Write.WebApi", "Pokens.Battles.Write.WebApi\Pokens.Battles.Write.WebApi.csproj", "{15451308-D037-4E67-A807-62020704F828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Write.WebApi", "Pokens.Battles.Write.WebApi\Pokens.Battles.Write.WebApi.csproj", "{15451308-D037-4E67-A807-62020704F828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Domain", "Pokens.Battles.Domain\Pokens.Battles.Domain.csproj", "{8BFCEE19-8942-49E0-8D25-EDDB11AD074F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Domain", "Pokens.Battles.Domain\Pokens.Battles.Domain.csproj", "{8BFCEE19-8942-49E0-8D25-EDDB11AD074F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Business", "Pokens.Battles.Business\Pokens.Battles.Business.csproj", "{FCD8C51E-D20D-48D6-9C89-2035F73E25D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Business", "Pokens.Battles.Business\Pokens.Battles.Business.csproj", "{FCD8C51E-D20D-48D6-9C89-2035F73E25D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.Domain", "..\Pomelo.Kernel\Pomelo.Kernel.Domain\Pomelo.Kernel.Domain.csproj", "{29DD54AD-FCBE-4913-B29D-48DADFD9C29F}"
 EndProject
@@ -38,6 +38,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.DataSynchronization", "..\Pomelo.Kernel\Pomelo.Kernel.DataSynchronization\Pomelo.Kernel.DataSynchronization.csproj", "{AE534C5C-08B1-402A-A17F-69256308623A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.EntityFramework", "..\Pomelo.Kernel\Pomelo.Kernel.EntityFramework\Pomelo.Kernel.EntityFramework.csproj", "{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Crosscutting Concerns", "4. Crosscutting Concerns", "{A74F4E25-8EF3-4225-B082-8DAA2EB0B71B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Resources", "Pokens.Battles.Resources\Pokens.Battles.Resources.csproj", "{B030D6F6-6572-4920-963E-29428DE4ADA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Infrastructure", "Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj", "{72F75596-9A3A-4675-A8BA-7B5682E46887}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Domain.Tests", "Pokens.Battles.Domain.Tests\Pokens.Battles.Domain.Tests.csproj", "{11ED12EE-E28F-415A-83AF-F64B7FD3658E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +101,18 @@ Global
 		{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B030D6F6-6572-4920-963E-29428DE4ADA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B030D6F6-6572-4920-963E-29428DE4ADA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B030D6F6-6572-4920-963E-29428DE4ADA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B030D6F6-6572-4920-963E-29428DE4ADA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F75596-9A3A-4675-A8BA-7B5682E46887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F75596-9A3A-4675-A8BA-7B5682E46887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F75596-9A3A-4675-A8BA-7B5682E46887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F75596-9A3A-4675-A8BA-7B5682E46887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +134,10 @@ Global
 		{DDF40009-5CC8-4BF9-B84A-51214DDEF8AB} = {0ECCE120-9E18-4BE9-AA04-B50E15635AC8}
 		{AE534C5C-08B1-402A-A17F-69256308623A} = {0ECCE120-9E18-4BE9-AA04-B50E15635AC8}
 		{01CAAAA4-1F9C-4736-BA42-F22AE7A66DDF} = {0ECCE120-9E18-4BE9-AA04-B50E15635AC8}
+		{A74F4E25-8EF3-4225-B082-8DAA2EB0B71B} = {3BCFCBCE-D976-4971-9A07-19AA6C581F43}
+		{B030D6F6-6572-4920-963E-29428DE4ADA1} = {A74F4E25-8EF3-4225-B082-8DAA2EB0B71B}
+		{72F75596-9A3A-4675-A8BA-7B5682E46887} = {CE1203B6-1E1E-47C6-9555-A87EEF6E2D85}
+		{11ED12EE-E28F-415A-83AF-F64B7FD3658E} = {D8294EE0-7D3D-4CB1-9823-7E903F6A5C2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ECE8988-FF48-4185-8C48-543F9AC74BB2}

@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ensure.That" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Domain\Pokens.Battles.Domain.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Resources\Pokens.Battles.Resources.csproj" />
   </ItemGroup>
 
 </Project>

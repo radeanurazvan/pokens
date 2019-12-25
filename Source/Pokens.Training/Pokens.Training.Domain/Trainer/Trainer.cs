@@ -45,7 +45,7 @@ namespace Pokens.Training.Domain
                 .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
                 .Bind(Pokemon.From)
                 .Tap(p => this.starterPokemon = p)
-                .Tap(p => AddDomainEvent(new StarterPokemonChosenEvent(p.DefinitionId)));
+                .Tap(p => AddDomainEvent(new StarterPokemonChosenEvent(p.Id, definition)));
         }
 
         public Result CatchPokemon(PokemonDefinition definition)
@@ -55,7 +55,7 @@ namespace Pokens.Training.Domain
                 .Ensure(d => caughtPokemons.All(p => p.DefinitionId != d.Id), Messages.TrainerAlreadyHasThisPokemon)
                 .Bind(Pokemon.From)
                 .Tap(p => this.caughtPokemons.Add(p))
-                .Tap(p => AddDomainEvent(new PokemonCaughtEvent(p.DefinitionId)));
+                .Tap(p => AddDomainEvent(new PokemonCaughtEvent(p.Id, definition)));
         }
 
         public static class Expressions

@@ -1,4 +1,5 @@
-﻿using Pomelo.Kernel.Domain;
+﻿using System;
+using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Domain
 {
@@ -8,12 +9,30 @@ namespace Pokens.Training.Domain
         {
         }
 
-        public StarterPokemonChosenEvent(string pokemonId)
+        public StarterPokemonChosenEvent(string pokemonId, PokemonDefinition definition)
             : this()
         {
             PokemonId = pokemonId;
+            DefinitionName = definition.Name;
+            Health = definition.Stats.Health;
+            Defense = definition.Stats.Defense;
+            DodgeChance = definition.Stats.DodgeChance;
+            AttackPower = definition.Stats.AttackPower;
+            CriticalStrikeChance = definition.Stats.CriticalStrikeChance;
         }
 
         public string PokemonId { get; private set; }
+
+        public string DefinitionName { get; private set; }
+
+        public int Health { get; private set; }
+
+        public int Defense { get; private set; }
+
+        public float DodgeChance { get; private set; }
+
+        public int AttackPower { get; private set; }
+
+        public float CriticalStrikeChance { get; private set; }
     }
 }
