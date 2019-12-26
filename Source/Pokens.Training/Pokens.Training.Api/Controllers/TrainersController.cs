@@ -44,7 +44,7 @@ namespace Pokens.Training.Api.Controllers
             return result.ToActionResult(NoContent);
         }
 
-        [HttpPatch("me/catch-pokemon")]
+        [HttpPatch("me/pokemons")]
         public async Task<IActionResult> CatchPokemon([FromBody] CatchPokemonModel model)
         {
             var query = new CatchPokemonCommand(user.Id.Value.ToString(), model.PokemonId.ToString());

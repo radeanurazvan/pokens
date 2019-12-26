@@ -10,7 +10,7 @@ namespace Pokens.Training.Domain
     public sealed class Trainer : DocumentAggregate
     {
         private readonly ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
-        private Pokemon starterPokemon;
+        private Pokemon _starterPokemon;
 
         private Trainer()
         {
@@ -34,7 +34,7 @@ namespace Pokens.Training.Domain
 
         public string Name { get; private set; }
 
-        public Maybe<Pokemon> StarterPokemon => this.starterPokemon;
+        public Maybe<Pokemon> StarterPokemon => this._starterPokemon;
 
         public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons;
 
@@ -44,7 +44,7 @@ namespace Pokens.Training.Domain
                 .Ensure(d => d.IsStarter, Messages.PokemonNotStarter)
                 .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
                 .Bind(Pokemon.From)
-                .Tap(p => this.starterPokemon = p)
+                .Tap(p => this._starterPokemon = p)
                 .Tap(p => AddDomainEvent(new StarterPokemonChosenEvent(p.Id, definition)));
         }
 
@@ -61,7 +61,7 @@ namespace Pokens.Training.Domain
         public static class Expressions
         {
             public const string CaughtPokemons = nameof(caughtPokemons);
-            public const string StarterPokemon = nameof(starterPokemon);
+            public const string StarterPokemon = nameof(_starterPokemon);
         }
     }
 }
