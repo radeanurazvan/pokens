@@ -70,6 +70,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot challenge yourself!.
+        /// </summary>
+        public static string CannotChallengeSelf {
+            get {
+                return ResourceManager.GetString("CannotChallengeSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required level should be at least 0!.
         /// </summary>
         public static string InvalidArenaLevel {
@@ -93,6 +102,15 @@ namespace Pokens.Battles.Resources {
         public static string InvalidTrainer {
             get {
                 return ResourceManager.GetString("InvalidTrainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already challenged this trainer!.
+        /// </summary>
+        public static string TrainerAlreadyChallenged {
+            get {
+                return ResourceManager.GetString("TrainerAlreadyChallenged", resourceCulture);
             }
         }
         
@@ -129,6 +147,15 @@ namespace Pokens.Battles.Resources {
         public static string TrainerNotFound {
             get {
                 return ResourceManager.GetString("TrainerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The trainers are not enrolled in the same arena!.
+        /// </summary>
+        public static string TrainersDoNotHaveSameEnrollment {
+            get {
+                return ResourceManager.GetString("TrainersDoNotHaveSameEnrollment", resourceCulture);
             }
         }
     }

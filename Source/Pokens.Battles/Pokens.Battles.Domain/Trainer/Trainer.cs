@@ -10,6 +10,7 @@ namespace Pokens.Battles.Domain
     public sealed class Trainer : AggregateRoot
     {
         private readonly ICollection<Pokemon> pokemons = new List<Pokemon>();
+        private readonly ICollection<Challenge> challenges = new List<Challenge>();
 
         private Trainer()
         {
@@ -30,6 +31,12 @@ namespace Pokens.Battles.Domain
 
         public Maybe<Guid> Enrollment { get; private set; } = Maybe<Guid>.None;
 
+        public bool IsEnrolled => Enrollment.HasValue;
+
+        public bool IsEnrolledIn(Arena arena) => IsEnrolled && Enrollment == arena.Id;
+
+        public IEnumerable<Challenge> Challenges => this.challenges;
+
         public void Catch(Pokemon pokemon)
         {
             ReactToDomainEvent(new TrainerCaughtPokemonEvent(pokemon));
@@ -47,7 +54,17 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new TrainerLeftArenaEvent()));
         }
 
+        internal Result Challenge(Trainer challenged)
+        {
+            return Result.FailureIf(challenges.Any(c => c.HasParticipants(this, challenged)), Messages.TrainerAlreadyChallenged)
+                .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
+                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id)))
+                .Tap(() => challenged.ReceiveChallengeFrom(this));
+        }
+
         internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
+
+        private void ReceiveChallengeFrom(Trainer challenger) => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challenger.Id));
 
         private void When(TrainerRegisteredEvent @event)
         {
@@ -68,6 +85,22 @@ namespace Pokens.Battles.Domain
         private void When(TrainerLeftArenaEvent @event)
         {
             Enrollment = Maybe<Guid>.None;
+        }
+
+        private void When(TrainerChallengedEvent @event)
+        {
+            var challenge = Domain.Challenge.For(@event.TrainerId)
+                .By(this.Id)
+                .On(Enrollment.Unwrap());
+            challenges.Add(challenge);
+        }
+
+        private void When(TrainerHasBeenChallengedEvent @event)
+        {
+            var challenge = Domain.Challenge.For(this.Id)
+                .By(@event.ChallengerId)
+                .On(Enrollment.Unwrap());
+            challenges.Add(challenge);
         }
     }
 }

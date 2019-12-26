@@ -39,5 +39,14 @@ namespace Pokens.Battles.Write.WebApi.Controllers
 
             return result.ToActionResult(NoContent);
         }
+
+        [HttpPatch("{id:Guid}/trainers/{challengedId:Guid}/challenges")]
+        public async Task<IActionResult> ChallengeTrainer([FromRoute] Guid id, [FromRoute] Guid challengedId)
+        {
+            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, challengedId);
+            var result = await mediator.Send(command);
+
+            return result.ToActionResult(NoContent);
+        }
     }
 }

@@ -120,6 +120,9 @@
   <data name="ArenaNotFound" xml:space="preserve">
     <value>Arena does not exist!</value>
   </data>
+  <data name="CannotChallengeSelf" xml:space="preserve">
+    <value>You cannot challenge yourself!</value>
+  </data>
   <data name="InvalidArenaLevel" xml:space="preserve">
     <value>Required level should be at least 0!</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="InvalidTrainer" xml:space="preserve">
     <value>The trainer is invalid!</value>
+  </data>
+  <data name="TrainerAlreadyChallenged" xml:space="preserve">
+    <value>You already challenged this trainer!</value>
   </data>
   <data name="TrainerAlreadyEnrolled" xml:space="preserve">
     <value>You are already enrolled in an arena!</value>
@@ -140,5 +146,8 @@
   </data>
   <data name="TrainerNotFound" xml:space="preserve">
     <value>Trainer does not exist!</value>
+  </data>
+  <data name="TrainersDoNotHaveSameEnrollment" xml:space="preserve">
+    <value>The trainers are not enrolled in the same arena!</value>
   </data>
 </root>
