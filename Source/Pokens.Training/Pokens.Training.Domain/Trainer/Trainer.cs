@@ -9,8 +9,8 @@ namespace Pokens.Training.Domain
 {
     public sealed class Trainer : DocumentAggregate
     {
-        private readonly ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
-        private Pokemon _starterPokemon;
+        private ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
+        private Pokemon starterPokemon;
 
         private Trainer()
         {
@@ -34,9 +34,9 @@ namespace Pokens.Training.Domain
 
         public string Name { get; private set; }
 
-        public Maybe<Pokemon> StarterPokemon => this._starterPokemon;
+        public Maybe<Pokemon> StarterPokemon => this.starterPokemon;
 
-        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons;
+        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons.Concat(StarterPokemon.Select(x => new List<Pokemon>{x}).Unwrap(new List<Pokemon>()));
 
         public Result ChooseStarter(PokemonDefinition definition)
         {
@@ -44,7 +44,7 @@ namespace Pokens.Training.Domain
                 .Ensure(d => d.IsStarter, Messages.PokemonNotStarter)
                 .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
                 .Bind(Pokemon.From)
-                .Tap(p => this._starterPokemon = p)
+                .Tap(p => this.starterPokemon = p)
                 .Tap(p => AddDomainEvent(new StarterPokemonChosenEvent(p.Id, definition)));
         }
 
@@ -61,7 +61,7 @@ namespace Pokens.Training.Domain
         public static class Expressions
         {
             public const string CaughtPokemons = nameof(caughtPokemons);
-            public const string StarterPokemon = nameof(_starterPokemon);
+            public const string StarterPokemon = nameof(starterPokemon);
         }
     }
 }
