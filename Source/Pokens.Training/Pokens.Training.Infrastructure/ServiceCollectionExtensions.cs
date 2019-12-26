@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.Infrastructure;
 using Pomelo.Kernel.Messaging;
 using Pomelo.Kernel.Mongo;
 
@@ -10,6 +12,8 @@ namespace Pokens.Training.Infrastructure
         public static IServiceCollection AddTrainingInfrastructure(this IServiceCollection services)
         {
             return services
+                .AddPomeloClaimsUser()
+                .AddPomeloEventStore()
                 .AddPomeloMongoCollectionRepository()
                 .AddPomeloRabbitMqBus()
                 .AddMongoMaps();
@@ -17,8 +21,8 @@ namespace Pokens.Training.Infrastructure
 
         private static IServiceCollection AddMongoMaps(this IServiceCollection services)
         {
-            BsonClassMap.RegisterClassMap<TrainerMap>();
-            BsonClassMap.RegisterClassMap<PokemonDefinitionMap>();
+            BsonClassMap.RegisterClassMap(new AggregateMap());
+            BsonClassMap.RegisterClassMap(new TrainerMap());
             return services;
         }
     }

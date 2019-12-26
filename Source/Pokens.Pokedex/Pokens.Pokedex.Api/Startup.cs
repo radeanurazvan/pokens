@@ -24,6 +24,7 @@ namespace Pokens.Pokedex.Api
             services
                 .AddPokedexInfrastructure()
                 .AddPokedexServices()
+                .AddPomeloJwtAuthentication(Configuration.GetJwtSettings())
                 .AddPomeloSwagger("Pokens Pokemons Api")
                 .AddPomeloCors(Configuration)
                 .AddControllers();

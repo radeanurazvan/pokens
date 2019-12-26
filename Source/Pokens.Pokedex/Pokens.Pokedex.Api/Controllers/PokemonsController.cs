@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Pokedex.Business;
 
 namespace Pokens.Pokedex.Api.Controllers
 {
-    [Route("api/v1/pokemons")]
+    [Authorize]
     [ApiController]
+    [Route("api/v1/pokemons")]
     public sealed class PokemonsController : ControllerBase
     {
         private readonly IPokemonService pokemonService;

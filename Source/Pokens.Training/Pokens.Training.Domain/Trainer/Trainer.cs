@@ -9,7 +9,7 @@ namespace Pokens.Training.Domain
 {
     public sealed class Trainer : DocumentAggregate
     {
-        private readonly ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
+        private ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
         private Pokemon starterPokemon;
 
         private Trainer()
@@ -36,7 +36,7 @@ namespace Pokens.Training.Domain
 
         public Maybe<Pokemon> StarterPokemon => this.starterPokemon;
 
-        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons;
+        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons.Concat(StarterPokemon.Select(x => new List<Pokemon>{x}).Unwrap(new List<Pokemon>()));
 
         public Result ChooseStarter(PokemonDefinition definition)
         {

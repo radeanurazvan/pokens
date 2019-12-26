@@ -4,7 +4,7 @@ using Pomelo.Kernel.Domain;
 namespace Pomelo.Kernel.EventStore
 {
     internal sealed class DefaultStreamConfig<T> : IStreamConfig<T>
-        where T : AggregateRoot
+        where T : IAggregateRoot
     {
         public string GetStreamFor(Guid aggregateId)
         {

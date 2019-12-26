@@ -50,9 +50,24 @@ namespace Pomelo.Kernel.Infrastructure
             return services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc($"v{version}", new OpenApiInfo {Title = title, Version = $"v{version}"});
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                c.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement();
+                securityRequirement.Add(securitySchema, new[] { "Bearer" });
+                c.AddSecurityRequirement(securityRequirement);
             });
         }
 
@@ -77,6 +92,11 @@ namespace Pomelo.Kernel.Infrastructure
             });
 
             return services;
+        }
+
+        public static IServiceCollection AddPomeloClaimsUser(this IServiceCollection services)
+        {
+            return services.AddScoped<IIdentifiedUser, ClaimsIdentifiedUser>();
         }
     }
 }
