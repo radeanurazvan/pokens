@@ -3,7 +3,7 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Pokedex.Domain
 {
-    public sealed class Pokemon : DocumentEntity
+    public sealed class Pokemon : DocumentAggregate
     {
         public string Name { get; set; }
 

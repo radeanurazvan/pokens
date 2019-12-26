@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Pomelo.Kernel.EventStore;
 using Pomelo.Kernel.Messaging;
 using Pomelo.Kernel.Mongo;
 
@@ -8,7 +9,9 @@ namespace Pokens.Pokedex.Infrastructure
     {
         public static IServiceCollection AddPokedexInfrastructure(this IServiceCollection services)
         {
-            return services.AddPomeloMongoCollectionRepository()
+            return services
+                .AddPomeloEventStore()
+                .AddPomeloMongoCollectionRepository()
                 .AddPomeloRabbitMqBus();
         }
     }

@@ -38,7 +38,7 @@ namespace Pokens.Pokedex.Business
                 .Select(p => new PokemonModel(p));
         }
 
-        public async Task Create(string name, Stats stats, IEnumerable<string> abilitiesIds, double catchRate)
+        public async Task<string> Create(string name, Stats stats, IEnumerable<string> abilitiesIds, double catchRate)
         {
             var abilities = await repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
             var pokemon = new Pokemon
@@ -52,6 +52,7 @@ namespace Pokens.Pokedex.Business
 
             await this.repository.Add(pokemon);
             await this.bus.Publish(new PokemonCreated(pokemon));
+            return pokemon.Id;
         }
 
         public async Task ChangeStats(string pokemonId, Stats newStats)
@@ -98,7 +99,7 @@ namespace Pokens.Pokedex.Business
             await this.repository.Update(pokemon);
             await this.bus.Publish(new PokemonStarterChanged(pokemon));
         }
-        public async Task ChangeImages(string pokemonId, byte[] contentImage, string imageName)
+        public async Task AddImage(string pokemonId, byte[] contentImage, string imageName)
         {
             var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
             if (pokemonOrNothing.HasNoValue)

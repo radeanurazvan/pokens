@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokens.Pokedex.Business;
 using Pokens.Pokedex.Infrastructure;
-using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Pokedex.Office
 {
@@ -48,7 +47,8 @@ namespace Pokens.Pokedex.Office
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapRazorPages();
-                });
+                })
+                .UseDefaultPokemons();
         }
     }
 }

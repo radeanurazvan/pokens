@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokens.Battles.Infrastructure;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pokens.Battles.Write.WebApi
 {
@@ -21,6 +22,7 @@ namespace Pokens.Battles.Write.WebApi
         {
             services
                 .AddBattlesInfrastructure()
+                .AddPomeloSwagger("Pokens Battles API")
                 .AddControllers();
         }
 

@@ -12,7 +12,7 @@ namespace Pokens.Pokedex.Business
 
         Task<IEnumerable<PokemonModel>> GetPokemonRoulette();
 
-        Task Create(string name, Stats stats, IEnumerable<string> abilities, double catchRate);
+        Task<string> Create(string name, Stats stats, IEnumerable<string> abilities, double catchRate);
         
         Task ChangeStats(string pokemonId, Stats newStats);
         
@@ -20,7 +20,7 @@ namespace Pokens.Pokedex.Business
 
         Task ChangeStarter(string pokemonId);
 
-        Task ChangeImages(string pokemonId, byte[] contentImage, string imageName);
+        Task AddImage(string pokemonId, byte[] contentImage, string imageName);
 
         Task DeleteImage(string pokemonId, string imageId);
 
