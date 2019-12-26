@@ -52,6 +52,14 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new ArenaEnrollmentEndedEvent(trainer.Id)));
         }
 
+        public Result MediateChallenge(Trainer challenger, Trainer challenged)
+        {
+            return Result.SuccessIf(challenger.IsEnrolled && challenged.IsEnrolled, Messages.TrainerIsNotEnrolled)
+                .Ensure(() => challenger.IsEnrolledIn(this) && challenged.IsEnrolledIn(this), Messages.TrainersDoNotHaveSameEnrollment)
+                .Bind(() => challenger.Challenge(challenged))
+                .Tap(() => AddDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
+        }
+
         private bool HasEnrollmentFor(Trainer trainer) => trainers.Any(t => t.Id == trainer.Id);
 
         private void When(ArenaOpenedEvent @event)

@@ -90,5 +90,61 @@ namespace Pokens.Battles.Domain.Tests
             sut.Events.Should().ContainSingle(e => e is ArenaEnrollmentEndedEvent);
             trainer.Events.Should().ContainSingle(e => e is TrainerLeftArenaEvent);
         }
+
+        [Fact]
+        public void Given_MediateChallenge_When_OneTrainerIsNotEnrolled_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.WithLevel(1);
+            var challenged = TrainerFactory.EnrolledIn(sut);
+
+            // Act
+            var result = sut.MediateChallenge(challenger, challenged);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerIsNotEnrolled);
+            sut.Events.Should().NotContain(e => e is ChallengeOccurredEvent);
+            challenger.Events.Should().BeEmpty();
+            challenged.Events.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Given_MediateChallenge_When_TrainersDoNotHaveSameEnrollment_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.Enrolled();
+            var challenged = TrainerFactory.EnrolledIn(sut);
+
+            // Act
+            var result = sut.MediateChallenge(challenger, challenged);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainersDoNotHaveSameEnrollment);
+            sut.Events.Should().NotContain(e => e is ChallengeOccurredEvent);
+            challenger.Events.Should().BeEmpty();
+            challenged.Events.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Given_MediateChallenge_When_TrainersHaveSameEnrollment_Then_ShouldChallenge()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(sut);
+            var challenged = TrainerFactory.EnrolledIn(sut);
+
+            // Act
+            var result = sut.MediateChallenge(challenger, challenged);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            sut.Events.Should().ContainSingle(e => e is ChallengeOccurredEvent);
+            challenger.Events.Should().ContainSingle(e => e is TrainerChallengedEvent);
+            challenged.Events.Should().ContainSingle(e => e is TrainerHasBeenChallengedEvent);
+        }
     }
 }

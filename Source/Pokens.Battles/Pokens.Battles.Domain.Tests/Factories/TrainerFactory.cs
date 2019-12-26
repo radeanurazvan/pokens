@@ -21,6 +21,16 @@ namespace Pokens.Battles.Domain.Tests
             return trainer;
         }
 
+        public static Trainer ChallengedBy(Trainer challenger)
+        {
+            var challenged = WithLevel(1);
+            challenger.Challenge(challenged);
+            challenger.ClearEvents();
+            challenged.ClearEvents();
+
+            return challenged;
+        }
+
         public static Trainer Enrolled() => EnrolledIn(ArenaFactory.WithoutRequirement());
     }
 }

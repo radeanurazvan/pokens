@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Pokens.Battles.Domain
 {
@@ -10,5 +11,7 @@ namespace Pokens.Battles.Domain
             Arena.Open("Crystal Arena", 5).Value,
             Arena.Open("Saphire Arena", 10).Value
         };
+
+        public static TimeSpan ChallengeTimeToLive => TimeSpan.FromDays(1);
     }
 }
