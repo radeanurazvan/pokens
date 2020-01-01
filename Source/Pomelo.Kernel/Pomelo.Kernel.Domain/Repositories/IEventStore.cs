@@ -5,6 +5,6 @@ namespace Pomelo.Kernel.Domain
 {
     public interface IEventStore
     {
-        Task StoreEventsFor(IEnumerable<AggregateRoot> aggregates);
+        Task StoreEventsFor(IEnumerable<IAggregateRoot> aggregates);
     }
 }

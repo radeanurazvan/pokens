@@ -40,8 +40,8 @@ namespace Pomelo.Kernel.EntityFramework
         private async Task ProcessEvents()
         {
             var aggregatesWithEvents = this.context.ChangeTracker.Entries()
-                .Where(e => e.Entity is AggregateRoot)
-                .Select(e => e.Entity as AggregateRoot)
+                .Where(e => e.Entity is IAggregateRoot)
+                .Select(e => e.Entity as IAggregateRoot)
                 .Where(a => a.Events.Any())
                 .ToList();
 
@@ -49,11 +49,11 @@ namespace Pomelo.Kernel.EntityFramework
             await PublishEventsFor(aggregatesWithEvents);
         }
 
-        private Task PublishEventsFor(IEnumerable<AggregateRoot> aggregates)
+        private Task PublishEventsFor(IEnumerable<IAggregateRoot> aggregates)
         {
             var publishTasks = aggregates.SelectMany(a =>
             {
-                var metadata = new IntegrationEventMetadata(a.Id);
+                var metadata = new IntegrationEventMetadata(a.GetId());
                 return a.Events.Select(e =>
                 {
                     var integrationEventType = typeof(IntegrationEvent<>).MakeGenericType(e.GetType());

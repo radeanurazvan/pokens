@@ -40,7 +40,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                 Defense = Pokemon.Defense,
                 DodgeChance = Pokemon.DodgeChance
             };
-            this.pokemonService.Create(Pokemon.Name, stats, Pokemon.Abilities);
+            this.pokemonService.Create(Pokemon.Name, stats, Pokemon.Abilities, Pokemon.CatchRate);
 
             return RedirectToPage("/Pokemons/All");
         }
@@ -61,5 +61,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         public float CriticalStrikeChance { get; set; }
 
         public ICollection<string> Abilities { get; set; }
+
+        public double CatchRate { get; set; }
     }
 }

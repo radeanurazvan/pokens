@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pokens.Training.Business
@@ -7,7 +8,9 @@ namespace Pokens.Training.Business
     {
         public static IServiceCollection AddTrainingBusiness(this IServiceCollection services)
         {
-            return services.AddBusHandlers();
+            return services
+                .AddMediatR(typeof(ServiceCollectionExtensions).Assembly)
+                .AddBusHandlers();
         }
 
         private static IServiceCollection AddBusHandlers(this IServiceCollection services)

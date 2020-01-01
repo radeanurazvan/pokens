@@ -23,6 +23,7 @@ namespace Pomelo.Kernel.Mongo
         public static IServiceCollection AddPomeloMongoCollectionRepository(this IServiceCollection services)
         {
             return services.AddSingletonSettings<MongoSettings>()
+                .AddScoped<MongoContext>()
                 .AddScoped<ICollectionRepository, MongoCollectionRepository>();
         }
     }

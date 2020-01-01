@@ -23,7 +23,7 @@ namespace Pomelo.Kernel.EventStore
             this.provider = provider;
         }
 
-        public Task StoreEventsFor(IEnumerable<AggregateRoot> aggregates)
+        public Task StoreEventsFor(IEnumerable<IAggregateRoot> aggregates)
         {
             var aggregatesByType = aggregates.ToLookup(a => a.GetType());
             var tasks = aggregatesByType.SelectMany(x =>
@@ -34,8 +34,8 @@ namespace Pomelo.Kernel.EventStore
                     var aggregateEvents = a.Events.ToList();
                     //a.ClearEvents();
 
-                    var events = aggregateEvents.Select(e => CreateEventData(e, a.Id));
-                    return connection.AppendToStreamAsync(streamConfig.GetStreamFor(a.Id), ExpectedVersion.Any, events);
+                    var events = aggregateEvents.Select(e => CreateEventData(e, a.GetId()));
+                    return connection.AppendToStreamAsync(streamConfig.GetStreamFor(a.GetId()), ExpectedVersion.Any, events);
                 });
             }).ToList();
 

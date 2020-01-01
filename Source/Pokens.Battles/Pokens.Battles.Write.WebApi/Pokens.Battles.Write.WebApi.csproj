@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Business\Pokens.Battles.Business.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

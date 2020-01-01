@@ -68,7 +68,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                             changePokemonImageModel.Content = reader.ReadBytes(Convert.ToInt32(file.Length));
                             changePokemonImageModel.ImageName = file.FileName;
                         }
-                        await this.pokemonService.ChangeImages(changePokemonImageModel.Id,
+                        await this.pokemonService.AddImage(changePokemonImageModel.Id,
                                 changePokemonImageModel.Content, changePokemonImageModel.ImageName);
                     }
                 }

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
+using Pokens.Training.Resources;
 using Xunit;
-using System.Linq;
+using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Domain.Tests
 {
@@ -17,6 +18,7 @@ namespace Pokens.Training.Domain.Tests
 
             // Assert
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.InvalidPokemonDefinition);
         }
 
         [Fact]
@@ -30,6 +32,7 @@ namespace Pokens.Training.Domain.Tests
 
             // Assert
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.PokemonNotStarter);
         }
 
         [Fact]
@@ -43,6 +46,7 @@ namespace Pokens.Training.Domain.Tests
 
             // Assert
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerAlreadyHasStarter);
         }
 
         [Fact]
@@ -60,7 +64,7 @@ namespace Pokens.Training.Domain.Tests
         }
 
         [Fact]
-        public void Given_CatchPokemon_When_DefinitionIsNull_Then_ShouldFail()
+        public void Given_CatchPokemon_When_DefinitionDoesNotExist_Then_ShouldFail()
         {
             // Arrange
             var sut = TrainerFactory.Ash();
@@ -70,10 +74,11 @@ namespace Pokens.Training.Domain.Tests
 
             // Assert
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.InvalidPokemonDefinition);
         }
 
         [Fact]
-        public void Given_CatchPokemon_When_DefinitionAlreadyExists_Then_ShouldFail()
+        public void Given_CatchPokemon_When_PokemonAlreadyCaught_Then_ShouldFail()
         {
             // Arrange
             var sut = TrainerFactory.Ash();
@@ -85,20 +90,38 @@ namespace Pokens.Training.Domain.Tests
 
             // Assert
             result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerAlreadyHasThisPokemon);
         }
 
         [Fact]
-        public void Given_CatchPokemon_When_DefinitionIsNotNullAndDoesNotAlreadyExist_Then_ShouldSuccessfullyCatch()
+        public void Given_CatchPokemon_When_PokemonNotCaughtAndCatchRateSucceeds_Then_ShouldSuccessfullyCatch()
         {
             // Arrange
             var sut = TrainerFactory.Ash();
-            var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu");
+            var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu", 90);
+            RandomProviderContext.PredictDouble(0.89);
 
             // Act
             var result = sut.CatchPokemon(pikachu);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Given_CatchPokemon_When_PokemonNotCaughtAndCatchRateFails_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = TrainerFactory.Ash();
+            var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu", 1);
+            RandomProviderContext.PredictDouble(0.91);
+
+            // Act
+            var result = sut.CatchPokemon(pikachu);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be(Messages.CatchFailed);
         }
     }
 }

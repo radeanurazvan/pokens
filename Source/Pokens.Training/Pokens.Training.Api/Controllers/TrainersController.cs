@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace Pokens.Training.Api.Controllers
             return result.ToActionResult(NoContent);
         }
 
-        [HttpPatch("me/catch-pokemon")]
+        [HttpPatch("me/pokemons")]
         public async Task<IActionResult> CatchPokemon([FromBody] CatchPokemonModel model)
         {
             var query = new CatchPokemonCommand(user.Id.Value.ToString(), model.PokemonId.ToString());

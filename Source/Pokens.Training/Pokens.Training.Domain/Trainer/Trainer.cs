@@ -9,7 +9,7 @@ namespace Pokens.Training.Domain
 {
     public sealed class Trainer : DocumentAggregate
     {
-        private readonly ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
+        private ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
         private Pokemon starterPokemon;
 
         private Trainer()
@@ -36,7 +36,7 @@ namespace Pokens.Training.Domain
 
         public Maybe<Pokemon> StarterPokemon => this.starterPokemon;
 
-        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons;
+        public IEnumerable<Pokemon> CaughtPokemons => this.caughtPokemons.Concat(StarterPokemon.Select(x => new List<Pokemon>{x}).Unwrap(new List<Pokemon>()));
 
         public Result ChooseStarter(PokemonDefinition definition)
         {
@@ -44,15 +44,18 @@ namespace Pokens.Training.Domain
                 .Ensure(d => d.IsStarter, Messages.PokemonNotStarter)
                 .Ensure(_ => StarterPokemon.HasNoValue, Messages.TrainerAlreadyHasStarter)
                 .Bind(Pokemon.From)
-                .Tap(p => this.starterPokemon = p);
+                .Tap(p => this.starterPokemon = p)
+                .Tap(p => AddDomainEvent(new StarterPokemonChosenEvent(p.Id, definition)));
         }
 
         public Result CatchPokemon(PokemonDefinition definition)
         {
             return definition.EnsureExists(Messages.InvalidPokemonDefinition)
+                .Ensure(d => d.CatchRate.Test(), Messages.CatchFailed)
+                .Ensure(d => caughtPokemons.All(p => p.DefinitionId != d.Id), Messages.TrainerAlreadyHasThisPokemon)
                 .Bind(Pokemon.From)
-                .Ensure(p => caughtPokemons.Where(c => c.Name == p.Name).Count() == 0, Messages.TrainerAlreadyHasThisPokemon)
-                .Tap(p => this.caughtPokemons.Add(p));
+                .Tap(p => this.caughtPokemons.Add(p))
+                .Tap(p => AddDomainEvent(new PokemonCaughtEvent(p.Id, definition)));
         }
 
         public static class Expressions

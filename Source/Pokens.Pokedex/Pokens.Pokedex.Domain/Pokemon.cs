@@ -3,7 +3,7 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Pokedex.Domain
 {
-    public sealed class Pokemon : DocumentEntity
+    public sealed class Pokemon : DocumentAggregate
     {
         public string Name { get; set; }
 
@@ -14,6 +14,8 @@ namespace Pokens.Pokedex.Domain
         public ICollection<Image> Images { get; set; } = new List<Image>();
 
         public ICollection<Ability> Abilities { get; set; } = new List<Ability>();
+
+        public Rate CatchRate { get; set; }
     }
 
 }
