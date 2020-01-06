@@ -11,6 +11,8 @@ import { StarterPokemonModel } from '../models/starter-pokemon.model';
 })
 export class StarterPokemonsService {
   private pokemonEndPoint = environment.apiPokensUrl + '/starters';
+  private trainingEndPoint = environment.apiTrainingUrl + '/me/starter';
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -22,5 +24,9 @@ export class StarterPokemonsService {
 
   public getPokemons(): Observable<StarterPokemonModel[]> {
     return this.http.get<StarterPokemonModel[]>(this.pokemonEndPoint, this.httpOptions);
+  }
+
+  public setStarterPokemon(id: string): Observable<any[]> {
+    return this.http.patch<any[]>(this.trainingEndPoint, {pokemonId: id}, this.httpOptions);
   }
 }

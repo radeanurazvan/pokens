@@ -37,6 +37,8 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<Challenge> Challenges => this.challenges;
 
+        public IEnumerable<Pokemon> Pokemons => this.pokemons;
+
         public void Catch(Pokemon pokemon)
         {
             ReactToDomainEvent(new TrainerCaughtPokemonEvent(pokemon));
@@ -54,17 +56,21 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new TrainerLeftArenaEvent()));
         }
 
-        internal Result Challenge(Trainer challenged)
+        internal Result Challenge(Trainer challenged, Guid challengerPokemonId, Guid challengedPokemonId)
         {
             return Result.FailureIf(challenges.Any(c => c.HasParticipants(this, challenged)), Messages.TrainerAlreadyChallenged)
                 .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
-                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id)))
-                .Tap(() => challenged.ReceiveChallengeFrom(this));
+                .Ensure(() => this.HasPokemon(challengerPokemonId) && challenged.HasPokemon(challengedPokemonId), Messages.TrainerDoesNotOwnPokemon)
+                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id, challengerPokemonId, challengedPokemonId)))
+                .Tap(() => challenged.ReceiveChallengeFrom(this, challengedPokemonId, challengerPokemonId));
         }
 
         internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
 
-        private void ReceiveChallengeFrom(Trainer challenger) => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challenger.Id));
+        private void ReceiveChallengeFrom(Trainer challenger, Guid challengedPokemonId, Guid challengerPokemonId) 
+            => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challenger.Id, challengerPokemonId));
+
+        private bool HasPokemon(Guid id) => this.pokemons.Any(p => p.Id == id);
 
         private void When(TrainerRegisteredEvent @event)
         {
@@ -89,16 +95,16 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerChallengedEvent @event)
         {
-            var challenge = Domain.Challenge.For(@event.TrainerId)
-                .By(this.Id)
+            var challenge = Domain.Challenge.For(@event.TrainerId, @event.ChallengedPokemonId)
+                .By(this.Id, @event.PokemonId)
                 .On(Enrollment.Unwrap());
             challenges.Add(challenge);
         }
 
         private void When(TrainerHasBeenChallengedEvent @event)
         {
-            var challenge = Domain.Challenge.For(this.Id)
-                .By(@event.ChallengerId)
+            var challenge = Domain.Challenge.For(this.Id, @event.PokemonId)
+                .By(@event.ChallengerId, @event.ChallengerPokemonId)
                 .On(Enrollment.Unwrap());
             challenges.Add(challenge);
         }

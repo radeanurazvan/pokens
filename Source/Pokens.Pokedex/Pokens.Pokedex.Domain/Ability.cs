@@ -13,5 +13,7 @@ namespace Pokens.Pokedex.Domain
         public int RequiredLevel { get; set; }
 
         public int Cooldown { get; set; }
+
+        public Image Image { get; set; }
     }
 }

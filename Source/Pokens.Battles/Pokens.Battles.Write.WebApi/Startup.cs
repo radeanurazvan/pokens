@@ -22,7 +22,9 @@ namespace Pokens.Battles.Write.WebApi
         {
             services
                 .AddBattlesInfrastructure()
+                .AddBattlesAuthorization(Configuration)
                 .AddPomeloSwagger("Pokens Battles API")
+                .AddPomeloCors(Configuration)
                 .AddControllers();
         }
 
@@ -38,6 +40,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UseRouting()
                 .UseAuthorization()
                 .UseDefaultArenas()
+                .UsePomeloCors()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();

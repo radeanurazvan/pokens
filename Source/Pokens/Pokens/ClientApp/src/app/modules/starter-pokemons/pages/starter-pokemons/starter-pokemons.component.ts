@@ -4,6 +4,7 @@ import { StarterPokemonModel } from '../../models/starter-pokemon.model';
 import { Guid } from 'guid-typescript';
 import { MatDialog } from '@angular/material';
 import { PopupComponent } from 'src/app/shared/components/popup/popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-starter-pokemons',
@@ -16,7 +17,8 @@ export class StarterPokemonsComponent implements OnInit {
 
   constructor(
     private starterService: StarterPokemonsService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -32,6 +34,17 @@ export class StarterPokemonsComponent implements OnInit {
       }
     });
 
-    popupRef.afterClosed().subscribe(result => console.log(result));
+    popupRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.starterService.setStarterPokemon(result).subscribe(
+          () => {
+            this.router.navigate(['/home/profile']);
+          },
+          () => {
+            console.log('Something went wrong!');
+          }
+        );
+      }
+    });
   }
 }

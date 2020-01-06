@@ -133,6 +133,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A trainer does not own the specified pokemon!.
+        /// </summary>
+        public static string TrainerDoesNotOwnPokemon {
+            get {
+                return ResourceManager.GetString("TrainerDoesNotOwnPokemon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The trainer is not enrolled in any arena!.
         /// </summary>
         public static string TrainerIsNotEnrolled {

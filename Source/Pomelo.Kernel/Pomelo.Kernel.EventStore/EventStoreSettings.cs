@@ -1,4 +1,5 @@
-﻿using EventStore.ClientAPI.SystemData;
+﻿using System.Net;
+using EventStore.ClientAPI.SystemData;
 
 namespace Pomelo.Kernel.EventStore
 {
@@ -12,7 +13,7 @@ namespace Pomelo.Kernel.EventStore
 
         public int Port { get; private set; }
 
-        public string ConnectionString => $"ConnectTo=tcp://{User}:{Password}@{Server}:{Port}; HeartBeatTimeout=500";
+        public string ConnectionString => $"ConnectTo=tcp://{User}:{Password}@{Server}:{Port}; HeartBeatTimeout=500; MaxRetries=50; MaxReconnections=-1; ReconnectionDelay=1000";
 
         public UserCredentials Credentials => new UserCredentials(User, Password);
     }

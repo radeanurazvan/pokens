@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CSharpFunctionalExtensions;
 using Pokens.Battles.Resources;
@@ -52,11 +53,11 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new ArenaEnrollmentEndedEvent(trainer.Id)));
         }
 
-        public Result MediateChallenge(Trainer challenger, Trainer challenged)
+        public Result MediateChallenge(Trainer challenger, Guid challengerPokemonId, Trainer challenged, Guid challengedPokemonId)
         {
             return Result.SuccessIf(challenger.IsEnrolled && challenged.IsEnrolled, Messages.TrainerIsNotEnrolled)
                 .Ensure(() => challenger.IsEnrolledIn(this) && challenged.IsEnrolledIn(this), Messages.TrainersDoNotHaveSameEnrollment)
-                .Bind(() => challenger.Challenge(challenged))
+                .Bind(() => challenger.Challenge(challenged, challengerPokemonId, challengedPokemonId))
                 .Tap(() => AddDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
         }
 
