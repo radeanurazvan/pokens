@@ -32,7 +32,6 @@ namespace Pomelo.Kernel.EventStore
                 return x.Select(a =>
                 {
                     var aggregateEvents = a.Events.ToList();
-                    //a.ClearEvents();
 
                     var events = aggregateEvents.Select(e => CreateEventData(e, a.GetId()));
                     return connection.AppendToStreamAsync(streamConfig.GetStreamFor(a.GetId()), ExpectedVersion.Any, events);

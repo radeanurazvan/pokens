@@ -11,14 +11,15 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public static ISteadyChallenge For(Guid challengedId)
+        public static ISteadyChallenge For(Guid challengedId, Guid challengedPokemonId)
         {
-            return new Challenge {ChallengedId = challengedId};
+            return new Challenge {ChallengedId = challengedId, ChallengedPokemonId = challengedPokemonId};
         }
 
-        public IReadyChallenge By(Guid challengerId)
+        public IReadyChallenge By(Guid challengerId, Guid challengerPokemonId)
         {
             ChallengerId = challengerId;
+            ChallengerPokemonId = challengerPokemonId;
             return this;
         }
 
@@ -29,8 +30,12 @@ namespace Pokens.Battles.Domain
         }
 
         public Guid ChallengerId { get; private set; }
+        
+        public Guid ChallengerPokemonId { get; private set; }
 
         public Guid ChallengedId { get; private set; }
+        
+        public Guid ChallengedPokemonId { get; private set; }
 
         public Guid ArenaId { get; private set; }
 
@@ -47,7 +52,7 @@ namespace Pokens.Battles.Domain
 
     public interface ISteadyChallenge
     {
-        IReadyChallenge By(Guid challengerId);
+        IReadyChallenge By(Guid challengerId, Guid challengerPokemonId);
     }
 
     public interface IReadyChallenge

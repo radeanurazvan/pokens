@@ -1,4 +1,5 @@
 ﻿using System;
+using Pokens.Battles.Domain.Tests.Extensions;
 
 namespace Pokens.Battles.Domain.Tests
 {
@@ -24,7 +25,7 @@ namespace Pokens.Battles.Domain.Tests
         public static Trainer ChallengedBy(Trainer challenger)
         {
             var challenged = WithLevel(1);
-            challenger.Challenge(challenged);
+            challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
             challenger.ClearEvents();
             challenged.ClearEvents();
 
