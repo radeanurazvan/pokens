@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Linq;
+using FluentAssertions;
+using Pokens.Battles.Domain.Tests.Extensions;
 using Pokens.Battles.Resources;
 using Xunit;
 
@@ -73,9 +76,10 @@ namespace Pokens.Battles.Domain.Tests
         {
             // Arrange
             var challenger = TrainerFactory.WithLevel(1);
+            var pokemonId = challenger.FirstPokemonId();
 
             // Act
-            var result = challenger.Challenge(challenger);
+            var result = challenger.Challenge(challenger, pokemonId, pokemonId);
 
             // Assert
             result.IsFailure.Should().BeTrue();
@@ -93,7 +97,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.ChallengedBy(challenger);
 
             // Act
-            var result = challenger.Challenge(challenged);
+            var result = challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
 
             // Assert
             result.IsFailure.Should().BeTrue();
@@ -105,6 +109,25 @@ namespace Pokens.Battles.Domain.Tests
         }
 
         [Fact]
+        public void Given_Challenge_When_TrainerDoesNotOwnPokemon_Then_ShouldFail()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.EnrolledIn(arena);
+
+            // Act
+            var result = challenger.Challenge(challenged, challenger.FirstPokemonId(), Guid.NewGuid());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerDoesNotOwnPokemon);
+            challenger.Challenges.Should().BeEmpty();
+            challenger.Events.Should().NotContain(e => e is TrainerChallengedEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerHasBeenChallengedEvent);
+        }
+
+        [Fact]
         public void Given_Challenge_When_ChallengeDoesNotExist_Then_ShouldChallenge()
         {
             // Arrange
@@ -113,7 +136,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.EnrolledIn(arena);
 
             // Act
-            var result = challenger.Challenge(challenged);
+            var result = challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -122,5 +145,6 @@ namespace Pokens.Battles.Domain.Tests
             challenger.Events.Should().ContainSingle(e => e is TrainerChallengedEvent);
             challenged.Events.Should().ContainSingle(e => e is TrainerHasBeenChallengedEvent);
         }
+
     }
 }

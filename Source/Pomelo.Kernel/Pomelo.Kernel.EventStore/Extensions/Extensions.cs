@@ -27,7 +27,7 @@ namespace Pomelo.Kernel.EventStore
                 .Ensure(m => m != null, "Event metadata cannot be null")
                 .Map(m => Type.GetType(m.EventType))
                 .Ensure(t => typeof(IDomainEvent).IsAssignableFrom(t), "Event is not domain event")
-                .Ensure(t => t != typeof(CheckpointRegistered), "Checkpoint message is not domain event")
+                .Ensure(t => t != typeof(CheckpointRegistered<>), "Checkpoint message is not domain event")
                 .Finally(x => !x.IsFailure);
         }
 

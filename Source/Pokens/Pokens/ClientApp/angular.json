@@ -24,7 +24,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "aot": false,
                         "assets": [
-                            "src/favicon.ico",
+                            "./assets/pictures/pokeball.jpg",
                             "src/assets"
                         ],
                         "styles": [
@@ -86,7 +86,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "assets": [
-                            "src/favicon.ico",
+                            "./assets/pictures/pokeball.jpg",
                             "src/assets"
                         ],
                         "styles": [

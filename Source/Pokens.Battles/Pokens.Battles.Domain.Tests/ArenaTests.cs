@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Pokens.Battles.Domain.Tests.Extensions;
 using Pokens.Battles.Resources;
 using Xunit;
 
@@ -100,7 +101,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.EnrolledIn(sut);
 
             // Act
-            var result = sut.MediateChallenge(challenger, challenged);
+            var result = sut.MediateChallenge(challenger, challenger.FirstPokemonId(), challenged, challenged.FirstPokemonId());
 
             // Assert
             result.IsFailure.Should().BeTrue();
@@ -119,7 +120,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.EnrolledIn(sut);
 
             // Act
-            var result = sut.MediateChallenge(challenger, challenged);
+            var result = sut.MediateChallenge(challenger, challenger.FirstPokemonId(), challenged, challenged.FirstPokemonId());
 
             // Assert
             result.IsFailure.Should().BeTrue();
@@ -138,7 +139,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.EnrolledIn(sut);
 
             // Act
-            var result = sut.MediateChallenge(challenger, challenged);
+            var result = sut.MediateChallenge(challenger, challenger.FirstPokemonId(), challenged, challenged.FirstPokemonId());
 
             // Assert
             result.IsSuccess.Should().BeTrue();

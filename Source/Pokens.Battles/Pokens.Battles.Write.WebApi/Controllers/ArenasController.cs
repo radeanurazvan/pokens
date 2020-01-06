@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Battles.Business;
+using Pokens.Battles.Write.WebApi.Models;
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.Infrastructure;
 
@@ -41,9 +42,9 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         }
 
         [HttpPatch("{id:Guid}/trainers/{challengedId:Guid}/challenges")]
-        public async Task<IActionResult> ChallengeTrainer([FromRoute] Guid id, [FromRoute] Guid challengedId)
+        public async Task<IActionResult> ChallengeTrainer([FromRoute] Guid id, [FromRoute] Guid challengedId, [FromBody] ChallengeTrainerModel model)
         {
-            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, challengedId);
+            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, challengedId, model.ChallengerPokemonId, model.ChallengedPokemonId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);

@@ -18,7 +18,7 @@ namespace Pokens.Battles.Infrastructure
             return services
                 .AddPomeloRabbitMqBus()
                 .AddPomeloEventStore()
-                .AddEventSourcedRepositories();
+                .AddPomeloEventSourcedRepositories();
         }
     }
 }
