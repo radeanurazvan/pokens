@@ -4,25 +4,24 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EnsureThat;
 using EventStore.ClientAPI;
+using MediatR;
 using Newtonsoft.Json;
 using Pomelo.Kernel.Common;
-using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pomelo.Kernel.EventStore
 {
     public abstract class EventStorePublisher
     {
         private readonly IEventStoreConnection storeConnection;
-        private readonly IMessageBus bus;
+        private readonly IMediator mediator;
         private readonly EventStoreSettings settings;
 
-        protected EventStorePublisher(IEventStoreConnection storeConnection, IMessageBus bus, EventStoreSettings settings)
+        protected EventStorePublisher(IEventStoreConnection storeConnection, IMediator mediator, EventStoreSettings settings)
         {
             EnsureArg.IsNotNull(storeConnection);
-            EnsureArg.IsNotNull(bus);
             EnsureArg.IsNotNull(settings);
             this.storeConnection = storeConnection;
-            this.bus = bus;
+            this.mediator = mediator;
             this.settings = settings;
         }
 
@@ -48,11 +47,11 @@ namespace Pomelo.Kernel.EventStore
             }
 
             var notification = this.GetNotificationMessage(@event.OriginalEvent);
-            var genericPublish = bus.GetType()
-                .GetMethod(nameof(IMessageBus.Publish))
+            var genericPublish = mediator.GetType()
+                .GetMethod(nameof(IMediator.Publish))
                 .MakeGenericMethod(notification.GetType());
 
-            await (Task) genericPublish.Invoke(this.bus, new[] { notification });
+            await (Task) genericPublish.Invoke(this.mediator, new[] { notification });
             await this.StoreCheckpoint(@event);
         }
 
@@ -61,7 +60,7 @@ namespace Pomelo.Kernel.EventStore
             await this.Subscribe();
         }
 
-        private async Task<Maybe<CheckpointRegistered>> GetCheckpoint()
+        private async Task<Maybe<CheckpointRegistered<Position>>> GetCheckpoint()
         {
             var checkpointReadOrNothing = await storeConnection.ReadStreamEventsBackwardAsync(
                 this.CheckpointStream,
@@ -71,8 +70,8 @@ namespace Pomelo.Kernel.EventStore
                 this.settings.Credentials).ToMaybe();
 
             return checkpointReadOrNothing.Where(cr => cr.Events.Any())
-                .Map(cr => cr.Events[0])
-                .Bind(e => e.OriginalEvent.ToDecodedMessage<CheckpointRegistered>());
+                .Select(cr => cr.Events[0])
+                .Select(e => e.OriginalEvent.ToDecodedMessage<CheckpointRegistered<Position>>());
         }
 
         private async Task StoreCheckpoint(ResolvedEvent @event)
@@ -80,7 +79,7 @@ namespace Pomelo.Kernel.EventStore
             var metadata = StreamMetadata.Build().SetMaxCount(1);
             await storeConnection.SetStreamMetadataAsync(this.CheckpointStream, ExpectedVersion.Any, metadata, this.settings.Credentials);
 
-            var checkpointMessage = new CheckpointRegistered(@event.OriginalPosition.GetValueOrDefault());
+            var checkpointMessage = new CheckpointRegistered<Position>(@event.OriginalPosition.GetValueOrDefault());
             await storeConnection.AppendToStreamAsync(this.CheckpointStream, ExpectedVersion.Any, checkpointMessage.ToEventData());
         }
 
