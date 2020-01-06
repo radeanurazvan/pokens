@@ -47,7 +47,9 @@ export class PokemonMapComponent implements OnInit {
         })
       });
 
-      this.setMarkers(pos.lng, pos.lat);
+      if (this.roulettePokemons) {
+        this.setMarkers(pos.lng, pos.lat);
+      }
 
       this.loaded = true;
     })
@@ -113,8 +115,10 @@ export class PokemonMapComponent implements OnInit {
 
   public catch(): void {
     const tooltip = document.getElementById('pokemon-tooltip');
-
-    console.log(tooltip['value']);
+    const pokemonId = tooltip['value'];
+    this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).subscribe(data => {
+      console.log(data);
+    }));
   }
 
   public get isLoaded(): boolean {

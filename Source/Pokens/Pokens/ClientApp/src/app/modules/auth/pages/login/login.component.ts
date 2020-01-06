@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   public loggedIn(): void {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/home/profile');
   }
 
   public goToRegister(): void {
