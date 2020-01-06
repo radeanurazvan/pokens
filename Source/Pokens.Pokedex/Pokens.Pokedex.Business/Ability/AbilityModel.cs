@@ -12,6 +12,10 @@ namespace Pokens.Pokedex.Business
             RequiredLevel = ability.RequiredLevel;
             Damage = ability.Damage;
             Cooldown = ability.Cooldown;
+            if(ability.Image != null)
+            {
+                AbilityImage = new ImageModel(ability.Image);
+            }
         }
 
         public string Id { get; set; }
@@ -25,6 +29,8 @@ namespace Pokens.Pokedex.Business
         public int Damage { get; set; }
 
         public int Cooldown { get; set; }
+
+        public ImageModel AbilityImage { get; set; }
 
         public string Summary => $"{Name}, deals {Damage} {nameof(Damage)}, requires level {RequiredLevel}, {Cooldown} rounds {nameof(Cooldown)}";
         
