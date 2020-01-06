@@ -15,6 +15,7 @@ namespace Pokens.Training.Domain
         {
             Name = definition.Name;
             DefinitionId = definition.Id;
+            Image = definition.Image;
         }
 
         public static Result<Pokemon> From(PokemonDefinition definition)
@@ -26,5 +27,7 @@ namespace Pokens.Training.Domain
         public string DefinitionId { get; private set; }
 
         public string Name { get; private set; }
+
+        public Image Image { get; set; }
     }
 }
