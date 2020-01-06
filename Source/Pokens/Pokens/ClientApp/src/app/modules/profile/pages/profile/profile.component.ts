@@ -8,10 +8,12 @@ import { ProfileService } from 'src/app/shared/core/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
+  public pokemons: any;
+
   constructor(private profileService: ProfileService) { }
 
   ngOnInit() {
-    this.profileService.getAllPokemons().subscribe((data) => console.log(data));
+    this.profileService.getAllPokemons().subscribe(data => this.pokemons = data);
   }
 
 }

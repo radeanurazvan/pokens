@@ -7,6 +7,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './router/app-routing.module';
 import { FirstLoginGuard } from './shared/core/first-login.guard';
+import { HasPokemonsGuard } from './shared/core/has-pokemons.guard';
+import { AuthGuard } from './shared/core/auth.guard';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { FirstLoginGuard } from './shared/core/first-login.guard';
       }
     })
   ],
-  providers: [FirstLoginGuard],
+  providers: [FirstLoginGuard, HasPokemonsGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
