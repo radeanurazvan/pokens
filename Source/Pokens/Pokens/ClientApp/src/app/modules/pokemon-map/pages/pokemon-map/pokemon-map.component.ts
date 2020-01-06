@@ -72,7 +72,8 @@ export class PokemonMapComponent implements OnInit {
       marker.setId(this.roulettePokemons[i].id);
 
       marker.setProperties({
-        name: this.roulettePokemons[i].name
+        name: this.roulettePokemons[i].name,
+        img: this.roulettePokemons[i].images[0]
       });
 
       let vectorSource = new SourceVector({
@@ -109,8 +110,8 @@ export class PokemonMapComponent implements OnInit {
         overlay.setPosition(evt.coordinate);
         tooltip.innerHTML = feature.get('name');
         tooltip['value'] = feature.getId();
+        console.log(feature)
       }
-
     });
   }
 
@@ -118,8 +119,10 @@ export class PokemonMapComponent implements OnInit {
     const tooltip = document.getElementById('pokemon-tooltip');
     const pokemonId = tooltip['value'];
     this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).subscribe(data => {
-      console.log(data);
+      if (data === null) {
+      }
     }));
+      tooltip.style.display = 'none';
   }
 
   public get isLoaded(): boolean {
