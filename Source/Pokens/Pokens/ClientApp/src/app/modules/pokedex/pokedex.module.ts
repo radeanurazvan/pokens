@@ -5,8 +5,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PokedexComponent } from './pages/pokedex/pokedex.component';
 import { PokedexRoutingModule } from './pokedex-routing.module';
 
-
-
 @NgModule({
   declarations: [PokedexComponent],
   imports: [

@@ -21,4 +21,14 @@ export const routes: Routes = [
     component: HomeComponent,
     loadChildren: () => import('../pokedex/pokedex.module').then(m => m.PokedexModule),
     canActivate: [AuthGuard]
-  }]
+  },
+  {
+    path: 'arena',
+    component: HomeComponent,
+    loadChildren: () => import('../arena/arena.module').then(m => m.ArenaModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: '',
+    redirectTo: 'map'
+  }];
