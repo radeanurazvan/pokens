@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PokedexService {
+export class ProfileService {
 
   private endPointBase = environment.apiTrainingUrl + '/me/pokemons';
   private httpOptions = {
