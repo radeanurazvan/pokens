@@ -45,6 +45,11 @@ export class SideBarComponent implements OnInit {
       isSelected: true
     },
     {
+      name: 'Arena',
+      route: '/home/arena',
+      isSelected: false
+    },
+    {
       name: 'Profile',
       route: '/home/profile',
       isSelected: false
@@ -53,7 +58,7 @@ export class SideBarComponent implements OnInit {
       name: 'Pokedex',
       route: '/home/pokedex',
       isSelected: false
-    }]
+    }];
   }
 
   private setPreselection(): void {
@@ -62,7 +67,7 @@ export class SideBarComponent implements OnInit {
         s.isSelected = true;
       } else {
         s.isSelected = false;
-      };
+      }
     });
   }
 }

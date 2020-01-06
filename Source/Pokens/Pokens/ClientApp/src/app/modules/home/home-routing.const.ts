@@ -23,6 +23,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'arena',
+    component: HomeComponent,
+    loadChildren: () => import('../arena/arena.module').then(m => m.ArenaModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     redirectTo: 'map'
-  }]
+  }];
