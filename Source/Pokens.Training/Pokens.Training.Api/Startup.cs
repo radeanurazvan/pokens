@@ -47,6 +47,7 @@ namespace Pokens.Training.Api
                 .UsePomeloSwagger("Pokens Training")
                 .UseHttpsRedirection()
                 .UseRouting()
+                .UsePomeloCors()
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
