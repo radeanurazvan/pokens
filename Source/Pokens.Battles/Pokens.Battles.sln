@@ -41,11 +41,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Kernel.EntityFramewo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Crosscutting Concerns", "4. Crosscutting Concerns", "{A74F4E25-8EF3-4225-B082-8DAA2EB0B71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Resources", "Pokens.Battles.Resources\Pokens.Battles.Resources.csproj", "{B030D6F6-6572-4920-963E-29428DE4ADA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Resources", "Pokens.Battles.Resources\Pokens.Battles.Resources.csproj", "{B030D6F6-6572-4920-963E-29428DE4ADA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Infrastructure", "Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj", "{72F75596-9A3A-4675-A8BA-7B5682E46887}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Infrastructure", "Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj", "{72F75596-9A3A-4675-A8BA-7B5682E46887}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Domain.Tests", "Pokens.Battles.Domain.Tests\Pokens.Battles.Domain.Tests.csproj", "{11ED12EE-E28F-415A-83AF-F64B7FD3658E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Reactors", "Pokens.Battles.Reactors\Pokens.Battles.Reactors.csproj", "{A5B9F49E-1E76-457A-8924-9608F40E0515}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pokens.Battles.Read.Domain", "Pokens.Battles.Read.Domain\Pokens.Battles.Read.Domain.csproj", "{5233A537-0AD5-48A2-8969-F4CFF8795B6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokens.Battles.Read.WebApi", "Pokens.Battles.Read.WebApi\Pokens.Battles.Read.WebApi.csproj", "{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +119,18 @@ Global
 		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11ED12EE-E28F-415A-83AF-F64B7FD3658E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B9F49E-1E76-457A-8924-9608F40E0515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B9F49E-1E76-457A-8924-9608F40E0515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B9F49E-1E76-457A-8924-9608F40E0515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B9F49E-1E76-457A-8924-9608F40E0515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5233A537-0AD5-48A2-8969-F4CFF8795B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5233A537-0AD5-48A2-8969-F4CFF8795B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5233A537-0AD5-48A2-8969-F4CFF8795B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5233A537-0AD5-48A2-8969-F4CFF8795B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +156,9 @@ Global
 		{B030D6F6-6572-4920-963E-29428DE4ADA1} = {A74F4E25-8EF3-4225-B082-8DAA2EB0B71B}
 		{72F75596-9A3A-4675-A8BA-7B5682E46887} = {CE1203B6-1E1E-47C6-9555-A87EEF6E2D85}
 		{11ED12EE-E28F-415A-83AF-F64B7FD3658E} = {D8294EE0-7D3D-4CB1-9823-7E903F6A5C2B}
+		{A5B9F49E-1E76-457A-8924-9608F40E0515} = {CE1203B6-1E1E-47C6-9555-A87EEF6E2D85}
+		{5233A537-0AD5-48A2-8969-F4CFF8795B6B} = {A8958245-EB2D-4132-B751-9B3BDCED01DC}
+		{088C6102-BF8B-4F79-B7C3-19B76CD8DE4B} = {0B2348AC-9A0B-4A0C-BC1F-15D8F1BD1868}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ECE8988-FF48-4185-8C48-543F9AC74BB2}

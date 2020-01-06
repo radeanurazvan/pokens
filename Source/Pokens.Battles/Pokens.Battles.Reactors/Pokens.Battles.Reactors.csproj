@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Domain\Pokens.Battles.Domain.csproj" />
+    <ProjectReference Include="..\Pokens.Battles.Read.Domain\Pokens.Battles.Read.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

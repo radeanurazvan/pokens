@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 
 namespace Pomelo.Kernel.EventStore
 {
-    internal sealed class CheckpointRegistered
+    internal sealed class CheckpointRegistered<T>
     {
-        public CheckpointRegistered(Position lastProcessedPosition)
+        public CheckpointRegistered(T lastProcessedPosition)
         {
             LastProcessedPosition = lastProcessedPosition;
         }
 
-        public Position LastProcessedPosition { get; private set; }
+        public T LastProcessedPosition { get; private set; }
 
         public EventData ToEventData()
         {

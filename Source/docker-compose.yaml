@@ -4,7 +4,8 @@ services:
   eventstore:
     image: eventstore/eventstore
     environment:
-      EVENTSTORE_RUN_PROJECTIONS: "All"
+      EVENTSTORE_RUN_PROJECTIONS: "System"
+      EVENTSTORE_START_STANDARD_PROJECTIONS: "True"
     ports:
       - 2113:2113
       - 1113:1113
