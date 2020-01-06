@@ -33,5 +33,20 @@ namespace Pokens.Pokedex.Business
 
             return this.repository.Add(ability);
         }
+
+        public async Task AddImage(string id, byte[] content, string imageName)
+        {
+            var abilityOrNothing = await this.repository.FindOne<Ability>(p => p.Id == id);
+            if (abilityOrNothing.HasNoValue)
+            {
+                return;
+            }
+            var ability = abilityOrNothing.Value;
+
+            var img = new Image(imageName, content);
+            ability.Image = img;
+
+            await this.repository.Update(ability);
+        }
     }
 }
