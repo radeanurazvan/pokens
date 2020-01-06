@@ -141,6 +141,9 @@
   <data name="TrainerDoesNotMeetMinimumLevel" xml:space="preserve">
     <value>You do not meet the minimum level requirements!</value>
   </data>
+  <data name="TrainerDoesNotOwnPokemon" xml:space="preserve">
+    <value>A trainer does not own the specified pokemon!</value>
+  </data>
   <data name="TrainerIsNotEnrolled" xml:space="preserve">
     <value>The trainer is not enrolled in any arena!</value>
   </data>
