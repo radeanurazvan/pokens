@@ -31,7 +31,9 @@ export class PokemonMapComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
+    let position;
     this.locationService.getPosition().then(pos => {
+      position = pos;
       this.map = new Map({
         target: 'map',
         layers: [
@@ -47,15 +49,14 @@ export class PokemonMapComponent implements OnInit {
         })
       });
 
-      if (this.roulettePokemons) {
-        this.setMarkers(pos.lng, pos.lat);
-      }
-
       this.loaded = true;
-    })
+    });
 
     this.subscription.add(this.mapPokemonsService.getRandomPokemons().subscribe((res: MapPokemonModel[]) => {
       this.roulettePokemons = res;
+      if (this.roulettePokemons) {
+        this.setMarkers(position.lng, position.lat);
+      }
     }));
   }
 
