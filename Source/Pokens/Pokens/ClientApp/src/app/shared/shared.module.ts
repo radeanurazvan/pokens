@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { AuthGuard } from './core/auth.guard';
 import { ErrorInterceptor } from './core/error.interceptor';
 import { ToastrService } from './core/toastr.service';
 import { PopupComponent } from './components/popup/popup.component';
@@ -62,7 +61,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        AuthGuard,
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         ToastrService
       ]

@@ -9,16 +9,17 @@ import { environment } from 'src/environments/environment';
 export class ProfileService {
 
   private endPointBase = environment.apiTrainingUrl + '/me/pokemons';
-  private httpOptions = {
+
+  constructor(private http: HttpClient) { }
+
+  public getAllPokemons(): Observable<any> {
+    const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${JSON.parse(localStorage.getItem('currentUserToken'))}`
       })
   };
 
-  constructor(private http: HttpClient) { }
-
-  public getAllPokemons(): Observable<any> {
-    return this.http.get<any>(this.endPointBase, this.httpOptions);
+    return this.http.get<any>(this.endPointBase, httpOptions);
   }
 }
