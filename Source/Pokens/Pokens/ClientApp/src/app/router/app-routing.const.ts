@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { FirstLoginGuard } from '../shared/core/first-login.guard';
 
 export const routes: Routes = [
     {
@@ -7,7 +8,8 @@ export const routes: Routes = [
     },
     {
         path: 'home',
-        loadChildren: () => import('../modules/home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('../modules/home/home.module').then(m => m.HomeModule),
+        canActivate: [FirstLoginGuard]
     },
     {
         path: 'starter',

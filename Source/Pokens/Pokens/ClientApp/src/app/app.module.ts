@@ -6,6 +6,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './router/app-routing.module';
+import { FirstLoginGuard } from './shared/core/first-login.guard';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { AppRoutingModule } from './router/app-routing.module';
       }
     })
   ],
-  providers: [],
+  providers: [FirstLoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
