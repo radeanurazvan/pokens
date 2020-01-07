@@ -61,6 +61,10 @@ export class PokemonMapComponent implements OnInit {
     }));
   }
 
+  private resetMap(coordinates): void {
+    this.map.getView().setCenter(coordinates);
+  }
+
   private setMarkers(long: number, lat: number): void {
     for (let i = 0; i < this.roulettePokemons.length; i++) {
       const coordinates = this.locationService.getRandomCoordinates(long, lat);
@@ -114,6 +118,8 @@ export class PokemonMapComponent implements OnInit {
 
         tooltip.src = `data:image/png;base64,${feature.get('img')['contentImage']}`
         tooltip['value'] = feature.getId();
+      } else {
+        this.resetMap(evt.coordinate);
       }
     });
   }
