@@ -11,6 +11,7 @@ import { LocationService } from '../../core/location.service';
 import { MapPokemonsService } from '../../core/map-pokemons.service';
 import { Subscription } from 'rxjs';
 import { MapPokemonModel } from '../../models/map-pokemon.model';
+import BaseLayer from 'ol/layer/Base';
 
 @Component({
   selector: 'app-pokemon-map',
@@ -60,6 +61,10 @@ export class PokemonMapComponent implements OnInit {
     }));
   }
 
+  private resetMap(coordinates): void {
+    this.map.getView().setCenter(coordinates);
+  }
+
   private setMarkers(long: number, lat: number): void {
     for (let i = 0; i < this.roulettePokemons.length; i++) {
       const coordinates = this.locationService.getRandomCoordinates(long, lat);
@@ -72,7 +77,8 @@ export class PokemonMapComponent implements OnInit {
       marker.setId(this.roulettePokemons[i].id);
 
       marker.setProperties({
-        name: this.roulettePokemons[i].name
+        name: this.roulettePokemons[i].name,
+        img: this.roulettePokemons[i].images[0]
       });
 
       let vectorSource = new SourceVector({
@@ -83,15 +89,17 @@ export class PokemonMapComponent implements OnInit {
         source: vectorSource,
       });
 
+      layerVector.set('layerId', marker.getId());
+
+
       this.map.addLayer(layerVector);
     }
 
     this.setPokemonsToMarkers();
   }
-
   private setPokemonsToMarkers(): void {
 
-    const tooltip = document.getElementById('pokemon-tooltip');
+    const tooltip = document.getElementById('pokemon-tooltip') as HTMLImageElement;
     const overlay = new Overlay({
       element: tooltip,
       offset: [10, 0]
@@ -107,19 +115,25 @@ export class PokemonMapComponent implements OnInit {
 
       if (feature) {
         overlay.setPosition(evt.coordinate);
-        tooltip.innerHTML = feature.get('name');
-        tooltip['value'] = feature.getId();
-      }
 
+        tooltip.src = `data:image/png;base64,${feature.get('img')['contentImage']}`
+        tooltip['value'] = feature.getId();
+      } else {
+        this.resetMap(evt.coordinate);
+      }
     });
   }
 
   public catch(): void {
     const tooltip = document.getElementById('pokemon-tooltip');
     const pokemonId = tooltip['value'];
-    this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).subscribe(data => {
-      console.log(data);
-    }));
+    this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).subscribe());
+    this.map.getLayers().forEach((layer: BaseLayer) => {
+      if (layer.getProperties()['layerId'] === pokemonId) {
+        this.map.removeLayer(layer);
+        tooltip.style.display = 'none';
+      }
+    });
   }
 
   public get isLoaded(): boolean {
