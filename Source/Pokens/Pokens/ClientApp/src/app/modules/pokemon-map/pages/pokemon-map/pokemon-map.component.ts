@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Feature, Map, Overlay, View } from 'ol';
-import { OSM, Vector as SourceVector } from 'ol/source';
+import { OSM, Vector as SourceVector, ImageStatic } from 'ol/source';
 import { Point } from 'ol/geom';
 import { Tile as TileLayer, Vector as LayerVector } from 'ol/layer';
-
-import * as proj from 'ol/proj'
+import { Icon, Style } from 'ol/style';
 
 import { LocationService } from '../../core/location.service';
 import { MapPokemonsService } from '../../core/map-pokemons.service';
 import { Subscription } from 'rxjs';
 import { MapPokemonModel } from '../../models/map-pokemon.model';
 import BaseLayer from 'ol/layer/Base';
-import { tap, catchError } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { ToastrService } from '../../../../shared/core/toastr.service';
-import LayerGroup from 'ol/layer/Group';
+import ImageLayer from 'ol/layer/Image';
 
 @Component({
   selector: 'app-pokemon-map',
@@ -26,6 +25,7 @@ export class PokemonMapComponent implements OnInit {
   private subscription = new Subscription();
   private loaded = false;
   private roulettePokemons: MapPokemonModel[];
+  private initialPosition = [3070838.01062542, 5966683.426528152];
 
   public map: Map;
 
@@ -36,50 +36,80 @@ export class PokemonMapComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    let position;
-    this.locationService.getPosition().then(pos => {
-      position = pos;
-      this.map = new Map({
-        target: 'map',
-        layers: [
-          new TileLayer({
-            source: new OSM()
-          })
-        ],
-        view: new View({
-          center: proj.fromLonLat([pos.lng, pos.lat]),
-          zoom: 19,
-          minZoom: 18,
-          maxZoom: 20
+    this.map = new Map({
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: new OSM()
         })
-      });
-
-      this.loaded = true;
+      ],
+      view: new View({
+        center: [this.initialPosition[0], this.initialPosition[1]],
+        zoom: 18,
+        minZoom: 18,
+        maxZoom: 20
+      })
     });
 
+    this.loaded = true;
+
+
     this.subscription.add(this.mapPokemonsService.getRandomPokemons().subscribe((res: MapPokemonModel[]) => {
+      this.addMapImage(this.initialPosition[0], this.initialPosition[1]);
+      console.log(this.map.getView().calculateExtent(this.map.getSize()));
       this.roulettePokemons = res;
       if (this.roulettePokemons) {
-        this.setMarkers(position.lng, position.lat);
+        this.setMarkers();
       }
     }));
   }
 
-  private resetMap(coordinates): void {
-    this.map.getView().setCenter(coordinates);
+  private addMapImage(long: number, lat: number): void {
+    const mapExtent = this.map.getView().calculateExtent(this.map.getSize());
+    this.map.setView(new View({
+      center: [long, lat],
+      zoom: 18,
+      minZoom: 18,
+      maxZoom: 20,
+      extent: mapExtent
+    }));
 
-    const layers = this.map.getLayers().getArray().filter((l: BaseLayer) => l.getProperties().layerId);
-    layers.forEach(l => this.map.removeLayer(l));
+    const imageLayer = new ImageLayer({
+      source: new ImageStatic({
+        url: '../../../../../assets/pictures/map.png',
+        imageExtent: mapExtent
+      })
+    });
+
+    this.map.addLayer(imageLayer);
   }
 
-  private setMarkers(long: number, lat: number): void {
+  private resetMap(): void {
+    const layers = this.map.getLayers().getArray().filter((l: BaseLayer) => l.getProperties().layerId);
+    layers.forEach(l => this.map.removeLayer(l));
+    this.setMarkers();
+
+  }
+
+  private setMarkers(): void {
+    const mapCenter = this.map.getView().getCenter();
     for (let i = 0; i < this.roulettePokemons.length; i++) {
-      const coordinates = this.locationService.getRandomCoordinates(long, lat);
-      let marker = new Feature({
+      const coordinates = this.locationService.getRandomCoordinates(mapCenter[0], mapCenter[1]);
+      const marker = new Feature({
         geometry: new Point(
-          proj.fromLonLat([coordinates.longitudue, coordinates.latitude])
+          [coordinates.longitudue, coordinates.latitude]
         )
       });
+
+      const markerIcon = new Icon({
+        scale: 0.2,
+        src: `data:image/png;base64,${this.roulettePokemons[i].images[0]['contentImage']}`
+      })
+
+      const markerStyle = new Style();
+      markerStyle.setImage(markerIcon);
+
+      marker.setStyle(markerStyle);
 
       marker.setId(this.roulettePokemons[i].id);
 
@@ -87,6 +117,8 @@ export class PokemonMapComponent implements OnInit {
         name: this.roulettePokemons[i].name,
         img: this.roulettePokemons[i].images[0]
       });
+
+      console.log(marker.getGeometry()['flatCoordinates']);
 
       let vectorSource = new SourceVector({
         features: [marker]
@@ -98,49 +130,36 @@ export class PokemonMapComponent implements OnInit {
 
       layerVector.set('layerId', marker.getId());
 
-
       this.map.addLayer(layerVector);
     }
 
     this.setPokemonsToMarkers();
   }
+
   private setPokemonsToMarkers(): void {
-
-    const tooltip = document.getElementById('pokemon-tooltip') as HTMLImageElement;
-    const overlay = new Overlay({
-      element: tooltip,
-      offset: [10, 0]
-    });
-    this.map.addOverlay(overlay);
-
     this.map.on('singleclick', (evt) => {
+
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         return feature;
       })
 
-      tooltip.style.display = feature ? 'flex' : 'none';
+      console.log(evt.coordinate);
 
       if (feature) {
-        overlay.setPosition(evt.coordinate);
-
-        tooltip.src = `data:image/png;base64,${feature.get('img')['contentImage']}`
-        tooltip['value'] = feature.getId();
+        this.catch(feature.getId());
       } else {
-        this.resetMap(evt.coordinate);
+        this.resetMap();
       }
     });
   }
 
-  public catch(): void {
-    const tooltip = document.getElementById('pokemon-tooltip');
-    const pokemonId = tooltip['value'];
+  public catch(pokemonId): void {
     this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).pipe(
       tap(() => this.toastrService.openToastr("You successfully caught this pokemon!"))
-    ).subscribe(() => {}, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next timeZ!")));
+    ).subscribe(() => { }, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next timeZ!")));
     this.map.getLayers().forEach((layer: BaseLayer) => {
       if (layer.getProperties()['layerId'] === pokemonId) {
         this.map.removeLayer(layer);
-        tooltip.style.display = 'none';
       }
     });
   }
