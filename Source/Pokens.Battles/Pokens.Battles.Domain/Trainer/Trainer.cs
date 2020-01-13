@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CSharpFunctionalExtensions;
 using Pokens.Battles.Resources;
+using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
 
 namespace Pokens.Battles.Domain
@@ -33,7 +34,9 @@ namespace Pokens.Battles.Domain
 
         public bool IsEnrolled => Enrollment.HasValue;
 
-        public bool IsEnrolledIn(Arena arena) => IsEnrolled && Enrollment == arena.Id;
+        public bool IsEnrolledIn(Arena arena) => IsEnrolledIn(arena.Id);
+        
+        public bool IsEnrolledIn(Guid arenaId) => IsEnrolled && Enrollment == arenaId;
 
         public IEnumerable<Challenge> Challenges => this.challenges;
 
@@ -44,7 +47,7 @@ namespace Pokens.Battles.Domain
             ReactToDomainEvent(new TrainerCaughtPokemonEvent(pokemon));
         }
 
-        internal Result EnrollIn(Arena arena)
+        public Result EnrollIn(Arena arena)
         {
             return Result.FailureIf(Enrollment.HasValue, Messages.TrainerAlreadyEnrolled)
                 .Tap(() => ReactToDomainEvent(new TrainerEnrolledEvent(arena.Id)));
@@ -63,6 +66,19 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => this.HasPokemon(challengerPokemonId) && challenged.HasPokemon(challengedPokemonId), Messages.TrainerDoesNotOwnPokemon)
                 .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id, challengerPokemonId, challengedPokemonId)))
                 .Tap(() => challenged.ReceiveChallengeFrom(this, challengedPokemonId, challengerPokemonId));
+        }
+
+        internal Result AcceptChallenge(Trainer challenger, Challenge challenge)
+        {
+            var challengerResult = challenger.EnsureExists(Messages.InvalidTrainer);
+            var challengeResult = challenge.EnsureExists(Messages.ChallengeNotFound)
+                .Ensure(_ => this.Challenges.Any(c => c == challenge), Messages.ChallengeNotFound)
+                .Ensure(c => c.IsNotExpired, Messages.ChallengeExpired)
+                .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
+
+            return Result.FirstFailureOrSuccess(challengerResult, challengeResult)
+                .Tap(() => ReactToDomainEvent(new TrainerAcceptedChallengeEvent(challenge.Id)))
+                .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
         internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
@@ -97,7 +113,8 @@ namespace Pokens.Battles.Domain
         {
             var challenge = Domain.Challenge.For(@event.TrainerId, @event.ChallengedPokemonId)
                 .By(this.Id, @event.PokemonId)
-                .On(Enrollment.Unwrap());
+                .On(Enrollment.Unwrap())
+                .At(@event.ChallengedAt);
             challenges.Add(challenge);
         }
 
@@ -105,8 +122,22 @@ namespace Pokens.Battles.Domain
         {
             var challenge = Domain.Challenge.For(this.Id, @event.PokemonId)
                 .By(@event.ChallengerId, @event.ChallengerPokemonId)
-                .On(Enrollment.Unwrap());
+                .On(Enrollment.Unwrap())
+                .At(@event.ChallengedAt);
             challenges.Add(challenge);
+        }
+
+        private void When(TrainerAcceptedChallengeEvent @event)
+        {
+            challenges.FirstOrNothing(c => c.Id == @event.ChallengeId)
+                .Execute(c => c.MarkAsAccepted());
+        }
+
+        private void When(TrainerChallengeAnsweredEvent @event)
+        {
+            challenges.FirstOrNothing(c => c.Id == @event.ChallengeId).ToResult(Messages.ChallengeNotFound)
+                .TapIf(@event.Accepted, c => c.MarkAsAccepted())
+                .TapIf(@event.Rejected, c => c.MarkAsRejected());
         }
     }
 }

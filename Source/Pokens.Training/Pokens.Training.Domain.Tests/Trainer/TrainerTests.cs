@@ -81,9 +81,41 @@ namespace Pokens.Training.Domain.Tests
         public void Given_CatchPokemon_When_PokemonAlreadyCaught_Then_ShouldFail()
         {
             // Arrange
-            var sut = TrainerFactory.Ash();
+            var sut = TrainerFactory.AshWithPikachu();
             var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu");
             sut.CatchPokemon(pikachu);
+
+            // Act
+            var result = sut.CatchPokemon(pikachu);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerAlreadyHasThisPokemon);
+        }
+
+
+        [Fact]
+        public void Given_CatchPokemon_When_TrainerHasNoStarter_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = TrainerFactory.Ash();
+            var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu");
+
+            // Act
+            var result = sut.CatchPokemon(pikachu);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerDoesNotHaveStarter);
+        }
+
+        [Fact]
+        public void Given_CatchPokemon_When_PokemonChosenAsStarter_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = TrainerFactory.Ash();
+            var pikachu = PokemonDefinitionFactory.Starter("Pikachu");
+            sut.ChooseStarter(pikachu);
 
             // Act
             var result = sut.CatchPokemon(pikachu);
@@ -97,7 +129,7 @@ namespace Pokens.Training.Domain.Tests
         public void Given_CatchPokemon_When_PokemonNotCaughtAndCatchRateSucceeds_Then_ShouldSuccessfullyCatch()
         {
             // Arrange
-            var sut = TrainerFactory.Ash();
+            var sut = TrainerFactory.AshWithPikachu();
             var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu", 90);
             RandomProviderContext.PredictDouble(0.89);
 
@@ -112,7 +144,7 @@ namespace Pokens.Training.Domain.Tests
         public void Given_CatchPokemon_When_PokemonNotCaughtAndCatchRateFails_Then_ShouldFail()
         {
             // Arrange
-            var sut = TrainerFactory.Ash();
+            var sut = TrainerFactory.AshWithPikachu();
             var pikachu = PokemonDefinitionFactory.GetPokemonDefinition("Pikachu", 1);
             RandomProviderContext.PredictDouble(0.91);
 

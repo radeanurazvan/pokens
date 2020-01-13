@@ -61,6 +61,20 @@ namespace Pokens.Battles.Domain
                 .Tap(() => AddDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
         }
 
+        public Result MediateChallengeApproval(Trainer challenger, Trainer challenged, Guid challengeId)
+        {
+            var challengerResult = challenger.EnsureExists(Messages.InvalidTrainer);
+            var challengedResult = challenged.EnsureExists(Messages.InvalidTrainer);
+
+            return Result.FirstFailureOrSuccess(challengedResult, challengerResult)
+                .Bind(() => challenged.Challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound))
+                .Ensure(c => c.ArenaId == this.Id, Messages.ArenaAlreadyLeft)
+                .Ensure(c => challenged.IsEnrolledIn(c.ArenaId), Messages.TrainerIsNotEnrolled)
+                .Ensure(c => challenger.IsEnrolledIn(c.ArenaId), Messages.TrainerIsNotEnrolled)
+                .Bind(c => challenged.AcceptChallenge(challenger, c))
+                .Tap(() => AddDomainEvent(new ChallengeAcceptedEvent(challengeId)));
+        }
+
         private bool HasEnrollmentFor(Trainer trainer) => trainers.Any(t => t.Id == trainer.Id);
 
         private void When(ArenaOpenedEvent @event)

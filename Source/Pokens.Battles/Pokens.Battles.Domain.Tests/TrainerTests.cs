@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using Pokens.Battles.Domain.Tests.Extensions;
 using Pokens.Battles.Resources;
+using Pomelo.Kernel.Domain;
 using Xunit;
 
 namespace Pokens.Battles.Domain.Tests
@@ -146,5 +147,112 @@ namespace Pokens.Battles.Domain.Tests
             challenged.Events.Should().ContainSingle(e => e is TrainerHasBeenChallengedEvent);
         }
 
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengerDoesNotExist_Then_ShouldFail()
+        {
+            // Arrange
+            var challenged = TrainerFactory.WithLevel(3);
+
+            // Act
+            var result = challenged.AcceptChallenge(null, null);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.InvalidTrainer);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengeDoesNotExist_Then_ShouldFail()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.WithLevel(3);
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, null);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ChallengeNotFound);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengeIsNotFound_Then_ShouldFail()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.WithLevel(3);
+            var otherChallenged = TrainerFactory.ChallengedBy(challenger);
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, otherChallenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ChallengeNotFound);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengeExpired_Then_ShouldFail()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.ChallengedBy(challenger);
+            DateTimeProviderContext.AdvanceUtcTimeTo(challenged.Challenges.First().ExpiresAt.Add(TimeSpan.FromHours(1)));
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ChallengeExpired);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_OneIsAlreadyInBattle_Then_ShouldFail()
+        {
+            true.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengeAlreadyAnswered_Then_ShouldFail()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.WithChallengeAcceptedFrom(challenger);
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ChallengeAlreadyAnswered);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_ChallengeIsPending_Then_ShouldAccept()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.ChallengedBy(challenger);
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            challenged.Challenges.Should().ContainSingle(c => c.Status == ChallengeStatus.Accepted);
+            challenger.Events.Should().ContainSingle(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().ContainSingle(e => e is TrainerAcceptedChallengeEvent);
+        }
     }
 }
