@@ -4,13 +4,24 @@
   }
 }
 
+:host ::ng-deep {
+  mat-card {
+    padding: 0 !important;
+  }
+}
+
 .container {
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
   align-content: baseline;
+  background: url('../../../../../assets/pictures/lMMX2.jpg');
+  background-position: 0;
+  background-size: 100%;
+  grid-template-columns: 200px 1fr 200px;
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  grid-template-rows: auto 1fr auto;
+  grid-gap: 100px;
 }
 
 .pokemon-card {
@@ -18,10 +29,15 @@
   height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 5px;
   margin: 15px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .image-container {
@@ -33,4 +49,16 @@
 .pokemon-image {
   max-height: 200px;
   width: auto;
+}
+
+.pokemon-name {
+  width: 100%;
+  height: 15%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
 }

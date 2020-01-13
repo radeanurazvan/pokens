@@ -4,8 +4,6 @@
           <img class="pokemon-image" mat-card-image [src]="'data:image/png;base64,'+ pokemon.image" [alt]="pokemon.name">
       </div>
 
-      <mat-card-title>{{pokemon.name}}</mat-card-title>
-
-      <button mat-raised-button>Go to details</button>
+      <span class="pokemon-name" [ngStyle]="{'background-color': getBackGroundColor()}">{{pokemon.name}}</span>
   </mat-card>
 </div>
