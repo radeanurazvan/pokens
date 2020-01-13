@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
@@ -26,15 +27,11 @@ namespace Pokens.Training.Business
         public Task Handle(PokemonStarterChanged message)
         {
             EnsureArg.IsNotNull(message);
-            return Task.Run(() => HandleCore(message));
-        }
-
-        private void HandleCore(PokemonStarterChanged message)
-        {
-            this.repository.FindOne<PokemonDefinition>(d => d.Id == message.PokemonId).ToResult(Messages.PokemonNotFound)
+            return this.repository.FindOne<PokemonDefinition>(d => d.Id == message.PokemonId).ToResult(Messages.PokemonNotFound)
                 .Tap(d => d.ChangeIsStarter(message.PokemonIsStarter))
                 .Tap(d => this.repository.Update(d))
-                .OnFailure(e => this.logger.LogError($"Integrating change starter failed with error {e} for message {message.ToJson()}"));
+                .OnFailure(e => this.logger.LogError($"Integrating change starter failed with error {e} for message {message.ToJson()}"))
+                .OnFailure(e => throw new Exception(e));
         }
     }
 }

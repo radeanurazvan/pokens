@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
@@ -25,16 +26,12 @@ namespace Pokens.Training.Business
         public Task Handle(PokemonCreated message)
         {
             EnsureArg.IsNotNull(message);
-            return Task.Run(() => HandleCore(message));
-        }
-
-        private Task HandleCore(PokemonCreated message)
-        {
             var stats = new Stats(message.Health, message.Defense, message.AttackPower, message.CriticalStrikeChance, message.DodgeChance);
 
             return PokemonDefinition.Create(message.Id, message.Name, stats, message.CatchRate)
+                .Tap(p => this.repository.Add(p))
                 .OnFailure(e => this.logger.LogError($"Integrating pokemon definition failed with error {e}, for message {message.ToJson()}"))
-                .Tap(p => this.repository.Add(p));
+                .OnFailure(e => throw new Exception(e));
         }
     }
 }
