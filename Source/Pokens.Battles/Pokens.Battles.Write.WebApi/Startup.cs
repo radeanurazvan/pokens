@@ -40,6 +40,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UseRouting()
                 .UseAuthorization()
                 .UseDefaultArenas()
+                .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()
                 .UseEndpoints(endpoints =>
                 {

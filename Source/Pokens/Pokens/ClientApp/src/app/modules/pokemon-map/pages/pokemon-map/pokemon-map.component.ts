@@ -12,6 +12,9 @@ import { MapPokemonsService } from '../../core/map-pokemons.service';
 import { Subscription } from 'rxjs';
 import { MapPokemonModel } from '../../models/map-pokemon.model';
 import BaseLayer from 'ol/layer/Base';
+import { tap, catchError } from 'rxjs/operators';
+import { ToastrService } from '../../../../shared/core/toastr.service';
+import LayerGroup from 'ol/layer/Group';
 
 @Component({
   selector: 'app-pokemon-map',
@@ -28,7 +31,8 @@ export class PokemonMapComponent implements OnInit {
 
   constructor(
     private locationService: LocationService,
-    private mapPokemonsService: MapPokemonsService
+    private mapPokemonsService: MapPokemonsService,
+    private toastrService: ToastrService
   ) { }
 
   public ngOnInit() {
@@ -63,6 +67,9 @@ export class PokemonMapComponent implements OnInit {
 
   private resetMap(coordinates): void {
     this.map.getView().setCenter(coordinates);
+
+    const layers = this.map.getLayers().getArray().filter((l: BaseLayer) => l.getProperties().layerId);
+    layers.forEach(l => this.map.removeLayer(l));
   }
 
   private setMarkers(long: number, lat: number): void {
@@ -127,7 +134,9 @@ export class PokemonMapComponent implements OnInit {
   public catch(): void {
     const tooltip = document.getElementById('pokemon-tooltip');
     const pokemonId = tooltip['value'];
-    this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).subscribe());
+    this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).pipe(
+      tap(() => this.toastrService.openToastr("You successfully caught this pokemon!"))
+    ).subscribe(() => {}, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next timeZ!")));
     this.map.getLayers().forEach((layer: BaseLayer) => {
       if (layer.getProperties()['layerId'] === pokemonId) {
         this.map.removeLayer(layer);
