@@ -3,12 +3,51 @@
     width: 100%
   }
 }
-
-.text-container {
+.container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: baseline;
+}
+
+.pokemon-card {
+  width: 300px;
+  height: 650px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 42px;
+  border-radius: 5px;
+  margin: 15px;
+}
+
+.image-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.pokemon-image {
+  max-height: 200px;
+  width: auto;
+}
+
+.icon-stats{
+  display: flex;
+  align-items: center;
+  
+  img { 
+  width: 25px;
+  height: 25px;
+  }
+}
+.abilities-container{
+  display: flex;
+  justify-content: space-evenly;
+}
+.ability-image{
+  width: 50px;
+  height: 50px;
 }
