@@ -6,6 +6,7 @@ using Pomelo.Kernel.Messaging.Abstractions;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
+using Polly;
 
 namespace Pomelo.Kernel.Messaging
 {
@@ -36,13 +37,11 @@ namespace Pomelo.Kernel.Messaging
 
         public void Subscribe<T>() where T : IBusMessage
         {
-            using (var scope = provider.CreateScope())
+            using var scope = provider.CreateScope();
+            var handlers = scope.ServiceProvider.GetServices<IBusMessageHandler<T>>();
+            foreach (var handler in handlers)
             {
-                var handlers = scope.ServiceProvider.GetServices<IBusMessageHandler<T>>();
-                foreach (var handler in handlers)
-                {
-                    SubscribeHandler<T>(handler.GetType());
-                }
+                SubscribeHandler<T>(handler.GetType());
             }
         }
 
@@ -75,7 +74,9 @@ namespace Pomelo.Kernel.Messaging
                     throw new InvalidOperationException($"No RabbitMQ handler {handlerType}");
                 }
 
-                await handler.Handle(jsonEvent);
+                await Policy.Handle<Exception>()
+                    .WaitAndRetryAsync(5, x => TimeSpan.FromSeconds(2 * x))
+                    .ExecuteAsync(() => handler.Handle(jsonEvent));
             };
         }
     }

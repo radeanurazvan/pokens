@@ -18,6 +18,7 @@ namespace Pokens.Pokedex.Infrastructure
             {
                 var repository = scope.ServiceProvider.GetService<ICollectionRepository>();
                 var pokemonService = scope.ServiceProvider.GetService<IPokemonService>();
+                
                 if (!repository.GetAll<Ability>().GetAwaiter().GetResult().Any())
                 {
                     DefaultAbilities.All.ForEach(a => repository.Add(a).GetAwaiter().GetResult());
