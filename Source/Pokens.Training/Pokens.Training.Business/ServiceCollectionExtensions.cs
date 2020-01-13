@@ -20,7 +20,9 @@ namespace Pokens.Training.Business
                 .AddScoped<IBusMessageHandler<PokemonCreated>, PokemonCreatedHandler>()
                 .AddScoped<PokemonCreatedHandler>()
                 .AddScoped<IBusMessageHandler<PokemonStarterChanged>, PokemonStarterChangedHandler>()
-                .AddScoped<PokemonStarterChangedHandler>();
+                .AddScoped<PokemonStarterChangedHandler>()
+                .AddScoped<IBusMessageHandler<PokemonImagesChanged>, PokemonImagesChangedHandler>()
+                .AddScoped<PokemonImagesChangedHandler>();
         }
     }
 }

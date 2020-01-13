@@ -39,14 +39,14 @@ namespace Pokens.Training.Domain
 
         public Rate CatchRate { get; private set; }
 
-        public Image Image { get; set; }
+        public byte[] Image { get; set; }
 
         public void ChangeIsStarter(bool isStarter)
         {
             IsStarter = isStarter;
         }
 
-        public void ChangeImages(Image image)
+        public void ChangeImage(byte[] image)
         {
             Image = image;
         }
