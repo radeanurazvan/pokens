@@ -12,6 +12,7 @@ namespace Pokens.Battles.Domain
     {
         private readonly ICollection<Pokemon> pokemons = new List<Pokemon>();
         private readonly ICollection<Challenge> challenges = new List<Challenge>();
+        private readonly ICollection<TrainerBattle> battles = new List<TrainerBattle>();
 
         private Trainer()
         {
@@ -42,10 +43,14 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<Pokemon> Pokemons => this.pokemons;
 
+        public IEnumerable<TrainerBattle> Battles => this.battles;
+
         public void Catch(Pokemon pokemon)
         {
             ReactToDomainEvent(new TrainerCaughtPokemonEvent(pokemon));
         }
+
+        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
 
         public Result EnrollIn(Arena arena)
         {
@@ -81,7 +86,11 @@ namespace Pokens.Battles.Domain
                 .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
-        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
+        internal Result StartBattleAgainst(Trainer enemy)
+        {
+            enemy.EnsureExists(Messages.InvalidTrainer)
+                .
+        }
 
         private void ReceiveChallengeFrom(Trainer challenger, Guid challengedPokemonId, Guid challengerPokemonId) 
             => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challenger.Id, challengerPokemonId));

@@ -33,6 +33,18 @@ namespace Pokens.Battles.Domain.Tests
             return challenged;
         }
 
+        public static Trainer ChallengedWith(Trainer challenger, Arena arena)
+        {
+            var challenged = WithLevel(1);
+            challenged.EnrollIn(arena);
+            challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
+            
+            challenger.ClearEvents();
+            challenged.ClearEvents();
+
+            return challenged;
+        }
+
         public static Trainer WithChallengeAcceptedFrom(Trainer challenger)
         {
             var challenged = WithLevel(1);
@@ -45,12 +57,12 @@ namespace Pokens.Battles.Domain.Tests
             return challenged;
         }
 
-        public static Trainer ChallengedWith(Trainer challenger, Arena arena)
+        public static Trainer InBattle(Trainer challenger)
         {
             var challenged = WithLevel(1);
-            challenged.EnrollIn(arena);
             challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
-            
+            challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
             challenger.ClearEvents();
             challenged.ClearEvents();
 
