@@ -88,13 +88,12 @@ export class PokemonMapComponent implements OnInit {
     const layers = this.map.getLayers().getArray().filter((l: BaseLayer) => l.getProperties().layerId);
     layers.forEach(l => this.map.removeLayer(l));
     this.setMarkers();
-
   }
 
   private setMarkers(): void {
-    const mapCenter = this.map.getView().getCenter();
+    const mapBounds = this.map.getView().calculateExtent(this.map.getSize());
     for (let i = 0; i < this.roulettePokemons.length; i++) {
-      const coordinates = this.locationService.getRandomCoordinates(mapCenter[0], mapCenter[1]);
+      const coordinates = this.locationService.getRandomCoordinates(mapBounds[0], mapBounds[2], mapBounds[1], mapBounds[3]);
       const marker = new Feature({
         geometry: new Point(
           [coordinates.longitudue, coordinates.latitude]

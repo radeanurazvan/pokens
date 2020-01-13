@@ -20,9 +20,9 @@ export class LocationService {
     });
   }
 
-  public getRandomCoordinates(long: number, lat: number): CoordinatesModel {
-    const longitude = ((Math.random() * (0.001)) + long);
-    const latitude = ((Math.random() * (0.001)) + lat);
+  public getRandomCoordinates(minLong: number, maxLong: number, minLat: number, maxLat: number): CoordinatesModel {
+    const longitude = Math.random() * (maxLong - minLong) + minLong;
+    const latitude = Math.random() * (maxLat - minLat) + minLat;
     return new CoordinatesModel(longitude, latitude);
   }
 }
