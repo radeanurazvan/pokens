@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ProfileService } from 'src/app/shared/core/profile.service';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -8,20 +9,23 @@ import { ProfileService } from 'src/app/shared/core/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  public pokemons: any;
+  public pokemons: any[];
 
-  private palette: string[] = ['#00d793', '#C12026', '#58ABF6'];
+  private palette: string[] = ['#F5E97E', '#A2D7D5', '#DF807E', '#55A3AB', '#CC6310'];
   constructor(private profileService: ProfileService) { }
 
   ngOnInit() {
-    this.profileService.getAllPokemons().subscribe(data => this.pokemons = data);
+    this.profileService.getAllPokemons().pipe(
+      map(data => data.map(x => { x.color = this.getBackGroundColor(x.name.charCodeAt(0)); return x; })),
+      tap(data => this.pokemons = data)
+    ).subscribe();
   }
 
-  getBackGroundColor(): string {
-    return this.palette[this.getRandomInt(3)];
+  getBackGroundColor(code: number): string {
+    return this.palette[this.getRandomInt(code)];
   }
 
-  private getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+  private getRandomInt(code: number) {
+    return Math.floor(code % 5);
   }
 }
