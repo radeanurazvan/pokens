@@ -56,7 +56,6 @@ export class PokemonMapComponent implements OnInit {
 
     this.subscription.add(this.mapPokemonsService.getRandomPokemons().subscribe((res: MapPokemonModel[]) => {
       this.addMapImage(this.initialPosition[0], this.initialPosition[1]);
-      console.log(this.map.getView().calculateExtent(this.map.getSize()));
       this.roulettePokemons = res;
       if (this.roulettePokemons) {
         this.setMarkers();
@@ -117,8 +116,6 @@ export class PokemonMapComponent implements OnInit {
         img: this.roulettePokemons[i].images[0]
       });
 
-      console.log(marker.getGeometry()['flatCoordinates']);
-
       let vectorSource = new SourceVector({
         features: [marker]
       });
@@ -141,8 +138,6 @@ export class PokemonMapComponent implements OnInit {
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
         return feature;
       })
-
-      console.log(evt.coordinate);
 
       if (feature) {
         this.catch(feature.getId());
