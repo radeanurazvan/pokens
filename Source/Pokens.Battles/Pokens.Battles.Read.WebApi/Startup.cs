@@ -21,6 +21,8 @@ namespace Pokens.Battles.Read.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddPomeloClaimsUser()
+                .AddPomeloJwtAuthentication(Configuration.GetJwtSettings())
                 .AddPomeloCors(Configuration)
                 .AddPomeloSwagger("Battles Read Api")
                 .AddMongoSyncStorage()
@@ -36,15 +38,13 @@ namespace Pokens.Battles.Read.WebApi
             }
 
             app
+                .UseAuthentication()
                 .UsePomeloCors()
                 .UsePomeloSwagger("Battles Read Api")
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+                .UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Pokens.Battles.Domain
                 .Tap(() => challenged.ReceiveChallengeFrom(this, challengedPokemonId, challengerPokemonId));
         }
 
-        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
+        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Concat(new List<int> {0}).Max();
 
         private void ReceiveChallengeFrom(Trainer challenger, Guid challengedPokemonId, Guid challengerPokemonId) 
             => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challenger.Id, challengerPokemonId));

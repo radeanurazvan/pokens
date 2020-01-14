@@ -2,6 +2,7 @@
 using System.Text;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pomelo.Kernel.EventStore
 {
@@ -15,7 +16,11 @@ namespace Pomelo.Kernel.EventStore
             var eventBody = Encoding.UTF8.GetString(@event.Data);
 
             Metadata = metadata;
-            Value = JsonConvert.DeserializeObject(eventBody, Type.GetType(metadata.EventType));
+            Value = JsonConvert.DeserializeObject(eventBody, Type.GetType(metadata.EventType), new JsonSerializerSettings
+            {
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                ContractResolver = new PrivateCamelcaseResolver()
+            });
         }
 
         public EventMetadata Metadata { get; }

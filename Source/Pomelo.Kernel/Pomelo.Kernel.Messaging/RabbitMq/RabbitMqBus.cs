@@ -7,6 +7,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 using Polly;
+using Pomelo.Kernel.Infrastructure;
 
 namespace Pomelo.Kernel.Messaging
 {
@@ -65,7 +66,10 @@ namespace Pomelo.Kernel.Messaging
         {
             return async (_, args) =>
             {
-                var jsonEvent = JsonConvert.DeserializeObject<T>(args.Body.ToUtf8String());
+                var jsonEvent = JsonConvert.DeserializeObject<T>(args.Body.ToUtf8String(), new JsonSerializerSettings
+                {
+                    ContractResolver = new PrivateCamelcaseResolver()
+                });
 
                 using var scope = provider.CreateScope();
                 var handler = scope.ServiceProvider.GetService(handlerType) as IBusMessageHandler<T>;

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Pokens.Battles.Business;
 using Pokens.Battles.Domain;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pokens.Battles.Infrastructure
 {
@@ -16,6 +18,16 @@ namespace Pokens.Battles.Infrastructure
                 Constants.DefaultArenas.ForEach(a => repository.Add(a).GetAwaiter().GetResult());
                 repository.Save().GetAwaiter().GetResult();
             }
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseBattlesBusSubscriptions(this IApplicationBuilder app)
+        {
+            var bus = app.ApplicationServices.GetService<IMessageBus>();
+            bus.Subscribe<IntegrationEvent<TrainerCreatedEvent>>();
+            bus.Subscribe<IntegrationEvent<PokemonCaughtEvent>>();
+            bus.Subscribe<IntegrationEvent<StarterPokemonChosenEvent>>();
 
             return app;
         }

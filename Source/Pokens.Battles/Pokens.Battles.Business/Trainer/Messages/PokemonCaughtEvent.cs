@@ -1,8 +1,9 @@
 ﻿using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pokens.Battles.Business
 {
-    internal sealed class PokemonCaughtEvent : IDomainEvent
+    public sealed class PokemonCaughtEvent : IDomainEvent, IBusMessage
     {
         private PokemonCaughtEvent()
         {
