@@ -142,6 +142,15 @@ namespace Pokens.Training.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need a starter pokemon before catching others!.
+        /// </summary>
+        public static string TrainerDoesNotHaveStarter {
+            get {
+                return ResourceManager.GetString("TrainerDoesNotHaveStarter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trainer does not exist!.
         /// </summary>
         public static string TrainerNotFound {
