@@ -13,16 +13,16 @@ namespace Pomelo.Kernel.EventStore
         where T : AggregateRoot
     {
         private readonly IEventStoreConnection connection;
-        private readonly IStreamConfig<T> streamConfig;
+        private readonly IServiceProvider provider;
         private readonly EventStoreContext context;
 
-        public EventStoreWriteRepository(IEventStoreConnection connection, IStreamConfig<T> streamConfig, EventStoreContext context)
+        public EventStoreWriteRepository(IEventStoreConnection connection, IServiceProvider provider, EventStoreContext context)
         {
             EnsureArg.IsNotNull(connection);
-            EnsureArg.IsNotNull(streamConfig);
+            EnsureArg.IsNotNull(provider);
             EnsureArg.IsNotNull(context);
             this.connection = connection;
-            this.streamConfig = streamConfig;
+            this.provider = provider;
             this.context = context;
         }
 
@@ -36,9 +36,12 @@ namespace Pomelo.Kernel.EventStore
             var tasks = this.context.AttachedAggregates.Select(a =>
             {
                 var events = a.Events.Select(e => CreateEventData(e, a.Id));
+                var streamConfigType = typeof(IStreamConfig<>).MakeGenericType(a.GetType());
+                dynamic streamConfig = provider.GetService(streamConfigType);
+
                 return connection.AppendToStreamAsync(streamConfig.GetStreamFor(a.Id), ExpectedVersion.Any, events);
             });
-            return Task.WhenAll(tasks);
+            return Task.WhenAll(tasks.Cast<Task>());
         }
 
         private EventData CreateEventData(IDomainEvent @event, Guid aggregateId)

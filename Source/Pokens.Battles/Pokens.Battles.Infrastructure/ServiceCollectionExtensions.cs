@@ -10,12 +10,15 @@ namespace Pokens.Battles.Infrastructure
     {
         public static IServiceCollection AddBattlesAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
-            return services.AddPomeloJwtAuthentication(configuration.GetJwtSettings());
+            return services
+                .AddPomeloClaimsUser()
+                .AddPomeloJwtAuthentication(configuration.GetJwtSettings());
         }
 
         public static IServiceCollection AddBattlesInfrastructure(this IServiceCollection services)
         {
             return services
+                .AddRepositoryMediator()
                 .AddPomeloRabbitMqBus()
                 .AddPomeloEventStore()
                 .AddPomeloEventSourcedRepositories();
