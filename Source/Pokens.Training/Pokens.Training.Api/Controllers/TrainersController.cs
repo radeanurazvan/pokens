@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ using Pomelo.Kernel.Infrastructure;
 
 namespace Pokens.Training.Api.Controllers
 {
-    [Route("api/v1/trainers")]
     [Authorize]
+    [Route("api/v1/trainers")]
     public sealed class TrainersController : ControllerBase
     {
         private readonly IIdentifiedUser user;
@@ -51,6 +52,15 @@ namespace Pokens.Training.Api.Controllers
             var result = await this.mediator.Send(query);
 
             return result.ToActionResult(NoContent);
+        }
+
+        [HttpGet("pokemons")]
+        public async Task<IActionResult> GetMyPokemons([FromQuery] IEnumerable<string> trainersIds)
+        {
+            var query = new GetTrainersPokemonsQuery(trainersIds);
+            var pokemons = await this.mediator.Send(query);
+
+            return Ok(pokemons);
         }
     }
 }

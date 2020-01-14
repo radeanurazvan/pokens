@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -29,7 +30,15 @@ namespace Pomelo.Kernel.Mongo
 
         public async Task<IEnumerable<T>> Find<T>(Expression<Func<T, bool>> predicate)
         {
-            return await GetCollection<T>().Find(predicate).ToListAsync();
+            try
+            {
+                return await GetCollection<T>().Find(predicate).ToListAsync();
+            }
+
+            catch
+            {
+                return GetCollection<T>().AsQueryable().Where(predicate.Compile()).AsEnumerable();
+            }
         }
 
         public async Task<Maybe<T>> FindOne<T>(Expression<Func<T, bool>> predicate)

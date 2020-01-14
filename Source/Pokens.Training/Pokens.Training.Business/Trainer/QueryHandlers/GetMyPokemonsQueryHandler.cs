@@ -25,7 +25,7 @@ namespace Pokens.Training.Business
             var trainerOrNothing = await repository.FindOne<Trainer>(t => t.Id == request.TrainerId);
             return trainerOrNothing
                 .Select(t => t.CaughtPokemons)
-                .Select(p => p.Select(x => new PokemonModel(x)));
+                .Select(p => p.Select(x => new PokemonModel(request.TrainerId, x)));
         }
     }
 }
