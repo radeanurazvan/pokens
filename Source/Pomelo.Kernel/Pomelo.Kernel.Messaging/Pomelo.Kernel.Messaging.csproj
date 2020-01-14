@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pomelo.Kernel.Common\Pomelo.Kernel.Common.csproj" />
+    <ProjectReference Include="..\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
     <ProjectReference Include="..\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
   </ItemGroup>
 </Project>
