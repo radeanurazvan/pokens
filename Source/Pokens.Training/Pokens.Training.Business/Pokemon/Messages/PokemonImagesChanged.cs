@@ -1,8 +1,5 @@
-﻿using Pokens.Training.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
-using System;
+﻿using Pomelo.Kernel.Messaging.Abstractions;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pokens.Training.Business
 {
@@ -14,6 +11,17 @@ namespace Pokens.Training.Business
 
         public string PokemonId { get; private set; }
 
-        public ICollection<Image> Images { get; private set; }
+        public IEnumerable<ChangedImage> Images { get; private set; }
+
+        internal sealed class ChangedImage
+        {
+            private ChangedImage()
+            {
+            }
+
+            public string Name { get; private set; }
+
+            public byte[] Content { get; private set; }
+        }
     }
 }

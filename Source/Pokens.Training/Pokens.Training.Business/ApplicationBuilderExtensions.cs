@@ -12,6 +12,7 @@ namespace Pokens.Training.Business
             bus.Subscribe<IntegrationEvent<TrainerCreatedEvent>>();
             bus.Subscribe<PokemonCreated>();
             bus.Subscribe<PokemonStarterChanged>();
+            bus.Subscribe<PokemonImagesChanged>();
 
             return app;
         }

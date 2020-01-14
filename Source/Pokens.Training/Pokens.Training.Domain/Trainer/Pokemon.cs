@@ -28,6 +28,6 @@ namespace Pokens.Training.Domain
 
         public string Name { get; private set; }
 
-        public Image Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

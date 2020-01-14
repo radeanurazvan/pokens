@@ -8,7 +8,7 @@ namespace Pokens.Training.Business
         {
             Id = pokemon.Id;
             Name = pokemon.Name;
-            Image = pokemon.Image?.ContentImage;
+            Image = pokemon.Image;
         }
 
         public string Id { get; }
