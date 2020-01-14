@@ -45,12 +45,14 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<TrainerBattle> Battles => this.battles;
 
+        public Maybe<TrainerBattle> CurrentBattle => this.battles.FirstOrNothing(b => b.EndedAt.HasNoValue);
+
         public void Catch(Pokemon pokemon)
         {
             ReactToDomainEvent(new TrainerCaughtPokemonEvent(pokemon));
         }
 
-        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Max();
+        internal int EnrollmentLevel => pokemons.Select(p => p.Level).Concat(new List<int>{0}).Max();
 
         public Result EnrollIn(Arena arena)
         {
@@ -82,14 +84,23 @@ namespace Pokens.Battles.Domain
                 .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
 
             return Result.FirstFailureOrSuccess(challengerResult, challengeResult)
+                .Ensure(() => challenger.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
+                .Ensure(() => this.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Tap(() => ReactToDomainEvent(new TrainerAcceptedChallengeEvent(challenge.Id)))
                 .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
         internal Result StartBattleAgainst(Trainer enemy)
         {
-            enemy.EnsureExists(Messages.InvalidTrainer)
-                .
+            return enemy.EnsureExists(Messages.InvalidTrainer)
+                .Ensure(_ => CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
+                .Ensure(e => e.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
+                .Tap(e => ReactToDomainEvent(new TrainerStartedBattleEvent(enemy.Id)));
+        }
+
+        private void EnterBattleAgainst(Trainer enemy)
+        {
+            ReactToDomainEvent(new TrainerEnteredBattleEvent(enemy.Id));
         }
 
         private void ReceiveChallengeFrom(Trainer challenger, Guid challengedPokemonId, Guid challengerPokemonId) 
@@ -147,6 +158,16 @@ namespace Pokens.Battles.Domain
             challenges.FirstOrNothing(c => c.Id == @event.ChallengeId).ToResult(Messages.ChallengeNotFound)
                 .TapIf(@event.Accepted, c => c.MarkAsAccepted())
                 .TapIf(@event.Rejected, c => c.MarkAsRejected());
+        }
+
+        private void When(TrainerStartedBattleEvent @event)
+        {
+            this.battles.Add(TrainerBattle.Against(@event.Enemy));
+        }
+
+        private void When(TrainerEnteredBattleEvent @event)
+        {
+            this.battles.Add(TrainerBattle.Against(@event.Enemy));
         }
     }
 }

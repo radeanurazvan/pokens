@@ -150,6 +150,9 @@
   <data name="TrainerAlreadyEnrolled" xml:space="preserve">
     <value>You are already enrolled in an arena!</value>
   </data>
+  <data name="TrainerAlreadyInBattle" xml:space="preserve">
+    <value>You have to finish your current battle before starting an another one!</value>
+  </data>
   <data name="TrainerDoesNotMeetMinimumLevel" xml:space="preserve">
     <value>You do not meet the minimum level requirements!</value>
   </data>

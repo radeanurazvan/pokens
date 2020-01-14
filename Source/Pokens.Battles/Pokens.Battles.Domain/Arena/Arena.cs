@@ -11,6 +11,7 @@ namespace Pokens.Battles.Domain
     public sealed class Arena : AggregateRoot
     {
         private readonly ICollection<TrainerInArena> trainers = new List<TrainerInArena>();
+        private readonly ICollection<ChallengeInArena> challenges = new List<ChallengeInArena>();
 
         private Arena()
         {
@@ -37,6 +38,8 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<TrainerInArena> Trainers => this.trainers;
 
+        public IEnumerable<ChallengeInArena> Challenges => this.challenges; 
+
         public Result Enroll(Trainer trainer)
         {
             return trainer.EnsureExists(Messages.InvalidTrainer)
@@ -58,7 +61,7 @@ namespace Pokens.Battles.Domain
             return Result.SuccessIf(challenger.IsEnrolled && challenged.IsEnrolled, Messages.TrainerIsNotEnrolled)
                 .Ensure(() => challenger.IsEnrolledIn(this) && challenged.IsEnrolledIn(this), Messages.TrainersDoNotHaveSameEnrollment)
                 .Bind(() => challenger.Challenge(challenged, challengerPokemonId, challengedPokemonId))
-                .Tap(() => AddDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
+                .Tap(() => ReactToDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
         }
 
         public Result MediateChallengeApproval(Trainer challenger, Trainer challenged, Guid challengeId)
@@ -93,6 +96,11 @@ namespace Pokens.Battles.Domain
         {
             trainers.FirstOrNothing(t => t.Id == @event.TrainerId)
                 .Execute(t => trainers.Remove(t));
+        }
+
+        private void When(ChallengeOccurredEvent @event)
+        {
+            this.challenges.Add(new ChallengeInArena(@event.ChallengerId, @event.ChallengedId));
         }
     }
 }

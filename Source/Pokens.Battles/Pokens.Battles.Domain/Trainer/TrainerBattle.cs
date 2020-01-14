@@ -10,6 +10,12 @@ namespace Pokens.Battles.Domain
         {
         }
 
+        public static TrainerBattle Against(Guid enemy) => new TrainerBattle
+        {
+            Enemy = enemy,
+            StartedAt = DateTimeProvider.Instance().UtcNow
+        };
+
         public Guid Enemy { get; private set; }
 
         public DateTime StartedAt { get; private set; }

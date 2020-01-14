@@ -160,6 +160,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have to finish your current battle before starting an another one!.
+        /// </summary>
+        public static string TrainerAlreadyInBattle {
+            get {
+                return ResourceManager.GetString("TrainerAlreadyInBattle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not meet the minimum level requirements!.
         /// </summary>
         public static string TrainerDoesNotMeetMinimumLevel {

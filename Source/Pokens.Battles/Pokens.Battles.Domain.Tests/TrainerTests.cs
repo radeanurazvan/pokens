@@ -218,7 +218,21 @@ namespace Pokens.Battles.Domain.Tests
         [Fact]
         public void Given_AcceptChallenge_When_OneIsAlreadyInBattle_Then_ShouldFail()
         {
-            true.Should().BeFalse();
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.InBattleAgainst(challenger);
+            challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
+            challenger.ClearEvents();
+            challenged.ClearEvents();
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerAlreadyInBattle);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
         [Fact]

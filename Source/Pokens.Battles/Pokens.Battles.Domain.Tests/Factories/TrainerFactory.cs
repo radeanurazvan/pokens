@@ -57,11 +57,10 @@ namespace Pokens.Battles.Domain.Tests
             return challenged;
         }
 
-        public static Trainer InBattle(Trainer challenger)
+        public static Trainer InBattleAgainst(Trainer challenger)
         {
             var challenged = WithLevel(1);
-            challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
-            challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+            challenger.StartBattleAgainst(challenged);
 
             challenger.ClearEvents();
             challenged.ClearEvents();
