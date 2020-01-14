@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
+import { ToastrService } from 'src/app/shared/core/toastr.service';
 
 @Component({
   selector: 'app-login',
@@ -12,10 +13,12 @@ import { AuthService } from '../../core/auth.service';
 export class LoginComponent implements OnInit {
 
   public loginFormGroup: FormGroup;
+  public isLoaded = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private toastrService: ToastrService,
     private router: Router) { }
 
   public ngOnInit(): void {
@@ -25,12 +28,16 @@ export class LoginComponent implements OnInit {
 
   public login(): void {
     if (this.loginFormGroup.valid) {
+      this.isLoaded = false;
       this.authService.login(this.loginFormGroup.getRawValue()).subscribe(
         (data: any) => {
           localStorage.setItem('currentUserToken', JSON.stringify(data.value.token));
+          this.isLoaded = true;
           this.loggedIn();
         },
-        () => {
+        (error) => {
+          this.isLoaded = true;
+          this.toastrService.openToastr(error.error.error);
         });
     }
   }

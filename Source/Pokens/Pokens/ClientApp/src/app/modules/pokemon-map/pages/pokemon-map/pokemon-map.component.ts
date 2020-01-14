@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Feature, Map, Overlay, View } from 'ol';
 import { OSM, Vector as SourceVector, ImageStatic } from 'ol/source';
@@ -20,7 +20,7 @@ import ImageLayer from 'ol/layer/Image';
   templateUrl: './pokemon-map.component.html',
   styleUrls: ['./pokemon-map.component.scss']
 })
-export class PokemonMapComponent implements OnInit {
+export class PokemonMapComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
   private loaded = false;
@@ -61,6 +61,10 @@ export class PokemonMapComponent implements OnInit {
         this.setMarkers();
       }
     }));
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private addMapImage(long: number, lat: number): void {
@@ -148,6 +152,9 @@ export class PokemonMapComponent implements OnInit {
   }
 
   public catch(pokemonId): void {
+    this.subscription.unsubscribe();
+    this.subscription = new Subscription();
+
     this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).pipe(
       tap(() => this.toastrService.openToastr("You successfully caught this pokemon!"))
     ).subscribe(() => { }, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next timeZ!")));
