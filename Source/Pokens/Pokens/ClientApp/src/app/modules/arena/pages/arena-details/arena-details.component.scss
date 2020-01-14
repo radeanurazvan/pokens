@@ -1,0 +1,52 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 82px);
+    align-content: baseline;
+    background-position: 0;
+    background-size: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.trainer-card {
+    height: 220px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    margin: 30px;
+
+    .trainer-details {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pokemons-details {
+        height: 100%;
+        width: 100%;
+        margin-left: 20px;
+    }
+}
+
+.image-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.trainer-image, .pokemon-image {
+    max-height: 110px;
+    width: auto;
+}
+
+.pokemons-container {
+    display: flex;
+    flex-direction: row;
+    border-left: 2px solid #F5F2F0;
+}

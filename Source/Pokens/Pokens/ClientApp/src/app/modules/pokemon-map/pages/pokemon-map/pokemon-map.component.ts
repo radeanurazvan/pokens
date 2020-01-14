@@ -157,7 +157,7 @@ export class PokemonMapComponent implements OnInit, OnDestroy {
 
     this.subscription.add(this.mapPokemonsService.catchPokemon(pokemonId).pipe(
       tap(() => this.toastrService.openToastr("You successfully caught this pokemon!"))
-    ).subscribe(() => { }, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next timeZ!")));
+    ).subscribe(() => {}, () => this.toastrService.openToastr("You didn't catch this pokemon. Bettter luck next time!")));
     this.map.getLayers().forEach((layer: BaseLayer) => {
       if (layer.getProperties()['layerId'] === pokemonId) {
         this.map.removeLayer(layer);

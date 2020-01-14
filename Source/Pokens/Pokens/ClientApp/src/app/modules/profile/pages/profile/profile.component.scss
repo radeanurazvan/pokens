@@ -12,13 +12,11 @@
 
 .container {
   width: 100%;
-  height: 100vh;
   align-content: baseline;
   background-position: 0;
   background-size: 100%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(auto);
   grid-gap: 10px;
 }
 

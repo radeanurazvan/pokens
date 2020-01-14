@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  public headerName: string;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  setHeaderName(name: string): void {
+    this.headerName = name;
+  }
 }

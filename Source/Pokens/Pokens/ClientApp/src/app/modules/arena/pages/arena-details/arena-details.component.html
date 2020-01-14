@@ -1,0 +1,22 @@
+<div class="container" *ngIf="arenaDetails">
+    <mat-card *ngFor="let trainer of arenaDetails.trainers" class="trainer-card">
+        <div class="trainer-details">
+            <span class="trainer-name">{{trainer.name}}</span>
+        
+            <div class="image-container">
+                <img class="trainer-image" src="../../../../../assets/pictures/images.jpg">
+            </div>
+      
+            <span class="trainer-joined-at">{{trainer.joinedAt | date : 'medium'}}</span>
+        </div>
+            <div class="pokemons-container" *ngIf="pokemons">
+                <div class="pokemons-details" *ngFor="let pokemon of getPokemons(trainer.id)">
+                  <span class="pokemon-name">{{pokemon.name}}</span>
+        
+                    <div class="image-container">
+                        <img class="pokemon-image" [src]="'data:image/png;base64,'+ pokemon.image">
+                 </div>
+            </div>
+        </div>
+    </mat-card>
+  </div>

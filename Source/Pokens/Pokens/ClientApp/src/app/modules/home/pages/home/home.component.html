@@ -1,2 +1,5 @@
-<app-side-bar></app-side-bar>
-<router-outlet></router-outlet>
+<app-side-bar (optionSelect)="setHeaderName($event)"></app-side-bar>
+<div class="right-container">
+    <app-header [title]="headerName"></app-header>
+    <router-outlet></router-outlet>
+</div>

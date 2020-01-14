@@ -18,7 +18,7 @@ export class StarterPokemonsService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${JSON.parse(localStorage.getItem('currentUserToken'))}`
     })
-  }
+  };
 
   constructor(private http: HttpClient) { }
 
