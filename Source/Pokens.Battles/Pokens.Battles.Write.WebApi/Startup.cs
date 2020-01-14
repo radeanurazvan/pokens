@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Pokens.Battles.Business;
 using Pokens.Battles.Infrastructure;
 using Pomelo.Kernel.Infrastructure;
 
@@ -21,6 +22,7 @@ namespace Pokens.Battles.Write.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddBattlesBusiness()
                 .AddBattlesInfrastructure()
                 .AddBattlesAuthorization(Configuration)
                 .AddPomeloSwagger("Pokens Battles API")
@@ -36,10 +38,13 @@ namespace Pokens.Battles.Write.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection()
+            app
+                .UseAuthentication()
+                .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
                 .UseDefaultArenas()
+                .UseBattlesBusSubscriptions()
                 .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()
                 .UseEndpoints(endpoints => endpoints.MapControllers());

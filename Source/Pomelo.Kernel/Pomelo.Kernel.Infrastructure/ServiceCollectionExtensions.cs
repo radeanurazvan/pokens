@@ -96,7 +96,9 @@ namespace Pomelo.Kernel.Infrastructure
 
         public static IServiceCollection AddPomeloClaimsUser(this IServiceCollection services)
         {
-            return services.AddScoped<IIdentifiedUser, ClaimsIdentifiedUser>();
+            return services
+                .AddHttpContextAccessor()
+                .AddScoped<IIdentifiedUser, ClaimsIdentifiedUser>();
         }
     }
 }

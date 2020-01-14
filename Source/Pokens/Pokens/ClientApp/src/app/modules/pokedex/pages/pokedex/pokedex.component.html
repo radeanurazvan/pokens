@@ -1,3 +1,12 @@
-<div class="text-container">
-  <h5> Coming soon...</h5>
+<div class="container">
+  <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card">
+    <div class="image-container">
+      <img class="pokemon-image" mat-card-image [src]="'data:image/png;base64,'+ pokemon.images[0].contentImage"
+        [alt]="pokemon.name">
+    </div>
+    <mat-card-title>{{pokemon.name}}</mat-card-title>
+
+  <button mat-raised-button (click)="openPopup(pokemon)">More details!</button>
+
+  </mat-card>
 </div>

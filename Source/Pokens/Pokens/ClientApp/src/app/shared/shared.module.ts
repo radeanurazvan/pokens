@@ -11,12 +11,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorInterceptor } from './core/error.interceptor';
 import { ToastrService } from './core/toastr.service';
 import { PopupComponent } from './components/popup/popup.component';
+import { PopupDetailsComponent } from '../modules/pokedex/pages/popup-details/popup-details.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    PopupComponent
+    PopupComponent,
+    PopupDetailsComponent
   ],
   imports: [
+    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
@@ -53,7 +57,8 @@ import { PopupComponent } from './components/popup/popup.component';
     MatIconModule
   ],
   entryComponents: [
-    PopupComponent
+    PopupComponent,
+    PopupDetailsComponent
   ]
 })
 export class SharedModule {

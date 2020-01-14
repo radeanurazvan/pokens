@@ -30,5 +30,12 @@ namespace Pokens.Pokedex.Api.Controllers
             var result = await pokemonService.GetPokemonRoulette();
             return Ok(result);
         }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await pokemonService.GetAll();
+            return Ok(result);
+        }
     }
 }

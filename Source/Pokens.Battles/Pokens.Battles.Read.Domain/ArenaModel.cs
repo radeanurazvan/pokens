@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Pomelo.Kernel.DataSynchronization;
 
 namespace Pokens.Battles.Read.Domain
@@ -11,6 +12,8 @@ namespace Pokens.Battles.Read.Domain
         public int RequiredLevel { get; set; }
 
         public ICollection<ArenaTrainerModel> Trainers { get; set; } = new List<ArenaTrainerModel>();
+
+        public bool HasTrainer(string trainerId) => Trainers.Any(t => t.Id == trainerId);
 
         public override string GetCollectionName() => "Arenas";
     }
