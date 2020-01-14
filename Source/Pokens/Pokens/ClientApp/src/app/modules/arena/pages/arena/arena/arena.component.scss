@@ -1,15 +1,50 @@
 ::ng-deep {
     app-arena {
       width: 100%
-    }
   }
-  
-  .text-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 42px;
+}
+
+.container {
+  width: 100%;
+  align-content: baseline;
+  background-position: 0;
+  background-size: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(auto);
+  grid-gap: 10px;
+}
+
+.arena-card {
+  height: 220px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  margin: 15px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
   }
-  
+}
+
+.image-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 10px;
+}
+
+.arena-image {
+  max-height: 110px;
+  width: auto;
+}
+
+.arena-details {
+  margin-bottom: 10px;
+}

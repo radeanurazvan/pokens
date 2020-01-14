@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../core/user.service';
@@ -14,6 +14,8 @@ export class SideBarComponent implements OnInit {
   sideMenuItems: SideMenuItem[];
   userName: string;
 
+  @Output() optionSelect: EventEmitter<string> = new EventEmitter<string>();
+
   constructor(
     private userService: UserService,
     private router: Router) { }
@@ -22,6 +24,7 @@ export class SideBarComponent implements OnInit {
     this.setDefaultMenuItems();
     this.setUserName();
     this.setPreselection();
+    this.optionSelect.emit(this.sideMenuItems.find(x => x.isSelected === true).name);
   }
 
   public selectItem(index: number): void {
@@ -63,11 +66,16 @@ export class SideBarComponent implements OnInit {
 
   private setPreselection(): void {
     this.sideMenuItems.map(s => {
-      if (s.route === this.router.routerState.snapshot.url) {
+      if (s.route === this.getBaseFromUrl()) {
         s.isSelected = true;
       } else {
         s.isSelected = false;
       }
     });
+  }
+
+  private getBaseFromUrl(): string {
+    const splits = this.router.routerState.snapshot.url.split('/', 3);
+    return `/${splits[1]}/${splits[2]}`;
   }
 }
