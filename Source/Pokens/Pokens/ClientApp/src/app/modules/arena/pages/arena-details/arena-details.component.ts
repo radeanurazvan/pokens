@@ -10,13 +10,21 @@ import { ArenaModel } from '../../models/arena.model';
 export class ArenaDetailsComponent implements OnInit {
 
   public arenaDetails: ArenaModel;
+  public trainersIds: string[];
+  private pokemons: any;
 
   constructor(private arenaService: ArenaService) { }
 
   ngOnInit() {
     this.arenaService.getArenaDetails().subscribe((data: ArenaModel) => {
       this.arenaDetails = data;
+      this.trainersIds = this.arenaDetails.trainers.map(a => a.id);
+
+      this.arenaService.getAllPokemons(this.trainersIds).subscribe((pokemons: any) => this.pokemons = pokemons);
     });
   }
 
+  getPokemons(id: string): any {
+    return this.pokemons.filter(p => p.trainerId === id);
+  }
 }

@@ -13,7 +13,7 @@ export class IsInArenaGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return this.arenaService.getArenaDetails().pipe(map((data: any) => {
-            if (data && data.length > 0) {
+            if (data) {
                 this.router.navigate(['/home/arena/details']);
                 return false;
             }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ArenaModel } from '../models/arena.model';
 
@@ -10,6 +10,7 @@ import { ArenaModel } from '../models/arena.model';
 export class ArenaService {
   private arenaReadEndPoint = environment.apiArenaUrl.read;
   private arenaWriteEndPoint = environment.apiArenaUrl.write;
+  private trainingEndPoint = environment.apiTrainingUrl;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -30,5 +31,15 @@ export class ArenaService {
 
   public getArenaDetails(): Observable<ArenaModel> {
     return this.http.get<ArenaModel>(`${this.arenaReadEndPoint}/me`, this.httpOptions);
+  }
+
+  public getAllPokemons(ids: string[]): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('trainersIds', ids.join(', '));
+    const options = {
+      headers: this.httpOptions.headers,
+      params: params
+    };
+    return this.http.get<any>(`${this.trainingEndPoint}/pokemons`, options);
   }
 }
