@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using Pokens.Battles.Domain.Tests.Extensions;
 using Pokens.Battles.Resources;
 using Xunit;
@@ -146,6 +147,60 @@ namespace Pokens.Battles.Domain.Tests
             sut.Events.Should().ContainSingle(e => e is ChallengeOccurredEvent);
             challenger.Events.Should().ContainSingle(e => e is TrainerChallengedEvent);
             challenged.Events.Should().ContainSingle(e => e is TrainerHasBeenChallengedEvent);
+        }
+
+        [Fact]
+        public void Given_MediateChallengeApproval_When_TrainerIsNotEnrolled_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(sut);
+            var challenged = TrainerFactory.ChallengedBy(challenger);
+
+            // Act
+            var result = sut.MediateChallengeApproval(challenger, challenged, challenged.Challenges.First().Id);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ArenaAlreadyLeft);
+            sut.Events.Should().NotContain(e => e is ChallengeAcceptedEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+        }
+
+        [Fact]
+        public void Given_MediateChallengeApproval_When_TrainerIsNotEnrolledInChallengedArena_Then_ShouldFail()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(ArenaFactory.WithoutRequirement());
+            var challenged = TrainerFactory.ChallengedBy(challenger);
+
+            // Act
+            var result = sut.MediateChallengeApproval(challenger, challenged, challenged.Challenges.First().Id);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ArenaAlreadyLeft);
+            sut.Events.Should().NotContain(e => e is ChallengeAcceptedEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+        }
+
+        [Fact]
+        public void Given_MediateChallengeApproval_When_TrainersAreInChallengedArena_Then_ShouldMediate()
+        {
+            // Arrange
+            var sut = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(sut);
+            var challenged = TrainerFactory.ChallengedWith(challenger, sut);
+
+            // Act
+            var result = sut.MediateChallengeApproval(challenger, challenged, challenged.Challenges.First().Id);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            sut.Events.Should().ContainSingle(e => e is ChallengeAcceptedEvent);
         }
     }
 }

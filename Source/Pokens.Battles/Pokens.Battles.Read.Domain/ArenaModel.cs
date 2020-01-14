@@ -18,12 +18,12 @@ namespace Pokens.Battles.Read.Domain
         public override string GetCollectionName() => "Arenas";
     }
 
-    public sealed class ArenaTrainerModel : SynchronizationModel
+    public sealed class ArenaTrainerModel 
     {
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public DateTime JoinedAt { get; set; }
-
-        public override string GetCollectionName() => "Trainers";
     }
 }

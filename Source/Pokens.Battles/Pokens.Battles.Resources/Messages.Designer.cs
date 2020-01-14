@@ -61,6 +61,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You already left the arena you&apos;ve been challenged in!.
+        /// </summary>
+        public static string ArenaAlreadyLeft {
+            get {
+                return ResourceManager.GetString("ArenaAlreadyLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arena does not exist!.
         /// </summary>
         public static string ArenaNotFound {
@@ -75,6 +84,33 @@ namespace Pokens.Battles.Resources {
         public static string CannotChallengeSelf {
             get {
                 return ResourceManager.GetString("CannotChallengeSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already answered to this challenge!.
+        /// </summary>
+        public static string ChallengeAlreadyAnswered {
+            get {
+                return ResourceManager.GetString("ChallengeAlreadyAnswered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot accept an expired challenge!.
+        /// </summary>
+        public static string ChallengeExpired {
+            get {
+                return ResourceManager.GetString("ChallengeExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Challenge does not exist!.
+        /// </summary>
+        public static string ChallengeNotFound {
+            get {
+                return ResourceManager.GetString("ChallengeNotFound", resourceCulture);
             }
         }
         
@@ -120,6 +156,15 @@ namespace Pokens.Battles.Resources {
         public static string TrainerAlreadyEnrolled {
             get {
                 return ResourceManager.GetString("TrainerAlreadyEnrolled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have to finish your current battle before starting an another one!.
+        /// </summary>
+        public static string TrainerAlreadyInBattle {
+            get {
+                return ResourceManager.GetString("TrainerAlreadyInBattle", resourceCulture);
             }
         }
         

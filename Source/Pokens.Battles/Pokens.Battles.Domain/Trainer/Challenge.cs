@@ -5,15 +5,23 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Battles.Domain
 {
-    public sealed class Challenge : Entity, ISteadyChallenge, IReadyChallenge
+    public sealed class Challenge : Entity, ISteadyChallenge, IReadyChallenge, IUnscheduledChallenge
     {
+        public static readonly TimeSpan TimeToLive = TimeSpan.FromHours(6);
+
         private Challenge()
         {
         }
 
         public static ISteadyChallenge For(Guid challengedId, Guid challengedPokemonId)
         {
-            return new Challenge {ChallengedId = challengedId, ChallengedPokemonId = challengedPokemonId};
+            return new Challenge
+            {
+                ChallengedId = challengedId,
+                ChallengedPokemonId = challengedPokemonId,
+                ExpiresAt = DateTimeProvider.Instance().UtcNow.Add(TimeToLive),
+                Status = ChallengeStatus.Pending
+            };
         }
 
         public IReadyChallenge By(Guid challengerId, Guid challengerPokemonId)
@@ -23,7 +31,7 @@ namespace Pokens.Battles.Domain
             return this;
         }
 
-        public Challenge On(Guid arenaId)
+        public IUnscheduledChallenge On(Guid arenaId)
         {
             ArenaId = arenaId;
             return this;
@@ -39,6 +47,8 @@ namespace Pokens.Battles.Domain
 
         public Guid ArenaId { get; private set; }
 
+        public DateTime ExpiresAt { get; private set; }
+
         public bool HasParticipants(Trainer first, Trainer second)
         {
             var givenParticipants = new List<Guid>{ first.Id, second.Id };
@@ -48,6 +58,37 @@ namespace Pokens.Battles.Domain
 
             return givenParticipants.SequenceEqual(realParticipants);
         }
+
+        public Challenge At(DateTime time)
+        {
+            ExpiresAt = time.Add(TimeToLive);
+            return this;
+        }
+
+        public ChallengeStatus Status;
+
+        internal void MarkAsAccepted()
+        {
+            Status = ChallengeStatus.Accepted;
+        }
+
+        internal void MarkAsRejected()
+        {
+            Status = ChallengeStatus.Rejected;
+        }
+
+        internal bool IsPending => Status == ChallengeStatus.Pending;
+
+        internal bool IsExpired => ExpiresAt < DateTimeProvider.Instance().UtcNow;
+        
+        internal bool IsNotExpired => !IsExpired;
+    }
+
+    public enum ChallengeStatus
+    {
+        Pending = 1,
+        Accepted = 2,
+        Rejected = 3
     }
 
     public interface ISteadyChallenge
@@ -57,6 +98,11 @@ namespace Pokens.Battles.Domain
 
     public interface IReadyChallenge
     {
-        Challenge On(Guid arenaId);
+        IUnscheduledChallenge On(Guid arenaId);
+    }
+
+    public interface IUnscheduledChallenge
+    {
+        Challenge At(DateTime time);
     }
 }

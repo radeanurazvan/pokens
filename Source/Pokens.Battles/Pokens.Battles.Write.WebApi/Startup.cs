@@ -47,10 +47,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UseBattlesBusSubscriptions()
                 .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+                .UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

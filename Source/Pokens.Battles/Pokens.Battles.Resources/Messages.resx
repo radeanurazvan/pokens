@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ArenaAlreadyLeft" xml:space="preserve">
+    <value>You already left the arena you've been challenged in!</value>
+  </data>
   <data name="ArenaNotFound" xml:space="preserve">
     <value>Arena does not exist!</value>
   </data>
   <data name="CannotChallengeSelf" xml:space="preserve">
     <value>You cannot challenge yourself!</value>
+  </data>
+  <data name="ChallengeAlreadyAnswered" xml:space="preserve">
+    <value>You already answered to this challenge!</value>
+  </data>
+  <data name="ChallengeExpired" xml:space="preserve">
+    <value>You cannot accept an expired challenge!</value>
+  </data>
+  <data name="ChallengeNotFound" xml:space="preserve">
+    <value>Challenge does not exist!</value>
   </data>
   <data name="InvalidArenaLevel" xml:space="preserve">
     <value>Required level should be at least 0!</value>
@@ -137,6 +149,9 @@
   </data>
   <data name="TrainerAlreadyEnrolled" xml:space="preserve">
     <value>You are already enrolled in an arena!</value>
+  </data>
+  <data name="TrainerAlreadyInBattle" xml:space="preserve">
+    <value>You have to finish your current battle before starting an another one!</value>
   </data>
   <data name="TrainerDoesNotMeetMinimumLevel" xml:space="preserve">
     <value>You do not meet the minimum level requirements!</value>
