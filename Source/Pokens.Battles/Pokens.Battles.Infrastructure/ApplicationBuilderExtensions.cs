@@ -28,6 +28,7 @@ namespace Pokens.Battles.Infrastructure
             bus.Subscribe<IntegrationEvent<TrainerCreatedEvent>>();
             bus.Subscribe<IntegrationEvent<PokemonCaughtEvent>>();
             bus.Subscribe<IntegrationEvent<StarterPokemonChosenEvent>>();
+            bus.Subscribe<TrainerAcceptedChallengeEvent>();
 
             return app;
         }

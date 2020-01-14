@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Domain\Pomelo.Kernel.Domain.csproj" />
+    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging.Abstractions\Pomelo.Kernel.Messaging.Abstractions.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Resources\Pokens.Battles.Resources.csproj" />
   </ItemGroup>
 

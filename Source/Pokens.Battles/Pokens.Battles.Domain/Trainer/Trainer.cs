@@ -86,7 +86,7 @@ namespace Pokens.Battles.Domain
             return Result.FirstFailureOrSuccess(challengerResult, challengeResult)
                 .Ensure(() => challenger.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Ensure(() => this.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
-                .Tap(() => ReactToDomainEvent(new TrainerAcceptedChallengeEvent(challenge.Id)))
+                .Tap(() => ReactToDomainEvent(new TrainerAcceptedChallengeEvent(Enrollment.Value, challenge.Id)))
                 .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
