@@ -7,6 +7,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { AuthService } from './core/auth.service';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { MatProgressSpinnerModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RegisterComponent } from './pages/register/register.component';
   imports: [
     CommonModule,
     AuthRoutingModule,
+    MatProgressSpinnerModule,
     [SharedModule.forChild()]
   ],
   exports: [
