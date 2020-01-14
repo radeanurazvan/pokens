@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,18 +9,19 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   private titles: { [id: string]: string } = {
-    'Map': 'Find some pokemons!',
-    'Arena': 'Here you can see all available arenas',
-    'Profile': 'These are all the pokemons that you have',
-    'Pokedex': 'Want to know more about pokemons?'
+    '/home/map': 'Find some pokemons!',
+    '/home/arena': 'Here you can see all available arenas',
+    '/home/arena/details': 'Here you can see the players in this arena',
+    '/home/profile': 'These are all the pokemons that you have',
+    '/home/pokedex': 'Want to know more about pokemons?'
   };
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  // getTitle(): string {
-
-  // }
+  getTitle(): string {
+    return this.titles[this.router.routerState.snapshot.url];
+  }
 }

@@ -1,1 +1,11 @@
-<p>arena-details works!</p>
+<div class="container">
+    <mat-card *ngFor="let trainer of arenaDetails.trainers" class="trainer-card">
+        <span class="trainer-name">{{trainer.name}}</span>
+        
+        <div class="image-container">
+            <img class="trainer-image" src="../../../../../assets/pictures/images.jpg">
+        </div>
+  
+        <span class="trainer-joined-at">{{trainer.joinedAt}}</span>
+    </mat-card>
+  </div>

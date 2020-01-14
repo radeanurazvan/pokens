@@ -27,4 +27,8 @@ export class ArenaService {
   public joinArena(id: string): Observable<any> {
     return this.http.patch(`${this.arenaWriteEndPoint}/${id}/enrollments`, this.httpOptions);
   }
+
+  public getArenaDetails(): Observable<ArenaModel> {
+    return this.http.get<ArenaModel>(`${this.arenaReadEndPoint}/me`);
+  }
 }
