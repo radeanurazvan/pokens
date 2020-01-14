@@ -16,19 +16,19 @@ export class ArenaService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${JSON.parse(localStorage.getItem('currentUserToken'))}`
     })
-  }
+  };
 
   constructor(private http: HttpClient) { }
 
   public getArenas(): Observable<ArenaModel[]> {
-    return this.http.get<ArenaModel[]>(this.arenaReadEndPoint);
+    return this.http.get<ArenaModel[]>(this.arenaReadEndPoint, this.httpOptions);
   }
 
   public joinArena(id: string): Observable<any> {
-    return this.http.patch(`${this.arenaWriteEndPoint}/${id}/enrollments`, this.httpOptions);
+    return this.http.patch(`${this.arenaWriteEndPoint}/${id}/enrollments`, null, this.httpOptions);
   }
 
   public getArenaDetails(): Observable<ArenaModel> {
-    return this.http.get<ArenaModel>(`${this.arenaReadEndPoint}/me`);
+    return this.http.get<ArenaModel>(`${this.arenaReadEndPoint}/me`, this.httpOptions);
   }
 }

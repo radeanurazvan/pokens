@@ -14,18 +14,9 @@ export class ArenaDetailsComponent implements OnInit {
   constructor(private arenaService: ArenaService) { }
 
   ngOnInit() {
-    // this.arenaService.getArenaDetails().subscribe((data: ArenaModel) => {
-      // this.arenaDetails = data;
-    // });
-    this.arenaDetails = {
-      id: '',
-      name: 'aaaa',
-      requiredLevel: 5,
-      trainers: [{
-        name: 'Player1',
-        joinedAt: new Date('10-10-2010')
-      }]
-    };
+    this.arenaService.getArenaDetails().subscribe((data: ArenaModel) => {
+      this.arenaDetails = data;
+    });
   }
 
 }

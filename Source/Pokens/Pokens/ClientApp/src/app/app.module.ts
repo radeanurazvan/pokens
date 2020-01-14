@@ -9,6 +9,7 @@ import { AppRoutingModule } from './router/app-routing.module';
 import { FirstLoginGuard } from './shared/core/first-login.guard';
 import { HasPokemonsGuard } from './shared/core/has-pokemons.guard';
 import { AuthGuard } from './shared/core/auth.guard';
+import { IsInArenaGuard } from './shared/core/is-in-arena.guard';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { AuthGuard } from './shared/core/auth.guard';
       }
     })
   ],
-  providers: [FirstLoginGuard, HasPokemonsGuard, AuthGuard],
+  providers: [FirstLoginGuard, HasPokemonsGuard, AuthGuard, IsInArenaGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
