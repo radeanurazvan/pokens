@@ -30,7 +30,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
             this.Abilities = (await this.abilityService.GetAll()).Select(a => new SelectListItem(a.Name, a.Id));
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             var stats = new Stats
             {
@@ -40,7 +40,7 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
                 Defense = Pokemon.Defense,
                 DodgeChance = Pokemon.DodgeChance
             };
-            this.pokemonService.Create(Pokemon.Name, stats, Pokemon.Abilities, Pokemon.CatchRate);
+            await this.pokemonService.Create(Pokemon.Name, stats, Pokemon.Abilities, Pokemon.CatchRate);
 
             return RedirectToPage("/Pokemons/All");
         }

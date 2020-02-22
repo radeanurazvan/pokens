@@ -6,7 +6,12 @@ namespace Pokens.Pokedex.Domain
 {
     public sealed class Pokemon : DocumentAggregateRoot
     {
+        private Pokemon()
+        {
+        }
+
         public Pokemon(string name, Stats stats, bool isStarter, Rate catchRate, IList<Ability> abilities)
+            : this()
         {
             Name = name;
             Stats = stats;

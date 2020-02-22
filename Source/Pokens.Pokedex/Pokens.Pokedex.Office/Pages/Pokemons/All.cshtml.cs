@@ -21,10 +21,10 @@ namespace Pokens.Pokedex.Office.Pages.Pokemons
         {
             this.Pokemons = await this.service.GetAll();
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             var id = HttpContext.Request.Query["action"];
-            this.service.ChangeStarter(id);
+            await this.service.ChangeStarter(id);
             return RedirectToPage("/Pokemons/All");
         }
     }

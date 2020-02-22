@@ -13,7 +13,8 @@ namespace Pokens.Battles.Infrastructure
         {
             return services
                 .AddPomeloClaimsUser()
-                .AddPomeloJwtAuthentication(configuration.GetJwtSettings());
+                .AddPomeloJwtAuthentication(configuration.GetJwtSettings())
+                .AddSingleton(typeof(IStreamConfig<>), typeof(BattlesStreamConfig<>));
         }
 
         public static IServiceCollection AddBattlesInfrastructure(this IServiceCollection services)

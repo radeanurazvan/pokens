@@ -33,7 +33,7 @@ namespace Pokens.Battles.Infrastructure
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
-                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>();
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>("Trainers");
                 subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>();
                 subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>();
                 subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>();
