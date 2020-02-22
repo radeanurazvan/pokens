@@ -7,12 +7,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200220.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Business\Pokens.Battles.Business.csproj" />
   </ItemGroup>
 

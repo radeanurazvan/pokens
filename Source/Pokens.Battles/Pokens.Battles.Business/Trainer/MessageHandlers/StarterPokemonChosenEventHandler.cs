@@ -5,11 +5,11 @@ using EnsureThat;
 using Pokens.Battles.Domain;
 using Pokens.Battles.Resources;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Business
 {
-    internal sealed class StarterPokemonChosenEventHandler : IBusMessageHandler<IntegrationEvent<StarterPokemonChosenEvent>>
+    internal sealed class StarterPokemonChosenEventHandler : IIntegrationEventHandler<StarterPokemonChosenEvent>
     {
         private readonly IRepositoryMediator mediator;
 
@@ -22,7 +22,7 @@ namespace Pokens.Battles.Business
         {
             EnsureArg.IsNotNull(message);
 
-            return mediator.ReadById<Trainer>(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
+            return mediator.Read<Trainer>().GetById(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
                 .Tap(t => t.Catch(GetPokemon(message.Data)))
                 .Tap(_ => this.mediator.Write<Trainer>().Save());
         }

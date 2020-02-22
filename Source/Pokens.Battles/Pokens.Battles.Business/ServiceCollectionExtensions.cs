@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Pokens.Battles.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Business
 {
@@ -9,20 +9,8 @@ namespace Pokens.Battles.Business
     {
         public static IServiceCollection AddBattlesBusiness(this IServiceCollection services)
         {
-            return services.AddBattlesBusHandlers()
+            return services.AddEventHandlers()
                 .AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
-        }
-
-        private static IServiceCollection AddBattlesBusHandlers(this IServiceCollection services)
-        {
-            return services.AddScoped<IBusMessageHandler<IntegrationEvent<TrainerCreatedEvent>>, TrainerCreatedEventHandler>()
-                .AddScoped<TrainerCreatedEventHandler>()
-                .AddScoped<IBusMessageHandler<IntegrationEvent<PokemonCaughtEvent>>, PokemonCaughtEventHandler>()
-                .AddScoped<PokemonCaughtEventHandler>()
-                .AddScoped<IBusMessageHandler<IntegrationEvent<StarterPokemonChosenEvent>>, StarterPokemonChosenEventHandler>()
-                .AddScoped<StarterPokemonChosenEventHandler>()
-                .AddScoped<IBusMessageHandler<TrainerAcceptedChallengeEvent>, TrainerAcceptedChallengeEventHandler>()
-                .AddScoped<TrainerAcceptedChallengeEventHandler>();
         }
     }
 }

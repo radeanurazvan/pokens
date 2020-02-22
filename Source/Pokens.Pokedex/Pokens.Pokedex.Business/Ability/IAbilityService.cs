@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Pokens.Pokedex.Business

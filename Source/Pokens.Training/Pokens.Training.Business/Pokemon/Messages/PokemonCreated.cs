@@ -1,9 +1,9 @@
 ﻿using System;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class PokemonCreated : IBusMessage
+    internal sealed class PokemonCreated : IIntegrationEvent
     {
         private PokemonCreated()
         {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
@@ -8,12 +8,15 @@ namespace Pokens.Training.Business
     {
         public static IApplicationBuilder UseTrainingBusSubscriptions(this IApplicationBuilder app)
         {
-            var bus = app.ApplicationServices.GetService<IMessageBus>();
-            bus.Subscribe<IntegrationEvent<TrainerCreatedEvent>>();
-            bus.Subscribe<PokemonCreated>();
-            bus.Subscribe<PokemonStarterChanged>();
-            bus.Subscribe<PokemonImagesChanged>();
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
 
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>();
+                subscriptions.SubscribeIntegrationEvent<PokemonCreated>();
+                subscriptions.SubscribeIntegrationEvent<PokemonStarterChanged>();
+                subscriptions.SubscribeIntegrationEvent<PokemonImagesChanged>();
+            }
             return app;
         }
     }

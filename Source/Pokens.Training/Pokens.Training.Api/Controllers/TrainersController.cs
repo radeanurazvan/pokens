@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pokens.Training.Api.Models;
 using Pokens.Training.Business;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Training.Api.Controllers
 {

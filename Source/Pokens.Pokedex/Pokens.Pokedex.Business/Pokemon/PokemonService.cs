@@ -4,19 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
 
 namespace Pokens.Pokedex.Business
 {
     internal sealed class PokemonService : IPokemonService
     {
         private readonly ICollectionRepository repository;
-        private readonly IMessageBus bus;
 
-        public PokemonService(ICollectionRepository repository, IMessageBus bus)
+        public PokemonService(ICollectionRepository repository)
         {
             this.repository = repository;
-            this.bus = bus;
         }
 
         public async Task<IEnumerable<PokemonModel>> GetAll()
@@ -41,17 +38,10 @@ namespace Pokens.Pokedex.Business
         public async Task<string> Create(string name, Stats stats, IEnumerable<string> abilitiesIds, double catchRate)
         {
             var abilities = await repository.Find<Ability>(a => abilitiesIds.Contains(a.Id));
-            var pokemon = new Pokemon
-            {
-                Name = name,
-                Stats = stats,
-                IsStarter = false,
-                Abilities = abilities.ToList(),
-                CatchRate = catchRate
-            };
+            var pokemon = new Pokemon(name, stats, false, catchRate, abilities.ToList());
 
             await this.repository.Add(pokemon);
-            await this.bus.Publish(new PokemonCreated(pokemon));
+            await this.repository.Commit();
             return pokemon.Id;
         }
 
@@ -64,10 +54,10 @@ namespace Pokens.Pokedex.Business
             }
 
             var pokemon = pokemonOrNothing.Value;
-            pokemon.Stats = newStats;
+            pokemon.ChangeStats(newStats);
 
             await this.repository.Update(pokemon);
-            await this.bus.Publish(new PokemonStatsChanged(pokemon));
+            await this.repository.Commit();
         }
 
         public async Task ChangeAbilities(string pokemonId, IEnumerable<string> abilitiesIds)
@@ -79,10 +69,11 @@ namespace Pokens.Pokedex.Business
             }
 
             var pokemon = pokemonOrNothing.Value;
-            pokemon.Abilities = (await this.repository.Find<Ability>(a => abilitiesIds.Contains(a.Id))).ToList();
+            pokemon.ChangeAbilities((await this.repository.Find<Ability>(a => abilitiesIds.Contains(a.Id))).ToList());
+
 
             await this.repository.Update(pokemon);
-            await this.bus.Publish(new PokemonAbilitiesChanged(pokemon));
+            await this.repository.Commit();
         }
 
         public async Task ChangeStarter(string pokemonId)
@@ -94,10 +85,10 @@ namespace Pokens.Pokedex.Business
             }
 
             var pokemon = pokemonOrNothing.Value;
-            pokemon.IsStarter = ! pokemon.IsStarter;
+            pokemon.ToggleStarter();
 
             await this.repository.Update(pokemon);
-            await this.bus.Publish(new PokemonStarterChanged(pokemon));
+            await this.repository.Commit();
         }
         public async Task AddImage(string pokemonId, byte[] contentImage, string imageName)
         {
@@ -107,12 +98,11 @@ namespace Pokens.Pokedex.Business
                 return;
             }
             var pokemon = pokemonOrNothing.Value;
-
             var img = new Image(imageName, contentImage);
-            pokemon.Images.Add(img);
+            pokemon.AddImage(img);
 
             await this.repository.Update(pokemon);
-            await this.bus.Publish(new PokemonImagesChanged(pokemon));
+            await this.repository.Commit();
         }
 
         public async Task DeleteImage(string pokemonId, string imageId)
@@ -125,14 +115,14 @@ namespace Pokens.Pokedex.Business
             var pokemon = pokemonOrNothing.Value;
 
             var image = pokemon.Images.FirstOrDefault(i => i.Id == imageId);
-
             if (image == null)
             {
                 return;
             }
-            pokemon.Images.Remove(image);
+            
+            pokemon.DeleteImage(image);
             await this.repository.Update(pokemon);
-            await this.bus.Publish(new PokemonImagesChanged(pokemon));
+            await this.repository.Commit();
         }
     }   
 }

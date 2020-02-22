@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokemons.Trainers.Business;
 using Pokens.Trainers.Domain;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Trainers.Api.Controllers
 {
@@ -33,7 +33,7 @@ namespace Pokens.Trainers.Api.Controllers
             var command = new AuthenticateTrainerCommand(model.Email, model.Password);
             var result = await mediator.Send(command);
 
-            return result.ToActionResult(() => Ok(new GenericApiResult<AuthenticationToken>(result)));
+            return result.ToActionResult(() => Ok(result.ToApiResult()));
         }
     }
 }

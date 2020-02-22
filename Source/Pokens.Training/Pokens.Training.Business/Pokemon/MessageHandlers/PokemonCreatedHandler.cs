@@ -4,13 +4,12 @@ using CSharpFunctionalExtensions;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Pokens.Training.Domain;
-using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class PokemonCreatedHandler : IBusMessageHandler<PokemonCreated>
+    internal sealed class PokemonCreatedHandler : IIntegrationEventHandler<PokemonCreated>
     {
         private readonly ICollectionRepository repository;
         private readonly ILogger logger;
@@ -23,14 +22,14 @@ namespace Pokens.Training.Business
             this.logger = logger;
         }
 
-        public Task Handle(PokemonCreated message)
+        public Task Handle(IntegrationEvent<PokemonCreated> message)
         {
             EnsureArg.IsNotNull(message);
-            var stats = new Stats(message.Health, message.Defense, message.AttackPower, message.CriticalStrikeChance, message.DodgeChance);
+            var stats = new Stats(message.Data.Health, message.Data.Defense, message.Data.AttackPower, message.Data.CriticalStrikeChance, message.Data.DodgeChance);
 
-            return PokemonDefinition.Create(message.Id, message.Name, stats, message.CatchRate)
+            return PokemonDefinition.Create(message.Data.Id, message.Data.Name, stats, message.Data.CatchRate)
                 .Tap(p => this.repository.Add(p))
-                .OnFailure(e => this.logger.LogError($"Integrating pokemon definition failed with error {e}, for message {message.ToJson()}"))
+                .OnFailure(e => this.logger.LogError($"Integrating pokemon definition failed with error {e}, for message {message.Data.Id}"))
                 .OnFailure(e => throw new Exception(e));
         }
     }

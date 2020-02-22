@@ -1,10 +1,9 @@
 ﻿using System;
-using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Business
 {
-    public sealed class TrainerCreatedEvent : IDomainEvent, IBusMessage
+    public sealed class TrainerCreatedEvent : IIntegrationEvent
     {
         private TrainerCreatedEvent()
         {

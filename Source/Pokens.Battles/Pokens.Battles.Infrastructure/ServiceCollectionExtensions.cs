@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.Kernel.Authentication;
 using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Infrastructure;
-using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Battles.Infrastructure
 {
@@ -18,9 +19,9 @@ namespace Pokens.Battles.Infrastructure
         public static IServiceCollection AddBattlesInfrastructure(this IServiceCollection services)
         {
             return services
-                .AddRepositoryMediator()
-                .AddPomeloRabbitMqBus()
+                .AddPomeloRepositoryMediator()
                 .AddPomeloEventStore()
+                .AddPomeloEventStoreSubscriptions()
                 .AddPomeloEventSourcedRepositories();
         }
     }

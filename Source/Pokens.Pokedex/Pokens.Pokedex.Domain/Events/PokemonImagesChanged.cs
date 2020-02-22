@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Pomelo.Kernel.Events.Abstractions;
 
-namespace Pokens.Pokedex.Business
+namespace Pokens.Pokedex.Domain
 {
     internal sealed class PokemonImagesChanged : IDomainEvent
     {

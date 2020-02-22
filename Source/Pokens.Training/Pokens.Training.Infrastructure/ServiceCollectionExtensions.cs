@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
 using Pomelo.Kernel.EventStore;
-using Pomelo.Kernel.Infrastructure;
-using Pomelo.Kernel.Messaging;
+using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Mongo;
 
 namespace Pokens.Training.Infrastructure
@@ -14,8 +13,8 @@ namespace Pokens.Training.Infrastructure
             return services
                 .AddPomeloClaimsUser()
                 .AddPomeloEventStore()
+                .AddPomeloEventStoreSubscriptions()
                 .AddPomeloMongoCollectionRepository()
-                .AddPomeloRabbitMqBus()
                 .AddMongoMaps();
         }
 

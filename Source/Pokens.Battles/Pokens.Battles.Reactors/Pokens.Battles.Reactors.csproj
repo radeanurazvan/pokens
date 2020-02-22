@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -19,12 +19,13 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Infrastructure" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200220.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Domain\Pokens.Battles.Domain.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Read.Domain\Pokens.Battles.Read.Domain.csproj" />
   </ItemGroup>

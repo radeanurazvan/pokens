@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokens.Pokedex.Business;
 using Pokens.Pokedex.Infrastructure;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Authentication;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Pokedex.Api
 {

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokens.Battles.Business;
 using Pokens.Battles.Infrastructure;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Battles.Write.WebApi
 {

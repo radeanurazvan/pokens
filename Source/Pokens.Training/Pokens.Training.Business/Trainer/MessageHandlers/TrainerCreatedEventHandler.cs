@@ -3,13 +3,12 @@ using CSharpFunctionalExtensions;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Pokens.Training.Domain;
-using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class TrainerCreatedEventHandler : IBusMessageHandler<IntegrationEvent<TrainerCreatedEvent>>
+    internal sealed class TrainerCreatedEventHandler : IIntegrationEventHandler<TrainerCreatedEvent>
     {
         private readonly ICollectionRepository repository;
         private readonly ILogger logger;
@@ -25,13 +24,8 @@ namespace Pokens.Training.Business
         public Task Handle(IntegrationEvent<TrainerCreatedEvent> message)
         {
             EnsureArg.IsNotNull(message);
-            return Task.Run(() => HandleCore(message.Data));
-        }
-
-        private void HandleCore(TrainerCreatedEvent message)
-        {
-            Trainer.Create(message.Id, message.Name)
-                .OnFailure(e => this.logger.LogError($"Integrating new trainer failed with error: {e} for message: {message.ToJson()}"))
+            return Trainer.Create(message.Data.Id, message.Data.Name)
+                .OnFailure(e => this.logger.LogError($"Integrating new trainer failed with error: {e} for message: {message.Data.Id}"))
                 .Tap(t => this.repository.Add(t));
         }
     }

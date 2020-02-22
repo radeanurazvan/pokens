@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Events.Abstractions;
 
-namespace Pokens.Pokedex.Business
+namespace Pokens.Pokedex.Domain
 {
     internal sealed class PokemonCreated : IDomainEvent
     {

@@ -2,7 +2,7 @@
 
 namespace Pokens.Pokedex.Domain
 {
-    public sealed class Ability : DocumentAggregate
+    public sealed class Ability : DocumentAggregateRoot
     {
         public string Name { get; set; }
 

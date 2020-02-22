@@ -1,11 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Domain\Pomelo.Kernel.Domain.csproj" />
+    <PackageReference Include="Pomelo.Kernel.Domain" Version="1.20200220.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokens.Training.Resources\Pokens.Training.Resources.csproj" />
   </ItemGroup>
 

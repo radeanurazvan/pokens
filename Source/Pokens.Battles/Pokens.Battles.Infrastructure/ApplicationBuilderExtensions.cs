@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pokens.Battles.Business;
 using Pokens.Battles.Domain;
-using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Infrastructure
 {
@@ -14,9 +14,15 @@ namespace Pokens.Battles.Infrastructure
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                var repository = scope.ServiceProvider.GetService<IWriteRepository<Arena>>();
-                Constants.DefaultArenas.ForEach(a => repository.Add(a).GetAwaiter().GetResult());
-                repository.Save().GetAwaiter().GetResult();
+                var mediator = scope.ServiceProvider.GetService<IRepositoryMediator>();
+                if (mediator.Read<Arena>().GetAll().GetAwaiter().GetResult().Any())
+                {
+                    return app;
+                }
+
+                var writeRepository = mediator.Write<Arena>();
+                Constants.DefaultArenas.ToList().ForEach(a => writeRepository.Add(a).GetAwaiter().GetResult());
+                writeRepository.Save().GetAwaiter().GetResult();
             }
 
             return app;
@@ -24,11 +30,14 @@ namespace Pokens.Battles.Infrastructure
 
         public static IApplicationBuilder UseBattlesBusSubscriptions(this IApplicationBuilder app)
         {
-            var bus = app.ApplicationServices.GetService<IMessageBus>();
-            bus.Subscribe<IntegrationEvent<TrainerCreatedEvent>>();
-            bus.Subscribe<IntegrationEvent<PokemonCaughtEvent>>();
-            bus.Subscribe<IntegrationEvent<StarterPokemonChosenEvent>>();
-            bus.Subscribe<TrainerAcceptedChallengeEvent>();
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>();
+                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>();
+                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>();
+                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>();
+            }
 
             return app;
         }
