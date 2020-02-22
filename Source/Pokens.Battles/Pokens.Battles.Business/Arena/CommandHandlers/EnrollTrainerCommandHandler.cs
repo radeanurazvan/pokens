@@ -22,8 +22,8 @@ namespace Pokens.Battles.Business
         {
             EnsureArg.IsNotNull(request);
 
-            var arenaResult = await this.mediator.Read<Arena>().GetById(request.ArenaId).ToResult(Messages.ArenaNotFound);
-            var trainerResult = await this.mediator.Read<Trainer>().GetById(request.TrainerId).ToResult(Messages.TrainerNotFound);
+            var arenaResult = await this.mediator.ReadById<Arena>(request.ArenaId).ToResult(Messages.ArenaNotFound);
+            var trainerResult = await this.mediator.ReadById<Trainer>(request.TrainerId).ToResult(Messages.TrainerNotFound);
 
             return await Result.FirstFailureOrSuccess(arenaResult, trainerResult)
                 .Tap(() => arenaResult.Value.Enroll(trainerResult.Value))

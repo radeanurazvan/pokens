@@ -14,13 +14,7 @@ namespace Pokens.Battles.Infrastructure
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                var mediator = scope.ServiceProvider.GetService<IRepositoryMediator>();
-                if (mediator.Read<Arena>().GetAll().GetAwaiter().GetResult().Any())
-                {
-                    return app;
-                }
-
-                var writeRepository = mediator.Write<Arena>();
+                var writeRepository = scope.ServiceProvider.GetService<IWriteRepository<Arena>>();
                 Constants.DefaultArenas.ToList().ForEach(a => writeRepository.Add(a).GetAwaiter().GetResult());
                 writeRepository.Save().GetAwaiter().GetResult();
             }
@@ -28,15 +22,15 @@ namespace Pokens.Battles.Infrastructure
             return app;
         }
 
-        public static IApplicationBuilder UseBattlesBusSubscriptions(this IApplicationBuilder app)
+        public static IApplicationBuilder UseBattlesSubscriptions(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
                 subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>("Trainers");
-                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>();
-                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>();
-                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>();
+                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>("Training");
+                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>("Training");
+                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>("Battles");
             }
 
             return app;

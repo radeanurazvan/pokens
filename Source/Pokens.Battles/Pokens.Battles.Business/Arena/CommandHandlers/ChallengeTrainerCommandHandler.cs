@@ -22,9 +22,9 @@ namespace Pokens.Battles.Business
         {
             EnsureArg.IsNotNull(request);
 
-            var arenaResult = await mediator.Read<Arena>().GetById(request.ArenaId).ToResult(Messages.ArenaNotFound);
-            var challengerResult = await mediator.Read<Trainer>().GetById(request.ChallengerId).ToResult(Messages.TrainerNotFound);
-            var challengedResult = await mediator.Read<Trainer>().GetById(request.ChallengedId).ToResult(Messages.TrainerNotFound);
+            var arenaResult = await mediator.ReadById<Arena>(request.ArenaId).ToResult(Messages.ArenaNotFound);
+            var challengerResult = await mediator.ReadById<Trainer>(request.ChallengerId).ToResult(Messages.TrainerNotFound);
+            var challengedResult = await mediator.ReadById<Trainer>(request.ChallengedId).ToResult(Messages.TrainerNotFound);
 
             return await Result.FirstFailureOrSuccess(arenaResult, challengerResult, challengedResult)
                 .Bind(() => arenaResult.Value.MediateChallenge(challengerResult.Value, request.ChallengerPokemonId, challengedResult.Value, request.ChallengedPokemonId))

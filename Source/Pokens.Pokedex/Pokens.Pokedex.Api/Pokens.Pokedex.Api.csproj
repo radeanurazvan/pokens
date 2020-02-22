@@ -17,8 +17,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.1" />
-    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.1" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.5" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace Pokens.Battles.Business
         {
             EnsureArg.IsNotNull(message);
 
-            return mediator.Read<Trainer>().GetById(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
+            return mediator.ReadById<Trainer>(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
                 .Tap(t => t.Catch(GetPokemon(message.Data)))
                 .Tap(_ => this.mediator.Write<Trainer>().Save());
         }

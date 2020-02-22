@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Pokens.Battles.Domain;
 using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Business
@@ -9,8 +8,9 @@ namespace Pokens.Battles.Business
     {
         public static IServiceCollection AddBattlesBusiness(this IServiceCollection services)
         {
-            return services.AddEventHandlers()
-                .AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
+            var assembly = typeof(ServiceCollectionExtensions).Assembly;
+            return services.AddEventHandlers(assembly)
+                .AddMediatR(assembly);
         }
     }
 }

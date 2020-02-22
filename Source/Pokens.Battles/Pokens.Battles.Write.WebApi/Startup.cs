@@ -43,10 +43,10 @@ namespace Pokens.Battles.Write.WebApi
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
-                .UseDefaultArenas()
-                .UseBattlesBusSubscriptions()
+                .UseBattlesSubscriptions()
                 .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()
+                .UseDefaultArenas()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
