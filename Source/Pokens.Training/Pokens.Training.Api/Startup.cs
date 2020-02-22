@@ -54,7 +54,7 @@ namespace Pokens.Training.Api
                 {
                     endpoints.MapControllers();
                 })
-                .UseTrainingBusSubscriptions();
+                .UseTrainingSubscriptions();
         }
     }
 }

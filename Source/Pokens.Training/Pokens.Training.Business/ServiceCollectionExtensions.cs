@@ -10,7 +10,7 @@ namespace Pokens.Training.Business
         {
             return services
                 .AddMediatR(typeof(ServiceCollectionExtensions).Assembly)
-                .AddEventHandlers();
+                .AddEventHandlers(typeof(TrainerCreatedEvent).Assembly);
         }
     }
 }

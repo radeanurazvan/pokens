@@ -18,8 +18,7 @@ namespace Pokens.Trainers.Infrastructure
                 .AddPomeloSingletonSettings<JwtSettings>()
                 .AddPomeloEntityFrameworkRepositories()
                 .AddPomeloEventStore()
-                .AddPomeloAggregatesContext()
-                .AddSingleton(typeof(IStreamConfig<>), typeof(TrainersStreamConfig<>));
+                .AddPomeloAggregatesContext();
         }
 
         public static IServiceCollection AddTrainersJwtAuthentication(this IServiceCollection services,

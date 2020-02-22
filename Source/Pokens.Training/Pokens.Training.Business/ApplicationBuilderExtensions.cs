@@ -6,16 +6,19 @@ namespace Pokens.Training.Business
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseTrainingBusSubscriptions(this IApplicationBuilder app)
+        private const string TrainersTag = "Trainers";
+        private const string PokedexTag = "Pokedex";
+
+        public static IApplicationBuilder UseTrainingSubscriptions(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
 
-                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>();
-                subscriptions.SubscribeIntegrationEvent<PokemonCreated>();
-                subscriptions.SubscribeIntegrationEvent<PokemonStarterChanged>();
-                subscriptions.SubscribeIntegrationEvent<PokemonImagesChanged>();
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>(TrainersTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<PokemonCreated>(PokedexTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<PokemonStarterChanged>(PokedexTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<PokemonImagesChanged>(PokedexTag).GetAwaiter().GetResult();
             }
             return app;
         }

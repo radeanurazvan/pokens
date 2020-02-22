@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Pomelo.Kernel.Domain" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.Domain" Version="1.20200222.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,8 +15,7 @@ namespace Pokens.Pokedex.Infrastructure
             return services
                 .AddPomeloAggregatesContext()
                 .AddPomeloEventStore()
-                .AddPomeloMongoCollectionRepository()
-                .AddSingleton(typeof(IStreamConfig<>), typeof(PokedexStreamConfig<>));
+                .AddPomeloMongoCollectionRepository();
         }
     }
 }

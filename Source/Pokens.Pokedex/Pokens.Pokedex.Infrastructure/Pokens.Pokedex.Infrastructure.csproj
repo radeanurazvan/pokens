@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
-    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200220.2" />
-    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200220.2" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200222.1" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200222.1" />
   </ItemGroup>
 
   <ItemGroup>
