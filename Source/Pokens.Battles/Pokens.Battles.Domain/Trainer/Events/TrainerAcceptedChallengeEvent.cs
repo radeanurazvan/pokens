@@ -1,11 +1,9 @@
 ﻿using System;
-using MediatR;
-using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    public sealed class TrainerAcceptedChallengeEvent : IDomainEvent, IBusMessage
+    public sealed class TrainerAcceptedChallengeEvent : IDomainEvent
     {
         private TrainerAcceptedChallengeEvent()
         {

@@ -1,12 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Domain" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200222.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokens.Battles.Read.Domain\Pokens.Battles.Read.Domain.csproj" />
   </ItemGroup>
 

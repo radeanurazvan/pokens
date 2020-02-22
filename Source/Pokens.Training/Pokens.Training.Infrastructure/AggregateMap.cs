@@ -3,7 +3,7 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Infrastructure
 {
-    internal sealed class AggregateMap : BsonClassMap<DocumentAggregate>
+    internal sealed class AggregateMap : BsonClassMap<DocumentAggregateRoot>
     {
         public AggregateMap()
         {

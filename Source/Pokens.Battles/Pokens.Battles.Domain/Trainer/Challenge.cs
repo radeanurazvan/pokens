@@ -19,7 +19,7 @@ namespace Pokens.Battles.Domain
             {
                 ChallengedId = challengedId,
                 ChallengedPokemonId = challengedPokemonId,
-                ExpiresAt = DateTimeProvider.Instance().UtcNow.Add(TimeToLive),
+                ExpiresAt = TimeProvider.Instance().UtcNow.Add(TimeToLive),
                 Status = ChallengeStatus.Pending
             };
         }
@@ -79,7 +79,7 @@ namespace Pokens.Battles.Domain
 
         internal bool IsPending => Status == ChallengeStatus.Pending;
 
-        internal bool IsExpired => ExpiresAt < DateTimeProvider.Instance().UtcNow;
+        internal bool IsExpired => ExpiresAt < TimeProvider.Instance().UtcNow;
         
         internal bool IsNotExpired => !IsExpired;
     }

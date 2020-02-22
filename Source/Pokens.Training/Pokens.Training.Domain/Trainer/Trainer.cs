@@ -7,7 +7,7 @@ using Pomelo.Kernel.Domain;
 using System.Linq;
 namespace Pokens.Training.Domain
 {
-    public sealed class Trainer : DocumentAggregate
+    public sealed class Trainer : DocumentAggregateRoot
     {
         private ICollection<Pokemon> caughtPokemons = new List<Pokemon>();
         private Pokemon starterPokemon;
@@ -25,7 +25,7 @@ namespace Pokens.Training.Domain
 
         public static Result<Trainer> Create(Guid id, string name)
         {
-            var idResult = id.EnsureNotEmpty(Messages.InvalidId);
+            var idResult = Result.FailureIf(id == Guid.Empty, Messages.InvalidId);
             var nameResult = name.EnsureValidString(Messages.InvalidName);
 
             return Result.FirstFailureOrSuccess(idResult, nameResult)

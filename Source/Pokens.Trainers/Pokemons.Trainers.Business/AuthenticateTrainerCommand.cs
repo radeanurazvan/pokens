@@ -4,11 +4,10 @@ using CSharpFunctionalExtensions;
 using EnsureThat;
 using MediatR;
 using Pokens.Trainers.Domain;
-using Pomelo.Kernel.Common;
 
 namespace Pokemons.Trainers.Business
 {
-    public sealed class AuthenticateTrainerCommand : ICommand<AuthenticationToken>
+    public sealed class AuthenticateTrainerCommand : IRequest<Result<AuthenticationToken>>
     {
         public AuthenticateTrainerCommand(string email, string password)
         {

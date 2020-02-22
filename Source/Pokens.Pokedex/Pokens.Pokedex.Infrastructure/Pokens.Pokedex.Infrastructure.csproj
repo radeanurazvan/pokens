@@ -7,12 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200222.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
     <ProjectReference Include="..\Pokens.Pokedex.Business\Pokens.Pokedex.Business.csproj" />
     <ProjectReference Include="..\Pokens.Pokedex.Domain\Pokens.Pokedex.Domain.csproj" />
   </ItemGroup>

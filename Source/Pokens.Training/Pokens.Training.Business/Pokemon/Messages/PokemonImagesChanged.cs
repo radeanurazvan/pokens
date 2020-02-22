@@ -1,9 +1,9 @@
-﻿using Pomelo.Kernel.Messaging.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class PokemonImagesChanged : IBusMessage
+    internal sealed class PokemonImagesChanged : IIntegrationEvent
     {
         private PokemonImagesChanged()
         {

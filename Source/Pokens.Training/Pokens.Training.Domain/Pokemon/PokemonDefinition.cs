@@ -6,7 +6,7 @@ using Pomelo.Kernel.Domain;
 
 namespace Pokens.Training.Domain
 {
-    public class PokemonDefinition : DocumentAggregate
+    public class PokemonDefinition : DocumentAggregateRoot
     {
         private PokemonDefinition()
         {
@@ -23,7 +23,7 @@ namespace Pokens.Training.Domain
 
         public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats, double catchRate)
         {
-            var idResult = id.EnsureNotEmpty(Messages.InvalidId);
+            var idResult = Result.FailureIf(id == Guid.Empty, Messages.InvalidId);
             var nameResult = name.EnsureValidString(Messages.InvalidName);
             var statsResult = stats.EnsureExists(Messages.NullStats);
 

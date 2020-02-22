@@ -5,11 +5,11 @@ using EnsureThat;
 using Pokens.Battles.Domain;
 using Pokens.Battles.Resources;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Business
 {
-    internal sealed class PokemonCaughtEventHandler : IBusMessageHandler<IntegrationEvent<PokemonCaughtEvent>>
+    internal sealed class PokemonCaughtEventHandler : IIntegrationEventHandler<PokemonCaughtEvent>
     {
         private readonly IRepositoryMediator mediator;
 
