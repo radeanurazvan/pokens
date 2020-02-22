@@ -1,4 +1,5 @@
 ﻿using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {

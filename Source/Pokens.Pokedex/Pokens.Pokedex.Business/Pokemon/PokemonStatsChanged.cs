@@ -1,9 +1,9 @@
 ﻿using Pokens.Pokedex.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Pokedex.Business
 {
-    internal sealed class PokemonStatsChanged : IBusMessage
+    internal sealed class PokemonStatsChanged : IDomainEvent
     {
         private PokemonStatsChanged()
         {

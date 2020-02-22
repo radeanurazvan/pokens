@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Pomelo.Kernel.Domain" Version="1.20200222.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Domain\Pomelo.Kernel.Domain.csproj" />
     <ProjectReference Include="..\Pokens.Trainers.Common\Pokens.Trainers.Common.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
@@ -7,7 +8,7 @@ namespace Pokens.Battles.Domain
     {
         public TrainerLeftArenaEvent()
         {
-            LeftAt = DateTimeProvider.Instance().UtcNow;
+            LeftAt = TimeProvider.Instance().UtcNow;
         }
 
         public DateTime LeftAt { get; private set; }

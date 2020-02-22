@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
+    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200222.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokens.Battles.Business\Pokens.Battles.Business.csproj" />
     <ProjectReference Include="..\Pokens.Battles.Infrastructure\Pokens.Battles.Infrastructure.csproj" />
   </ItemGroup>

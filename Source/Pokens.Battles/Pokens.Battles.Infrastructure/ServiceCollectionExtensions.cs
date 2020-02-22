@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.Kernel.Authentication;
+using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Infrastructure;
-using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Battles.Infrastructure
 {
@@ -11,6 +13,7 @@ namespace Pokens.Battles.Infrastructure
         public static IServiceCollection AddBattlesAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
             return services
+                .AddPomeloDefaultJsonSettings()
                 .AddPomeloClaimsUser()
                 .AddPomeloJwtAuthentication(configuration.GetJwtSettings());
         }
@@ -18,10 +21,12 @@ namespace Pokens.Battles.Infrastructure
         public static IServiceCollection AddBattlesInfrastructure(this IServiceCollection services)
         {
             return services
-                .AddRepositoryMediator()
-                .AddPomeloRabbitMqBus()
+                .AddPomeloRepositoryMediator()
                 .AddPomeloEventStore()
-                .AddPomeloEventSourcedRepositories();
+                .AddPomeloEventStoreSubscriptions()
+                .AddPomeloEventSourcedRepositories()
+                .AddPomeloAggregatesContext()
+                .AddPomeloRepositoryMediator();
         }
     }
 }

@@ -203,7 +203,7 @@ namespace Pokens.Battles.Domain.Tests
             // Arrange
             var challenger = TrainerFactory.WithLevel(2);
             var challenged = TrainerFactory.ChallengedBy(challenger);
-            DateTimeProviderContext.AdvanceUtcTimeTo(challenged.Challenges.First().ExpiresAt.Add(TimeSpan.FromHours(1)));
+            TimeProviderContext.AdvanceTimeTo(challenged.Challenges.First().ExpiresAt.Add(TimeSpan.FromHours(1)));
 
             // Act
             var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());

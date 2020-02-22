@@ -12,29 +12,25 @@ namespace Pokens.Battles.Business
 {
     internal sealed class AcceptChallengeCommandHandler : IRequestHandler<AcceptChallengeCommand, Result>
     {
-        private readonly IGetById<Arena> arenasReadRepository;
-        private readonly IGetById<Trainer> trainersReadRepository;
-        private readonly IWriteRepository<Arena> arenasWriteRepository;
+        private readonly IRepositoryMediator mediator;
 
-        public AcceptChallengeCommandHandler(IGetById<Arena> arenasReadRepository, IGetById<Trainer> trainersReadRepository, IWriteRepository<Arena> arenasWriteRepository)
+        public AcceptChallengeCommandHandler(IRepositoryMediator mediator)
         {
-            this.arenasReadRepository = arenasReadRepository;
-            this.trainersReadRepository = trainersReadRepository;
-            this.arenasWriteRepository = arenasWriteRepository;
+            this.mediator = mediator;
         }
 
         public async Task<Result> Handle(AcceptChallengeCommand request, CancellationToken cancellationToken)
         {
             EnsureArg.IsNotNull(request);
 
-            var arenaResult = await arenasReadRepository.GetById(request.ArenaId).ToResult(Messages.ArenaNotFound);
+            var arenaResult = await mediator.ReadById<Arena>(request.ArenaId).ToResult(Messages.ArenaNotFound);
             var challengeResult = arenaResult.Bind(a => a.Challenges.FirstOrNothing(c => c.Id == request.ChallengeId).ToResult(Messages.ChallengeNotFound));
-            var challengerResult = await challengeResult.Bind(c => trainersReadRepository.GetById(c.ChallengerId).ToResult(Messages.TrainerNotFound));
-            var challengedResult = await challengeResult.Bind(c => trainersReadRepository.GetById(c.ChallengedId).ToResult(Messages.TrainerNotFound));
+            var challengerResult = await challengeResult.Bind(c => mediator.ReadById<Trainer>(c.ChallengerId).ToResult(Messages.TrainerNotFound));
+            var challengedResult = await challengeResult.Bind(c => mediator.ReadById<Trainer>(c.ChallengedId).ToResult(Messages.TrainerNotFound));
 
             return await Result.FirstFailureOrSuccess(arenaResult, challengedResult, challengerResult)
                 .Tap(() => arenaResult.Value.MediateChallengeApproval(challengerResult.Value, challengedResult.Value, request.ChallengeId))
-                .Tap(() => this.arenasWriteRepository.Save());
+                .Tap(() => this.mediator.Write<Arena>().Save());
         }
     }
 }

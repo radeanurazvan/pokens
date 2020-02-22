@@ -1,5 +1,6 @@
 ﻿using System;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
@@ -14,7 +15,7 @@ namespace Pokens.Battles.Domain
         {
             TrainerId = trainer.Id;
             Name = trainer.Name;
-            JoinedAt = DateTimeProvider.Instance().UtcNow;
+            JoinedAt = TimeProvider.Instance().UtcNow;
         }
 
         public Guid TrainerId { get; private set; }

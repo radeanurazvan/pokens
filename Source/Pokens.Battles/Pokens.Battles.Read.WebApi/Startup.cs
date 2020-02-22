@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Authentication;
+using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Mongo;
 
 namespace Pokens.Battles.Read.WebApi
@@ -25,7 +26,7 @@ namespace Pokens.Battles.Read.WebApi
                 .AddPomeloJwtAuthentication(Configuration.GetJwtSettings())
                 .AddPomeloCors(Configuration)
                 .AddPomeloSwagger("Battles Read Api")
-                .AddMongoSyncStorage()
+                .AddPomeloMongoSyncStorage()
                 .AddControllers();
         }
 

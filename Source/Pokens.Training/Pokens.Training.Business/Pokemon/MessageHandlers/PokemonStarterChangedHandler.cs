@@ -5,13 +5,12 @@ using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Pokens.Training.Domain;
 using Pokens.Training.Resources;
-using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class PokemonStarterChangedHandler : IBusMessageHandler<PokemonStarterChanged>
+    internal sealed class PokemonStarterChangedHandler : IIntegrationEventHandler<PokemonStarterChanged>
     {
         private readonly ICollectionRepository repository;
         private readonly ILogger logger;
@@ -24,13 +23,13 @@ namespace Pokens.Training.Business
             this.logger = logger;
         }
 
-        public Task Handle(PokemonStarterChanged message)
+        public Task Handle(IntegrationEvent<PokemonStarterChanged> message)
         {
             EnsureArg.IsNotNull(message);
-            return this.repository.FindOne<PokemonDefinition>(d => d.Id == message.PokemonId).ToResult(Messages.PokemonNotFound)
-                .Tap(d => d.ChangeIsStarter(message.PokemonIsStarter))
+            return this.repository.FindOne<PokemonDefinition>(d => d.Id == message.Data.PokemonId).ToResult(Messages.PokemonNotFound)
+                .Tap(d => d.ChangeIsStarter(message.Data.PokemonIsStarter))
                 .Tap(d => this.repository.Update(d))
-                .OnFailure(e => this.logger.LogError($"Integrating change starter failed with error {e} for message {message.ToJson()}"))
+                .OnFailure(e => this.logger.LogError($"Integrating change starter failed with error {e} for message {message.Metadata.AggregateId}"))
                 .OnFailure(e => throw new Exception(e));
         }
     }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pokens.Battles.Business;
 using Pokens.Battles.Write.WebApi.Models;
 using Pomelo.Kernel.Domain;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Battles.Write.WebApi.Controllers
 {

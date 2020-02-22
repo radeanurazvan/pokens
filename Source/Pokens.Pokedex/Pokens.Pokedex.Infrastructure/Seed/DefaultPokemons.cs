@@ -7,7 +7,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
 {
     internal static class DefaultPokemons
     {
-        public static Pokemon Pikachu { get; } = new Pokemon
+        public static DefaultPokemon Pikachu { get; } = new DefaultPokemon
         {
             Name = "Pikachu",
             CatchRate = 35.2,
@@ -23,7 +23,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             }
         };
 
-        public static Pokemon Bulbasaur { get; } = new Pokemon
+        public static DefaultPokemon Bulbasaur { get; } = new DefaultPokemon
         {
             Name = "Bulbasaur",
             CatchRate = 11.9,
@@ -40,7 +40,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             IsStarter = true
         };
 
-        public static Pokemon Squirtle { get; } = new Pokemon
+        public static DefaultPokemon Squirtle { get; } = new DefaultPokemon
         {
             Name = "Squirtle",
             CatchRate = 11.9,
@@ -57,7 +57,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             IsStarter = true
         };
 
-        public static Pokemon Charmander { get; } = new Pokemon
+        public static DefaultPokemon Charmander { get; } = new DefaultPokemon
         {
             Name = "Charmander",
             CatchRate = 11.9,
@@ -74,7 +74,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             IsStarter = true
         };
 
-        public static IEnumerable<Pokemon> All { get; } = new List<Pokemon> { Pikachu, Charmander, Bulbasaur, Squirtle };
+        public static IEnumerable<DefaultPokemon> All { get; } = new List<DefaultPokemon> { Pikachu, Charmander, Bulbasaur, Squirtle };
 
         private static byte[] ImageUrlToBytes(string url)
         {
@@ -86,5 +86,15 @@ namespace Pokens.Pokedex.Infrastructure.Seed
 
             return memoryStream.ToArray();
         }
+    }
+
+    internal class DefaultPokemon
+    {
+        public string Name { get; set; }
+        public Rate CatchRate { get; set; }
+        public List<Ability> Abilities { get; set; }
+        public List<Image> Images { get; set; }
+        public Stats Stats { get; set; }
+        public bool IsStarter { get; set; }
     }
 }

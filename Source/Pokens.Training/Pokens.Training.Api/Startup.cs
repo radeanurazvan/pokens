@@ -6,7 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pokens.Training.Business;
 using Pokens.Training.Infrastructure;
-using Pomelo.Kernel.Infrastructure;
+using Pomelo.Kernel.Authentication;
+using Pomelo.Kernel.Http;
 
 namespace Pokens.Training.Api
 {
@@ -24,7 +25,7 @@ namespace Pokens.Training.Api
         {
             services
                 .AddHttpContextAccessor()
-                .AddDefaultJsonSettings()
+                .AddPomeloDefaultJsonSettings()
                 .AddLogging(c => c.AddDebug().AddConsole())
                 .AddTrainingBusiness()
                 .AddTrainingInfrastructure()
@@ -53,7 +54,7 @@ namespace Pokens.Training.Api
                 {
                     endpoints.MapControllers();
                 })
-                .UseTrainingBusSubscriptions();
+                .UseTrainingSubscriptions();
         }
     }
 }

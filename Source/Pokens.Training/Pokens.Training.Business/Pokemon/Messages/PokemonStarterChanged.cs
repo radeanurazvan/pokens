@@ -1,8 +1,8 @@
-﻿using Pomelo.Kernel.Messaging.Abstractions;
+﻿using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Training.Business
 {
-    internal sealed class PokemonStarterChanged : IBusMessage
+    internal sealed class PokemonStarterChanged : IIntegrationEvent
     {
         private PokemonStarterChanged()
         {

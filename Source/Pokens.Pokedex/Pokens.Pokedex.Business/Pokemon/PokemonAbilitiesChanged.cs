@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Pokens.Pokedex.Domain;
-using Pomelo.Kernel.Messaging.Abstractions;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Pokedex.Business
 {
-    internal class PokemonAbilitiesChanged : IBusMessage
+    internal class PokemonAbilitiesChanged : IDomainEvent
     {
         private PokemonAbilitiesChanged()
         {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pokens.Trainers.Domain;
+using Pomelo.Kernel.Authentication;
 using Pomelo.Kernel.Common;
+using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EntityFramework;
 using Pomelo.Kernel.EventStore;
-using Pomelo.Kernel.Infrastructure;
-using Pomelo.Kernel.Messaging;
 
 namespace Pokens.Trainers.Infrastructure
 {
@@ -15,10 +15,10 @@ namespace Pokens.Trainers.Infrastructure
         {
             return services.AddScoped<ITokenService, JwtTokenService>()
                 .AddScoped<IUsersService, IdentityUsersService>()
-                .AddSingletonSettings<JwtSettings>()
+                .AddPomeloSingletonSettings<JwtSettings>()
                 .AddPomeloEntityFrameworkRepositories()
                 .AddPomeloEventStore()
-                .AddPomeloRabbitMqBus();
+                .AddPomeloAggregatesContext();
         }
 
         public static IServiceCollection AddTrainersJwtAuthentication(this IServiceCollection services,

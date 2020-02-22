@@ -1,5 +1,6 @@
 ﻿using System;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
@@ -15,7 +16,7 @@ namespace Pokens.Battles.Domain
             TrainerId = trainerId;
             PokemonId = pokemonId;
             ChallengedPokemonId = challengedPokemonId;
-            ChallengedAt = DateTimeProvider.Instance().UtcNow;
+            ChallengedAt = TimeProvider.Instance().UtcNow;
         }
 
         public Guid TrainerId { get; private set; }

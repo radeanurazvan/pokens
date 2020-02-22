@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.EventStore\Pomelo.Kernel.EventStore.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Infrastructure\Pomelo.Kernel.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Messaging\Pomelo.Kernel.Messaging.csproj" />
-    <ProjectReference Include="..\..\Pomelo.Kernel\Pomelo.Kernel.Mongo\Pomelo.Kernel.Mongo.csproj" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200222.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pokens.Training.Domain\Pokens.Training.Domain.csproj" />
   </ItemGroup>
 

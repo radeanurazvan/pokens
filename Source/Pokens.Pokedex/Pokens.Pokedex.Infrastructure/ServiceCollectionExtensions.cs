@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
+using Pokens.Pokedex.Infrastructure.Maps;
+using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EventStore;
-using Pomelo.Kernel.Messaging;
 using Pomelo.Kernel.Mongo;
 
 namespace Pokens.Pokedex.Infrastructure
@@ -9,10 +11,11 @@ namespace Pokens.Pokedex.Infrastructure
     {
         public static IServiceCollection AddPokedexInfrastructure(this IServiceCollection services)
         {
+            BsonClassMap.RegisterClassMap(new AggregateRootMap());
             return services
+                .AddPomeloAggregatesContext()
                 .AddPomeloEventStore()
-                .AddPomeloMongoCollectionRepository()
-                .AddPomeloRabbitMqBus();
+                .AddPomeloMongoCollectionRepository();
         }
     }
 }
