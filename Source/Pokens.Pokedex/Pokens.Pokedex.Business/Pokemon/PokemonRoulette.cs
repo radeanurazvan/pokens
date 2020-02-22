@@ -8,7 +8,7 @@ namespace Pokens.Pokedex.Business
         private const int BetweenFiveAndTenRatio = 70;
         private const int AboveTenRatio = 90;
 
-        public const int MaxRouletteResult = 12;
+        public const int MaxRouletteResult = 30;
 
         static PokemonRoulette()
         {
@@ -24,15 +24,15 @@ namespace Pokens.Pokedex.Business
 
             if (luckRatio >= AboveTenRatio)
             {
-                return Random.Next(10, MaxRouletteResult);
+                return Random.Next(20, MaxRouletteResult);
             }
 
             if (luckRatio >= BetweenFiveAndTenRatio)
             {
-                return Random.Next(5, 10);
+                return Random.Next(10, 20);
             }
 
-            return Random.Next(0, 5);
+            return Random.Next(0, 10);
         }
     }
 }

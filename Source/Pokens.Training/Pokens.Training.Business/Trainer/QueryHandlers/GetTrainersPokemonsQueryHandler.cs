@@ -21,8 +21,8 @@ namespace Pokens.Training.Business
         public async Task<IEnumerable<PokemonModel>> Handle(GetTrainersPokemonsQuery request, CancellationToken cancellationToken)
         {
             EnsureArg.IsNotNull(request);
-            var trainerOrNothing = await repository.Find<Trainer>(t => request.TrainerIds.Contains(t.Id));
-            return trainerOrNothing
+            var trainers = await repository.Find<Trainer>(t => request.TrainerIds.Contains(t.Id));
+            return trainers
                 .SelectMany(t => t.CaughtPokemons.Select(cp => new PokemonModel(t.Id, cp)));
         }
     }

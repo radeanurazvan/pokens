@@ -35,7 +35,7 @@ export class ArenaService {
 
   public getAllPokemons(ids: string[]): Observable<any> {
     let params = new HttpParams();
-    params = params.append('trainersIds', ids.join(', '));
+    ids.forEach(x => params = params.append('trainersIds', x));
     const options = {
       headers: this.httpOptions.headers,
       params: params
