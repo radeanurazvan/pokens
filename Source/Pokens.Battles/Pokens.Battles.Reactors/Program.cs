@@ -23,7 +23,8 @@ namespace Pokens.Battles.Reactors
                         .AddJsonAppSettings()
                         .AddPomeloMongoSyncStorage()
                         .AddPomeloDefaultJsonSettings()
-                        .AddPomeloEventStore();
+                        .AddPomeloEventStore()
+                        .AddPomeloEventStoreSubscriptions();
                 });
 
             return builder.UseConsoleLifetime()
