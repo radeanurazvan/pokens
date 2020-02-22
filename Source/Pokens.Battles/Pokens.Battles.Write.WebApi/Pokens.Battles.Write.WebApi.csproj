@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200222.6-merge" />
   </ItemGroup>
 
   <ItemGroup>

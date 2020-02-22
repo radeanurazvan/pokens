@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.5" />
-    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200222.5" />
-    <PackageReference Include="Pomelo.Kernel.EntityFramework" Version="1.20200222.5" />
-    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200222.6-merge" />
+    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200222.6-merge" />
+    <PackageReference Include="Pomelo.Kernel.EntityFramework" Version="1.20200222.6-merge" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200222.6-merge" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 

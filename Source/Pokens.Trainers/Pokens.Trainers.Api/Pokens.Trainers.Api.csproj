@@ -11,7 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.5" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200222.6-merge" />
   </ItemGroup>
 
   <ItemGroup>

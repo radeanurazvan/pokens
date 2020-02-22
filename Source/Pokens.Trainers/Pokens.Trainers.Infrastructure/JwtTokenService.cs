@@ -49,7 +49,8 @@ namespace Pokens.Trainers.Infrastructure
             return new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Iss, settings.Issuer),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Trainer.Id.ToString()),
+                new Claim("UserId", user.Trainer.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(PokensClaims.TrainerId, user.Trainer.Id.ToString()),
                 new Claim(PokensClaims.TrainerName, user.Trainer.Name)
