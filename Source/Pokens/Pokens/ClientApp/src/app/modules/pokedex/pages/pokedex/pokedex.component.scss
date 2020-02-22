@@ -1,53 +1,65 @@
 ::ng-deep {
-  app-pokedex {
+  app-profile {
     width: 100%
   }
 }
+
+:host ::ng-deep {
+  mat-card {
+    padding: 0 !important;
+  }
+}
+
 .container {
+  height: calc(100vh - 82px);
   width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
   align-content: baseline;
+  background-position: 0;
+  background-size: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  background-color: #f7fcfb;
 }
 
 .pokemon-card {
-  width: 300px;
-  height: 350px;
+  height: 220px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 5px;
   margin: 15px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .image-container {
   display: flex;
   width: 100%;
   justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 10px;
 }
 
 .pokemon-image {
-  max-height: 200px;
+  max-height: 110px;
   width: auto;
 }
 
-.icon-stats{
+.pokemon-name {
+  width: 100%;
+  height: 15%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   display: flex;
   align-items: center;
-  
-  img { 
-  width: 25px;
-  height: 25px;
-  }
-}
-.abilities-container{
-  display: flex;
-  justify-content: space-evenly;
-}
-.ability-image{
-  width: 50px;
-  height: 50px;
+  justify-content: center;
+  font-size: 22px;
+  background-color: white;
 }

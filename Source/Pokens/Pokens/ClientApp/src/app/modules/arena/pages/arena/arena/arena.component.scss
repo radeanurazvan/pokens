@@ -6,12 +6,14 @@
 
 .container {
   width: 100%;
+  height: calc(100vh - 82px);
   align-content: baseline;
   background-position: 0;
   background-size: 100%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 10px;
+  background-color: #f7fcfb;
 }
 
 .arena-card {

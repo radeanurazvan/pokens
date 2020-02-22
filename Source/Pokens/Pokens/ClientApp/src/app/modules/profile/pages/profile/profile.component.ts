@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ProfileService } from 'src/app/shared/core/profile.service';
 import { map, tap } from 'rxjs/operators';
+import { Colors } from '../../../../shared/components/colors.const';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +12,6 @@ export class ProfileComponent implements OnInit {
 
   public pokemons: any[];
 
-  private palette: string[] = ['#F5E97E', '#A2D7D5', '#DF807E', '#55A3AB', '#CC6310'];
   constructor(private profileService: ProfileService) { }
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getBackGroundColor(code: number): string {
-    return this.palette[this.getRandomInt(code)];
+    return Colors[this.getRandomInt(code)];
   }
 
   private getRandomInt(code: number) {
