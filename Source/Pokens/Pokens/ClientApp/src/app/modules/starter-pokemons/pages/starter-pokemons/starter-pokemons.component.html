@@ -1,11 +1,37 @@
-<div class="starters-container">
-    <mat-card *ngFor="let pokemon of pokemons" class="starter-card">
+<div class="main-starter-container">
+  <div class="cards-panel">
+    <div class="panel-title">
+      <div class="title">
+        Choose a Pokemon!
+      </div>
+      <div class="description">
+        <p>
+          It seems that this is your first time in this application and you
+          don't own a pokemon yet.
+        </p>
+        <p>Choose one from the one listed below in order to get started!</p>
+      </div>
+    </div>
+
+    <div class="card-container">
+      <mat-card
+        *ngFor="let pokemon of pokemons"
+        class="starter-card"
+        (click)="openPopup(pokemon)"
+      >
         <div class="image-container">
-            <img class="pokemon-image" mat-card-image [src]="'data:image/png;base64,'+ pokemon.image" [alt]="pokemon.name">
+          <img
+            class="pokemon-image"
+            mat-card-image
+            [src]="'data:image/png;base64,' + pokemon.image"
+            [alt]="pokemon.name"
+          />
         </div>
 
-        <mat-card-title>{{pokemon.name}}</mat-card-title>
+        <mat-card-title>{{ pokemon.name }}</mat-card-title>
 
-        <button mat-raised-button (click)="openPopup(pokemon)">Choose</button>
-    </mat-card>
+        <!-- <button mat-raised-button (click)="openPopup(pokemon)">Choose</button> -->
+      </mat-card>
+    </div>
+  </div>
 </div>
