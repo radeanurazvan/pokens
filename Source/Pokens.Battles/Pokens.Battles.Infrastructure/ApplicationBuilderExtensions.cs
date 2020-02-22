@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pokens.Battles.Business;
@@ -10,12 +11,24 @@ namespace Pokens.Battles.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
+        private static readonly Guid NoobGuid = new Guid("C9591069-33E7-45E1-BF71-2166C67397BD");
+
         public static IApplicationBuilder UseDefaultArenas(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                var writeRepository = scope.ServiceProvider.GetService<IWriteRepository<Arena>>();
-                Constants.DefaultArenas.ToList().ForEach(a => writeRepository.Add(a).GetAwaiter().GetResult());
+                var mediator = scope.ServiceProvider.GetService<IRepositoryMediator>();
+                var existingArena = mediator.ReadById<Arena>(NoobGuid).GetAwaiter().GetResult();
+                if (existingArena.HasValue && !string.IsNullOrEmpty(existingArena.Value.Name))
+                {
+                    return app;
+                }
+
+                var arenas = Constants.DefaultArenas.ToList();
+                typeof(Arena).GetProperty(nameof(Arena.Id)).SetValue(arenas.First(), NoobGuid);
+
+                var writeRepository = mediator.Write<Arena>();
+                arenas.ForEach(a => writeRepository.Add(a).GetAwaiter().GetResult());
                 writeRepository.Save().GetAwaiter().GetResult();
             }
 
