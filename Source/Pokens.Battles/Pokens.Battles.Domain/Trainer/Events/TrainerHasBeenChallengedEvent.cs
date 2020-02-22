@@ -10,16 +10,19 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public TrainerHasBeenChallengedEvent(Guid pokemonId, Guid challengerId, Guid challengerPokemonId)
+        public TrainerHasBeenChallengedEvent(Guid pokemonId, Guid challengeId, Guid challengerId, Guid challengerPokemonId)
             : this()
         {
             PokemonId = pokemonId;
+            ChallengeId = challengeId;
             ChallengerId = challengerId;
             ChallengerPokemonId = challengerPokemonId;
             ChallengedAt = TimeProvider.Instance().UtcNow;
         }
 
         public Guid ChallengerId { get; private set; }
+        
+        public Guid ChallengeId { get; private set; }
 
         public Guid ChallengerPokemonId { get; private set; }
         

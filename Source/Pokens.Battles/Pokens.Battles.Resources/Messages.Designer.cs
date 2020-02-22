@@ -187,6 +187,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The trainer has not accepted your challenge!.
+        /// </summary>
+        public static string TrainerHasNotAcceptedChallenge {
+            get {
+                return ResourceManager.GetString("TrainerHasNotAcceptedChallenge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The trainer is not enrolled in any arena!.
         /// </summary>
         public static string TrainerIsNotEnrolled {

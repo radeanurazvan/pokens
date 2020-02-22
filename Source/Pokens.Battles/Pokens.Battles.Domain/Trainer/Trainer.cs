@@ -68,20 +68,28 @@ namespace Pokens.Battles.Domain
 
         internal Result Challenge(Trainer challenged, Guid challengerPokemonId, Guid challengedPokemonId)
         {
-            return Result.FailureIf(challenges.Any(c => c.HasParticipants(this, challenged)), Messages.TrainerAlreadyChallenged)
+            var challengeId = Guid.NewGuid();
+            var hasAlreadyChallenged = challenges
+                .Where(c => c.IsPending)
+                .Where(c => c.IsNotExpired)
+                .Any(c => c.HasParticipants(this, challenged));
+            return Result.FailureIf(hasAlreadyChallenged, Messages.TrainerAlreadyChallenged)
                 .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
                 .Ensure(() => this.HasPokemon(challengerPokemonId) && challenged.HasPokemon(challengedPokemonId), Messages.TrainerDoesNotOwnPokemon)
-                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id, challengerPokemonId, challengedPokemonId)))
-                .Tap(() => challenged.ReceiveChallengeFrom(this, challengedPokemonId, challengerPokemonId));
+                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id, challengeId, challengerPokemonId, challengedPokemonId)))
+                .Tap(() => challenged.ReceiveChallengeFrom(this, challengeId, challengedPokemonId, challengerPokemonId));
         }
 
         internal Result AcceptChallenge(Trainer challenger, Challenge challenge)
         {
             var challengerResult = challenger.EnsureExists(Messages.InvalidTrainer);
-            var challengeResult = challenge.EnsureExists(Messages.ChallengeNotFound)
-                .Ensure(_ => this.Challenges.Any(c => c == challenge), Messages.ChallengeNotFound)
+            var challengeResult = this.challenges.FirstOrNothing(c => c == challenge).ToResult(Messages.ChallengeNotFound)
                 .Ensure(c => c.IsNotExpired, Messages.ChallengeExpired)
-                .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
+                .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered)
+                .Ensure(_ => this.IsEnrolled, Messages.ArenaAlreadyLeft)
+                .Ensure(_ => challenger.IsEnrolled, Messages.ArenaAlreadyLeft)
+                .Ensure(c => Enrollment.Value == c.ArenaId, Messages.ArenaAlreadyLeft)
+                .Ensure(c => challenger.Enrollment.Value == c.ArenaId, Messages.ArenaAlreadyLeft);
 
             return Result.FirstFailureOrSuccess(challengerResult, challengeResult)
                 .Ensure(() => challenger.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
@@ -92,10 +100,15 @@ namespace Pokens.Battles.Domain
 
         internal Result StartBattleAgainst(Trainer enemy)
         {
-            return enemy.EnsureExists(Messages.InvalidTrainer)
-                .Ensure(_ => CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
-                .Ensure(e => e.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
-                .Tap(e => ReactToDomainEvent(new TrainerStartedBattleEvent(enemy.Id)));
+            var challengeResult = this.challenges.FirstOrNothing(c => c.IsAccepted && c.HasParticipants(this, enemy))
+                .ToResult(Messages.TrainerHasNotAcceptedChallenge);
+            var enemyResult = enemy.EnsureExists(Messages.InvalidTrainer);
+
+            return Result.FirstFailureOrSuccess(challengeResult, enemyResult)
+                .Ensure(() => CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
+                .Ensure(() => enemy.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
+                .Tap(() => enemy.EnterBattleAgainst(this))
+                .Tap(() => ReactToDomainEvent(new TrainerStartedBattleEvent(enemy.Id)));
         }
 
         private void EnterBattleAgainst(Trainer enemy)
@@ -103,8 +116,8 @@ namespace Pokens.Battles.Domain
             ReactToDomainEvent(new TrainerEnteredBattleEvent(enemy.Id));
         }
 
-        private void ReceiveChallengeFrom(Trainer challenger, Guid challengedPokemonId, Guid challengerPokemonId) 
-            => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challenger.Id, challengerPokemonId));
+        private void ReceiveChallengeFrom(Trainer challenger, Guid challengeId, Guid challengedPokemonId, Guid challengerPokemonId) 
+            => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challengeId, challenger.Id, challengerPokemonId));
 
         private bool HasPokemon(Guid id) => this.pokemons.Any(p => p.Id == id);
 
@@ -131,7 +144,7 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerChallengedEvent @event)
         {
-            var challenge = Domain.Challenge.For(@event.TrainerId, @event.ChallengedPokemonId)
+            var challenge = Domain.Challenge.For(@event.ChallengeId, @event.TrainerId, @event.ChallengedPokemonId)
                 .By(this.Id, @event.PokemonId)
                 .On(Enrollment.Unwrap())
                 .At(@event.ChallengedAt);
@@ -140,7 +153,7 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerHasBeenChallengedEvent @event)
         {
-            var challenge = Domain.Challenge.For(this.Id, @event.PokemonId)
+            var challenge = Domain.Challenge.For(@event.ChallengeId, this.Id, @event.PokemonId)
                 .By(@event.ChallengerId, @event.ChallengerPokemonId)
                 .On(Enrollment.Unwrap())
                 .At(@event.ChallengedAt);
@@ -162,11 +175,15 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerStartedBattleEvent @event)
         {
+            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.Enemy))
+                .Execute(c => c.MarkAsHonored());
             this.battles.Add(TrainerBattle.Against(@event.Enemy));
         }
 
         private void When(TrainerEnteredBattleEvent @event)
         {
+            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.Enemy))
+                .Execute(c => c.MarkAsHonored());
             this.battles.Add(TrainerBattle.Against(@event.Enemy));
         }
     }

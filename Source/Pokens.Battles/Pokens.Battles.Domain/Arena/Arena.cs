@@ -72,8 +72,8 @@ namespace Pokens.Battles.Domain
             return Result.FirstFailureOrSuccess(challengedResult, challengerResult)
                 .Bind(() => challenged.Challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound))
                 .Ensure(c => c.ArenaId == this.Id, Messages.ArenaAlreadyLeft)
-                .Ensure(c => challenged.IsEnrolledIn(c.ArenaId), Messages.TrainerIsNotEnrolled)
-                .Ensure(c => challenger.IsEnrolledIn(c.ArenaId), Messages.TrainerIsNotEnrolled)
+                .Ensure(c => challenged.IsEnrolledIn(c.ArenaId), Messages.ArenaAlreadyLeft)
+                .Ensure(c => challenger.IsEnrolledIn(c.ArenaId), Messages.ArenaAlreadyLeft)
                 .Bind(c => challenged.AcceptChallenge(challenger, c))
                 .Tap(() => AddDomainEvent(new ChallengeAcceptedEvent(challengeId)));
         }

@@ -159,6 +159,9 @@
   <data name="TrainerDoesNotOwnPokemon" xml:space="preserve">
     <value>A trainer does not own the specified pokemon!</value>
   </data>
+  <data name="TrainerHasNotAcceptedChallenge" xml:space="preserve">
+    <value>The trainer has not accepted your challenge!</value>
+  </data>
   <data name="TrainerIsNotEnrolled" xml:space="preserve">
     <value>The trainer is not enrolled in any arena!</value>
   </data>

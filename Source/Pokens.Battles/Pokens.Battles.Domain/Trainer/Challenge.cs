@@ -13,10 +13,11 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public static ISteadyChallenge For(Guid challengedId, Guid challengedPokemonId)
+        public static ISteadyChallenge For(Guid challengeId, Guid challengedId, Guid challengedPokemonId)
         {
             return new Challenge
             {
+                Id = challengeId,
                 ChallengedId = challengedId,
                 ChallengedPokemonId = challengedPokemonId,
                 ExpiresAt = TimeProvider.Instance().UtcNow.Add(TimeToLive),
@@ -49,11 +50,13 @@ namespace Pokens.Battles.Domain
 
         public DateTime ExpiresAt { get; private set; }
 
-        public bool HasParticipants(Trainer first, Trainer second)
+        public bool HasParticipants(Trainer first, Trainer second) => HasParticipants(first.Id, second.Id);
+
+        public bool HasParticipants(Guid first, Guid second)
         {
-            var givenParticipants = new List<Guid>{ first.Id, second.Id };
+            var givenParticipants = new List<Guid> { first, second };
             givenParticipants.Sort();
-            var realParticipants = new List<Guid>{ ChallengedId, ChallengerId };
+            var realParticipants = new List<Guid> { ChallengedId, ChallengerId };
             realParticipants.Sort();
 
             return givenParticipants.SequenceEqual(realParticipants);
@@ -77,10 +80,17 @@ namespace Pokens.Battles.Domain
             Status = ChallengeStatus.Rejected;
         }
 
-        internal bool IsPending => Status == ChallengeStatus.Pending;
+        internal void MarkAsHonored()
+        {
+            Status = ChallengeStatus.Honored;
+        }
+
+        internal bool IsPending => Status == ChallengeStatus.Pending && !IsExpired;
+
+        internal bool IsAccepted => Status == ChallengeStatus.Accepted;
 
         internal bool IsExpired => ExpiresAt < TimeProvider.Instance().UtcNow;
-        
+
         internal bool IsNotExpired => !IsExpired;
     }
 
@@ -88,7 +98,8 @@ namespace Pokens.Battles.Domain
     {
         Pending = 1,
         Accepted = 2,
-        Rejected = 3
+        Rejected = 3,
+        Honored = 4
     }
 
     public interface ISteadyChallenge

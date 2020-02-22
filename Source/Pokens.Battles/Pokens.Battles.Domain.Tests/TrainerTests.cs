@@ -94,8 +94,9 @@ namespace Pokens.Battles.Domain.Tests
         public void Given_Challenge_When_ChallengeAlreadyExists_Then_ShouldFail()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(1);
-            var challenged = TrainerFactory.ChallengedBy(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.ChallengedBy(challenger, arena);
 
             // Act
             var result = challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
@@ -183,9 +184,10 @@ namespace Pokens.Battles.Domain.Tests
         public void Given_AcceptChallenge_When_ChallengeIsNotFound_Then_ShouldFail()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(2);
-            var challenged = TrainerFactory.WithLevel(3);
-            var otherChallenged = TrainerFactory.ChallengedBy(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.EnrolledIn(arena);
+            var otherChallenged = TrainerFactory.ChallengedBy(challenger, arena);
 
             // Act
             var result = challenged.AcceptChallenge(challenger, otherChallenged.Challenges.First());
@@ -201,8 +203,9 @@ namespace Pokens.Battles.Domain.Tests
         public void Given_AcceptChallenge_When_ChallengeExpired_Then_ShouldFail()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(2);
-            var challenged = TrainerFactory.ChallengedBy(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.ChallengedBy(challenger, arena);
             TimeProviderContext.AdvanceTimeTo(challenged.Challenges.First().ExpiresAt.Add(TimeSpan.FromHours(1)));
 
             // Act
@@ -219,8 +222,9 @@ namespace Pokens.Battles.Domain.Tests
         public void Given_AcceptChallenge_When_OneIsAlreadyInBattle_Then_ShouldFail()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(2);
-            var challenged = TrainerFactory.InBattleAgainst(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.InBattleAgainst(TrainerFactory.WithLevel(1), arena);
+            var challenged = TrainerFactory.EnrolledIn(arena);
             challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
             challenger.ClearEvents();
             challenged.ClearEvents();
@@ -236,11 +240,34 @@ namespace Pokens.Battles.Domain.Tests
         }
 
         [Fact]
+        public void Given_AcceptChallenge_When_OneLeftArena_Then_ShouldFail()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.EnrolledIn(arena);
+            challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
+            challenger.LeaveArena();
+            challenger.ClearEvents();
+            challenged.ClearEvents();
+
+            // Act
+            var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ArenaAlreadyLeft);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
         public void Given_AcceptChallenge_When_ChallengeAlreadyAnswered_Then_ShouldFail()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(2);
-            var challenged = TrainerFactory.WithChallengeAcceptedFrom(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.WithChallengeAcceptedFrom(challenger, arena);
 
             // Act
             var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
@@ -256,8 +283,9 @@ namespace Pokens.Battles.Domain.Tests
         public void Given_AcceptChallenge_When_ChallengeIsPending_Then_ShouldAccept()
         {
             // Arrange
-            var challenger = TrainerFactory.WithLevel(2);
-            var challenged = TrainerFactory.ChallengedBy(challenger);
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.ChallengedBy(challenger, arena);
 
             // Act
             var result = challenged.AcceptChallenge(challenger, challenged.Challenges.First());
@@ -267,6 +295,46 @@ namespace Pokens.Battles.Domain.Tests
             challenged.Challenges.Should().ContainSingle(c => c.Status == ChallengeStatus.Accepted);
             challenger.Events.Should().ContainSingle(e => e is TrainerChallengeAnsweredEvent);
             challenged.Events.Should().ContainSingle(e => e is TrainerAcceptedChallengeEvent);
+        }
+        
+        [Fact]
+        public void Given_StartBattleAgainst_When_HasNoAcceptedChallenge_Then_ShouldFail()
+        {
+            // Arrange
+            var challenger = TrainerFactory.WithLevel(2);
+            var challenged = TrainerFactory.WithLevel(2);
+
+            // Act
+            var result = challenged.StartBattleAgainst(challenger);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.TrainerHasNotAcceptedChallenge);
+            challenger.Events.Should().NotContain(e => e is TrainerStartedBattleEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerEnteredBattleEvent);
+        }
+
+        [Fact]
+        public void Given_StartBattleAgainst_When_HasAcceptedChallenge_Then_ShouldStartBattle()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.WithChallengeAcceptedFrom(challenger, arena);
+
+            // Act
+            var result = challenger.StartBattleAgainst(challenged);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            challenger.Events.Should().ContainSingle(e => e is TrainerStartedBattleEvent);
+            challenged.Events.Should().ContainSingle(e => e is TrainerEnteredBattleEvent);
+
+            challenger.Challenges.First().Status.Should().Be(ChallengeStatus.Honored);
+            challenged.Challenges.First().Status.Should().Be(ChallengeStatus.Honored);
+
+            challenger.Battles.Should().ContainSingle(b => b.Enemy == challenged.Id);
+            challenged.Battles.Should().ContainSingle(b => b.Enemy == challenger.Id);
         }
     }
 }

@@ -23,9 +23,10 @@ namespace Pokens.Battles.Domain.Tests
             return trainer;
         }
 
-        public static Trainer ChallengedBy(Trainer challenger)
+        public static Trainer ChallengedBy(Trainer challenger, Arena arena)
         {
-            var challenged = WithLevel(1);
+            challenger.EnrollIn(arena);
+            var challenged = EnrolledIn(arena);
             challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
             challenger.ClearEvents();
             challenged.ClearEvents();
@@ -35,6 +36,7 @@ namespace Pokens.Battles.Domain.Tests
 
         public static Trainer ChallengedWith(Trainer challenger, Arena arena)
         {
+            challenger.EnrollIn(arena);
             var challenged = WithLevel(1);
             challenged.EnrollIn(arena);
             challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
@@ -45,9 +47,10 @@ namespace Pokens.Battles.Domain.Tests
             return challenged;
         }
 
-        public static Trainer WithChallengeAcceptedFrom(Trainer challenger)
+        public static Trainer WithChallengeAcceptedFrom(Trainer challenger, Arena arena)
         {
-            var challenged = WithLevel(1);
+            challenger.EnrollIn(arena);
+            var challenged = EnrolledIn(arena);
             challenger.Challenge(challenged, challenger.FirstPokemonId(), challenged.FirstPokemonId());
             challenged.AcceptChallenge(challenger, challenged.Challenges.First());
             
@@ -57,9 +60,10 @@ namespace Pokens.Battles.Domain.Tests
             return challenged;
         }
 
-        public static Trainer InBattleAgainst(Trainer challenger)
+        public static Trainer InBattleAgainst(Trainer challenger, Arena arena)
         {
-            var challenged = WithLevel(1);
+            challenger.EnrollIn(arena);
+            var challenged = WithChallengeAcceptedFrom(challenger, arena);
             challenger.StartBattleAgainst(challenged);
 
             challenger.ClearEvents();
