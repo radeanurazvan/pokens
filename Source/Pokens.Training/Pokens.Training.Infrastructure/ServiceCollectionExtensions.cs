@@ -24,6 +24,7 @@ namespace Pokens.Training.Infrastructure
         {
             BsonClassMap.RegisterClassMap(new AggregateMap());
             BsonClassMap.RegisterClassMap(new TrainerMap());
+            BsonClassMap.RegisterClassMap(new PokemonDefinitionMap());
             return services;
         }
     }

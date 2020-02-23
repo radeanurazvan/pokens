@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EnsureThat;
@@ -32,7 +33,9 @@ namespace Pokens.Battles.Business
             var defensiveStats = new DefensiveStats(@event.Health, @event.Defense, @event.DodgeChance);
             var offensiveStats = new OffensiveStats(@event.AttackPower, @event.CriticalStrikeChance);
             var stats = new Stats(defensiveStats, offensiveStats);
-            return new Pokemon(new Guid(@event.PokemonId), @event.DefinitionName, stats);
+            var abilities = @event.Abilities.Select(a => new Ability(a.Id, a.Name, a.Description, a.Damage, a.RequiredLevel, a.Cooldown));
+
+            return new Pokemon(new Guid(@event.PokemonId), @event.DefinitionName, stats, abilities);
         }
     }
 }

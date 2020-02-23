@@ -1,6 +1,8 @@
-﻿namespace Pokens.Battles.Domain
+﻿using Pomelo.Kernel.Domain;
+
+namespace Pokens.Battles.Domain
 {
-    public sealed class Battle
+    public sealed class Battle : AggregateRoot
     {
         private Battle()
         {

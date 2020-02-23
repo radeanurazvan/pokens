@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CSharpFunctionalExtensions;
 using Pokens.Training.Resources;
 using Pomelo.Kernel.Common;
@@ -8,6 +9,8 @@ namespace Pokens.Training.Domain
 {
     public class PokemonDefinition : DocumentAggregateRoot
     {
+        private ICollection<Ability> abilities = new List<Ability>();
+
         private PokemonDefinition()
         {
         }
@@ -21,7 +24,7 @@ namespace Pokens.Training.Domain
             CatchRate = catchRate;
         }
 
-        public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats, double catchRate)
+        public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats, double catchRate, IEnumerable<Ability> abilities)
         {
             var idResult = Result.FailureIf(id == Guid.Empty, Messages.InvalidId);
             var nameResult = name.EnsureValidString(Messages.InvalidName);
@@ -39,7 +42,9 @@ namespace Pokens.Training.Domain
 
         public Rate CatchRate { get; private set; }
 
-        public byte[] Image { get; set; }
+        public byte[] Image { get; private set; }
+
+        public IEnumerable<Ability> Abilities => this.abilities;
 
         public void ChangeIsStarter(bool isStarter)
         {
@@ -49,6 +54,11 @@ namespace Pokens.Training.Domain
         public void ChangeImage(byte[] image)
         {
             Image = image;
+        }
+
+        public static class Expressions
+        {
+            public const string Abilities = nameof(abilities);
         }
     }
 }
