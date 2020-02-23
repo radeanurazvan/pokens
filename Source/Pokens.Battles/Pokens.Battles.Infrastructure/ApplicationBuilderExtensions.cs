@@ -19,7 +19,7 @@ namespace Pokens.Battles.Infrastructure
             {
                 var mediator = scope.ServiceProvider.GetService<IRepositoryMediator>();
                 var existingArena = mediator.ReadById<Arena>(NoobGuid).GetAwaiter().GetResult();
-                if (existingArena.HasValue && !string.IsNullOrEmpty(existingArena.Value.Name))
+                if (existingArena.HasValue)
                 {
                     return app;
                 }
