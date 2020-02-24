@@ -141,6 +141,9 @@
   <data name="InvalidName" xml:space="preserve">
     <value>Name is invalid!</value>
   </data>
+  <data name="InvalidPokemon" xml:space="preserve">
+    <value>The pokemon is invalid!</value>
+  </data>
   <data name="InvalidTrainer" xml:space="preserve">
     <value>The trainer is invalid!</value>
   </data>

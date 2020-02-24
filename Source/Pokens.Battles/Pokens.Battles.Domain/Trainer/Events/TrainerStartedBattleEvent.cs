@@ -9,12 +9,27 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public TrainerStartedBattleEvent(Guid enemy)
+        public TrainerStartedBattleEvent(Challenge challenge)
             : this()
         {
-            Enemy = enemy;
+            ArenaId = challenge.ArenaId;
+            ChallengeId = challenge.Id;
+            TrainerId = challenge.ChallengerId;
+            PokemonId = challenge.ChallengerPokemonId;
+            EnemyId = challenge.ChallengedId;
+            EnemyPokemonId = challenge.ChallengedPokemonId;
         }
 
-        public Guid Enemy { get; private set; }
+        public Guid ArenaId { get; private set; }
+
+        public Guid ChallengeId { get; private set; }
+
+        public Guid TrainerId { get; private set; }
+
+        public Guid PokemonId { get; private set; }
+
+        public Guid EnemyPokemonId { get; private set; }
+
+        public Guid EnemyId { get; private set; }
     }
 }

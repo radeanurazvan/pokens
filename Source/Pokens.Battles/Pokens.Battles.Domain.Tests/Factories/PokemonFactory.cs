@@ -7,12 +7,10 @@ namespace Pokens.Battles.Domain.Tests
 {
     public static class PokemonFactory
     {
-        public static Pokemon Pikachu() => Pikachu(0);
-
-        public static Pokemon Pikachu(int level)
+        public static Pokemon Pikachu(int level, Guid trainerId)
         {
             var stats = new Stats(new DefensiveStats(0, 0, 0), new OffensiveStats(0, 0));
-            var pokemon = new Pokemon(Guid.NewGuid(), "Pikachu", stats, new List<Ability>());
+            var pokemon = new Pokemon(Guid.NewGuid(), trainerId, "Pikachu", stats, new List<Ability>());
             Enumerable.Range(0, level-1).ForEach(_ => pokemon.LevelUp());
 
             return pokemon;

@@ -107,13 +107,15 @@ namespace Pokens.Battles.Domain
             return Result.FirstFailureOrSuccess(challengeResult, enemyResult)
                 .Ensure(() => CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Ensure(() => enemy.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
-                .Tap(() => enemy.EnterBattleAgainst(this))
-                .Tap(() => ReactToDomainEvent(new TrainerStartedBattleEvent(enemy.Id)));
+                .Bind(() => enemy.EnterBattleAgainst(this))
+                .Tap(() => ReactToDomainEvent(new TrainerStartedBattleEvent(challengeResult.Value)));
         }
 
-        private void EnterBattleAgainst(Trainer enemy)
+        private Result EnterBattleAgainst(Trainer enemy)
         {
-            ReactToDomainEvent(new TrainerEnteredBattleEvent(enemy.Id));
+            return this.challenges.FirstOrNothing(c => c.IsAccepted && c.HasParticipants(this, enemy))
+                .ToResult(Messages.TrainerHasNotAcceptedChallenge)
+                .Bind(c => ReactToDomainEvent(new TrainerEnteredBattleEvent(c)));
         }
 
         private void ReceiveChallengeFrom(Trainer challenger, Guid challengeId, Guid challengedPokemonId, Guid challengerPokemonId) 
@@ -175,16 +177,16 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerStartedBattleEvent @event)
         {
-            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.Enemy))
+            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
-            this.battles.Add(TrainerBattle.Against(@event.Enemy));
+            this.battles.Add(TrainerBattle.Against(@event.EnemyId));
         }
 
         private void When(TrainerEnteredBattleEvent @event)
         {
-            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.Enemy))
+            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
-            this.battles.Add(TrainerBattle.Against(@event.Enemy));
+            this.battles.Add(TrainerBattle.Against(@event.EnemyId));
         }
     }
 }

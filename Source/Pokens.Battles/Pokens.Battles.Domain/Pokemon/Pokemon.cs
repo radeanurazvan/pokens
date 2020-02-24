@@ -14,15 +14,18 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public Pokemon(Guid id, string name, Stats stats, IEnumerable<Ability> abilities)
+        public Pokemon(Guid id, Guid trainerId, string name, Stats stats, IEnumerable<Ability> abilities)
             : this()
         {
             Id = id;
+            TrainerId = trainerId;
             Name = name;
             Stats = stats;
             Level = StartingLevel;
             this.abilities.AddRange(abilities);
         }
+
+        public Guid TrainerId { get; private set; }
 
         public string Name { get; private set; }
 

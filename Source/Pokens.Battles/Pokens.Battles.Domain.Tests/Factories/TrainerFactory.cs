@@ -9,7 +9,7 @@ namespace Pokens.Battles.Domain.Tests
         public static Trainer WithLevel(int level)
         {
             var trainer = Trainer.Register(Guid.NewGuid(), "Ash");
-            trainer.Catch(PokemonFactory.Pikachu(level));
+            trainer.Catch(PokemonFactory.Pikachu(level, trainer.Id));
             trainer.ClearEvents();
             return trainer;
         }

@@ -133,6 +133,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The pokemon is invalid!.
+        /// </summary>
+        public static string InvalidPokemon {
+            get {
+                return ResourceManager.GetString("InvalidPokemon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The trainer is invalid!.
         /// </summary>
         public static string InvalidTrainer {
