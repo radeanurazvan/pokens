@@ -10,13 +10,16 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public BattleEndedEvent(Guid winner, Guid loser)
+        public BattleEndedEvent(Battle battle)
             : this()
         {
-            Winner = winner;
-            Loser = loser;
+            BattleId = battle.Id;
+            Winner = battle.ActivePlayer;
+            Loser = battle.WaitingPlayer;
             EndedAt = TimeProvider.Instance().UtcNow;
         }
+
+        public Guid BattleId { get; private set; }
 
         public Guid Winner { get; private set; }
 

@@ -58,6 +58,21 @@ namespace Pokens.Battles.Domain.Tests
         }
 
         [Fact]
+        public void Given_LeaveArena_When_TrainerIsInBattle_Then_ShouldFail()
+        {
+            // Arrange
+            var otherTrainer = TrainerFactory.WithLevel(1);
+            var sut = TrainerFactory.InBattleAgainst(otherTrainer, ArenaFactory.WithoutRequirement());
+
+            // Act
+            var result = sut.LeaveArena();
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.CannotLeaveWhileInBattle);
+        }
+
+        [Fact]
         public void Given_LeaveArena_When_TrainerIsEnrolled_Then_ShouldLeave()
         {
             // Arrange
@@ -335,6 +350,74 @@ namespace Pokens.Battles.Domain.Tests
 
             challenger.Battles.Should().ContainSingle(b => b.Enemy == challenged.Id);
             challenged.Battles.Should().ContainSingle(b => b.Enemy == challenger.Id);
+        }
+
+        [Fact]
+        public void Given_UseAbilityIn_When_BattleDoesNotExist_Then_ShouldFail()
+        {
+            // Arrange
+            var trainer = TrainerFactory.WithLevel(1);
+
+            // Act
+            var result = trainer.UseAbilityIn(BattleFactory.Started(), trainer.Pokemons.First().Abilities.First().Id);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.BattleNotFound);
+        }
+
+        [Fact]
+        public void Given_UseAbilityIn_When_AbilityDoesNotExist_Then_ShouldFail()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var attacker = TrainerFactory.EnrolledIn(arena);
+            var defender = TrainerFactory.EnrolledIn(arena);
+            var battle = BattleFactory.Started(attacker, defender);
+
+            // Act
+            var result = attacker.UseAbilityIn(battle, new Guid("0623D502-2C0D-4EB9-B786-909E806B9AC4"));
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.InvalidAbility);
+        }
+
+        [Fact]
+        public void Given_UseAbilityIn_When_PokemonDoesNotMeetLevel_Then_ShouldFail()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var attacker = TrainerFactory.EnrolledIn(arena);
+            var ability = AbilityFactory.WithRequiredLevel(int.MaxValue);
+            var pokemon = PokemonFactory.Pikachu(attacker.Id, ability);
+            attacker.Catch(pokemon);
+
+            var defender = TrainerFactory.EnrolledIn(arena);
+            var battle = BattleFactory.Started(attacker, defender, attacker.Pokemons.Last(), defender.Pokemons.First());
+
+            // Act
+            var result = attacker.UseAbilityIn(battle, ability.Id);
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.AbilityRequiresLevel);
+        }
+
+        [Fact]
+        public void Given_UseAbilityIn_When_AbilityCanBeUsed_Then_ShoulSucceed()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var attacker = TrainerFactory.EnrolledIn(arena);
+            var defender = TrainerFactory.EnrolledIn(arena);
+            var battle = BattleFactory.Started(attacker, defender);
+
+            // Act
+            var result = attacker.UseAbilityIn(battle, attacker.Pokemons.First().Abilities.First().Id);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
         }
     }
 }

@@ -15,9 +15,11 @@ namespace Pokens.Battles.Domain.Tests
             return Started(attacker, defender);
         }
 
-        public static Battle Started(Trainer attacker, Trainer defender)
+        public static Battle Started(Trainer attacker, Trainer defender) => Started(attacker, defender, attacker.Pokemons.First(), defender.Pokemons.First());
+
+        public static Battle Started(Trainer attacker, Trainer defender, Pokemon attackerPokemon, Pokemon defenderPokemon)
         {
-            attacker.Challenge(defender, attacker.FirstPokemonId(), defender.FirstPokemonId());
+            attacker.Challenge(defender, attackerPokemon.Id, defenderPokemon.Id);
             var challenge = attacker.Challenges.First();
 
             defender.AcceptChallenge(attacker, challenge);
@@ -27,8 +29,8 @@ namespace Pokens.Battles.Domain.Tests
             defender.ClearEvents();
             var battle = Battle.FromChallenge(challenge.Id)
                 .Bind(b => b.In(challenge.ArenaId))
-                .Bind(b => b.WithAttacker(attacker.Id, attacker.Pokemons.First()))
-                .Bind(b => b.WithDefender(defender.Id, defender.Pokemons.First()))
+                .Bind(b => b.WithAttacker(attacker.Id, attackerPokemon))
+                .Bind(b => b.WithDefender(defender.Id, defenderPokemon))
                 .Value;
             battle.ClearEvents();
 

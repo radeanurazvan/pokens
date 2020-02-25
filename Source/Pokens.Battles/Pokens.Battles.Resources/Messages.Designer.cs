@@ -70,6 +70,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have th required level to use this ability!.
+        /// </summary>
+        public static string AbilityRequiresLevel {
+            get {
+                return ResourceManager.GetString("AbilityRequiresLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You already left the arena you&apos;ve been challenged in!.
         /// </summary>
         public static string ArenaAlreadyLeft {
@@ -97,11 +106,29 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The battle does not exist!.
+        /// </summary>
+        public static string BattleNotFound {
+            get {
+                return ResourceManager.GetString("BattleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot challenge yourself!.
         /// </summary>
         public static string CannotChallengeSelf {
             get {
                 return ResourceManager.GetString("CannotChallengeSelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot leave an arena while in battle!.
+        /// </summary>
+        public static string CannotLeaveWhileInBattle {
+            get {
+                return ResourceManager.GetString("CannotLeaveWhileInBattle", resourceCulture);
             }
         }
         

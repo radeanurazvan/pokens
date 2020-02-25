@@ -10,11 +10,15 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public static TrainerBattle Against(Guid enemy) => new TrainerBattle
+        public static TrainerBattle Create(Guid challengeId, Guid enemyId, Guid pokemonId) => new TrainerBattle
         {
-            Enemy = enemy,
+            Id = challengeId,
+            Enemy = enemyId,
+            Pokemon = pokemonId,
             StartedAt = TimeProvider.Instance().UtcNow
         };
+
+        public Guid Pokemon { get; private set; }
 
         public Guid Enemy { get; private set; }
 

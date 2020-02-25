@@ -72,6 +72,10 @@ namespace Pokens.Battles.Domain
 
         public bool HasEnded => EndedAt.HasValue;
 
+        public Maybe<Guid> Winner { get; private set; } = Maybe<Guid>.None;
+        
+        public Maybe<Guid> Loser { get; private set; } = Maybe<Guid>.None;
+
         private IEnumerable<Guid> Participants => new List<Guid> { AttackerId, DefenderId };
 
         public Guid ActivePlayer => Participants.ElementAt(turns.Count % Participants.Count());
@@ -80,7 +84,7 @@ namespace Pokens.Battles.Domain
 
         private IEnumerable<PokemonInFight> FightingPokemons => new List<PokemonInFight> { AttackerPokemon, DefenderPokemon };
 
-        private PokemonInFight ActivePokemon => FightingPokemons.ElementAt(turns.Count % FightingPokemons.Count());
+        internal PokemonInFight ActivePokemon => FightingPokemons.ElementAt(turns.Count % FightingPokemons.Count());
         
         private PokemonInFight WaitingPokemon => FightingPokemons.ElementAt((turns.Count + 1) % FightingPokemons.Count());
 
@@ -100,7 +104,7 @@ namespace Pokens.Battles.Domain
 
         private void ConcludeBattle()
         {
-            ReactToDomainEvent(new BattleEndedEvent(ActivePlayer, WaitingPlayer));
+            ReactToDomainEvent(new BattleEndedEvent(this));
         }
 
         private void When(BattleStartedEvent @event)
@@ -134,6 +138,8 @@ namespace Pokens.Battles.Domain
 
         private void When(BattleEndedEvent @event)
         {
+            Winner = @event.Winner;
+            Loser = @event.Loser;
             EndedAt = @event.EndedAt;
         }
     }

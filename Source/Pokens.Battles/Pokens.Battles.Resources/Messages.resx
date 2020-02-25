@@ -120,6 +120,9 @@
   <data name="AbilityIsOnCooldown" xml:space="preserve">
     <value>You have to wait for your cooldown to run off before using this ability again!</value>
   </data>
+  <data name="AbilityRequiresLevel" xml:space="preserve">
+    <value>You don't have th required level to use this ability!</value>
+  </data>
   <data name="ArenaAlreadyLeft" xml:space="preserve">
     <value>You already left the arena you've been challenged in!</value>
   </data>
@@ -129,8 +132,14 @@
   <data name="BattleAlreadyEnded" xml:space="preserve">
     <value>Battle has already ended!</value>
   </data>
+  <data name="BattleNotFound" xml:space="preserve">
+    <value>The battle does not exist!</value>
+  </data>
   <data name="CannotChallengeSelf" xml:space="preserve">
     <value>You cannot challenge yourself!</value>
+  </data>
+  <data name="CannotLeaveWhileInBattle" xml:space="preserve">
+    <value>You cannot leave an arena while in battle!</value>
   </data>
   <data name="ChallengeAlreadyAnswered" xml:space="preserve">
     <value>You already answered to this challenge!</value>

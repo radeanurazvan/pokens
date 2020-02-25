@@ -60,9 +60,21 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new TrainerEnrolledEvent(arena.Id)));
         }
 
+        public Result UseAbilityIn(Battle battle, Guid abilityId)
+        {
+            var pokemonResult = battle.EnsureExists(Messages.BattleNotFound)
+                .Bind(_ => battles.FirstOrNothing(b => b.Id == battle.Id).ToResult(Messages.BattleNotFound))
+                .Bind(b => pokemons.FirstOrNothing(p => p.Id == b.Pokemon).ToResult(Messages.InvalidPokemon));
+            return pokemonResult
+                .Bind(p => p.Abilities.FirstOrNothing(a => a.Id == abilityId).ToResult(Messages.InvalidAbility))
+                .Ensure(a => a.RequiredLevel <= pokemonResult.Value.Level, Messages.AbilityRequiresLevel)
+                .Bind(a => battle.TakeTurn(this, a));
+        }
+
         internal Result LeaveArena()
         {
             return Result.SuccessIf(Enrollment.HasValue, Messages.TrainerIsNotEnrolled)
+                .Ensure(() => CurrentBattle.HasNoValue, Messages.CannotLeaveWhileInBattle)
                 .Tap(() => ReactToDomainEvent(new TrainerLeftArenaEvent()));
         }
 
@@ -179,14 +191,14 @@ namespace Pokens.Battles.Domain
         {
             this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
-            this.battles.Add(TrainerBattle.Against(@event.EnemyId));
+            this.battles.Add(TrainerBattle.Create(@event.ChallengeId, @event.EnemyId, @event.PokemonId));
         }
 
         private void When(TrainerEnteredBattleEvent @event)
         {
             this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
-            this.battles.Add(TrainerBattle.Against(@event.EnemyId));
+            this.battles.Add(TrainerBattle.Create(@event.ChallengeId, @event.EnemyId, @event.PokemonId));
         }
     }
 }
