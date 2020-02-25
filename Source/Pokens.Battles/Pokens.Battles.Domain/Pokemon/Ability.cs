@@ -1,4 +1,6 @@
-﻿namespace Pokens.Battles.Domain
+﻿using System;
+
+namespace Pokens.Battles.Domain
 {
     public sealed class Ability
     {
@@ -6,7 +8,7 @@
         {
         }
 
-        public Ability(string id, string name, string description, int damage, int requiredLevel, int cooldown)
+        public Ability(Guid id, string name, string description, int damage, int requiredLevel, int cooldown)
             : this()
         {
             Id = id;
@@ -17,7 +19,7 @@
             Cooldown = cooldown;
         }
 
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
         public string Name { get; private set; }
 

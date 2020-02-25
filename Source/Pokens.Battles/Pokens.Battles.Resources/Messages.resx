@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbilityIsOnCooldown" xml:space="preserve">
+    <value>You have to wait for your cooldown to run off before using this ability again!</value>
+  </data>
   <data name="ArenaAlreadyLeft" xml:space="preserve">
     <value>You already left the arena you've been challenged in!</value>
   </data>
   <data name="ArenaNotFound" xml:space="preserve">
     <value>Arena does not exist!</value>
+  </data>
+  <data name="BattleAlreadyEnded" xml:space="preserve">
+    <value>Battle has already ended!</value>
   </data>
   <data name="CannotChallengeSelf" xml:space="preserve">
     <value>You cannot challenge yourself!</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="ChallengeNotFound" xml:space="preserve">
     <value>Challenge does not exist!</value>
+  </data>
+  <data name="InvalidAbility" xml:space="preserve">
+    <value>Invalid ability!</value>
   </data>
   <data name="InvalidArenaLevel" xml:space="preserve">
     <value>Required level should be at least 0!</value>
@@ -173,5 +182,8 @@
   </data>
   <data name="TrainersDoNotHaveSameEnrollment" xml:space="preserve">
     <value>The trainers are not enrolled in the same arena!</value>
+  </data>
+  <data name="YouAreNotTheActivePlayer" xml:space="preserve">
+    <value>You are not the active player, wait for your turn!</value>
   </data>
 </root>

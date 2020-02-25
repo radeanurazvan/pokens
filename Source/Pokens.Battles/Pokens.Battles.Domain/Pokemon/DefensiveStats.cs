@@ -17,6 +17,11 @@ namespace Pokens.Battles.Domain
         public int Defense { get; private set; }
 
         public float DodgeChance { get; private set; }
+
+        public DefensiveStats WithLessHealth(int healthToSubtract)
+        {
+            return new DefensiveStats(this.Health - healthToSubtract, Defense, DodgeChance);
+        }
         
         protected override IEnumerable<object> GetEqualityComponents()
         {

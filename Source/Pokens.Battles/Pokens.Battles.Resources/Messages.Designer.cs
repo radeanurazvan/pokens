@@ -61,6 +61,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have to wait for your cooldown to run off before using this ability again!.
+        /// </summary>
+        public static string AbilityIsOnCooldown {
+            get {
+                return ResourceManager.GetString("AbilityIsOnCooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You already left the arena you&apos;ve been challenged in!.
         /// </summary>
         public static string ArenaAlreadyLeft {
@@ -75,6 +84,15 @@ namespace Pokens.Battles.Resources {
         public static string ArenaNotFound {
             get {
                 return ResourceManager.GetString("ArenaNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battle has already ended!.
+        /// </summary>
+        public static string BattleAlreadyEnded {
+            get {
+                return ResourceManager.GetString("BattleAlreadyEnded", resourceCulture);
             }
         }
         
@@ -111,6 +129,15 @@ namespace Pokens.Battles.Resources {
         public static string ChallengeNotFound {
             get {
                 return ResourceManager.GetString("ChallengeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid ability!.
+        /// </summary>
+        public static string InvalidAbility {
+            get {
+                return ResourceManager.GetString("InvalidAbility", resourceCulture);
             }
         }
         
@@ -228,6 +255,15 @@ namespace Pokens.Battles.Resources {
         public static string TrainersDoNotHaveSameEnrollment {
             get {
                 return ResourceManager.GetString("TrainersDoNotHaveSameEnrollment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not the active player, wait for your turn!.
+        /// </summary>
+        public static string YouAreNotTheActivePlayer {
+            get {
+                return ResourceManager.GetString("YouAreNotTheActivePlayer", resourceCulture);
             }
         }
     }

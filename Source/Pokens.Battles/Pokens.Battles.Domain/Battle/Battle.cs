@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CSharpFunctionalExtensions;
-using Pokens.Battles.Domain.Events;
 using Pokens.Battles.Resources;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
@@ -9,6 +10,8 @@ namespace Pokens.Battles.Domain
 {
     public sealed class Battle : AggregateRoot, IIdentifiedBattle, IBattleWithArena, IBattleWithAttacker
     {
+        private readonly ICollection<BattleTurn> turns = new List<BattleTurn>();
+
         private Battle()
         {
         }
@@ -34,7 +37,7 @@ namespace Pokens.Battles.Domain
 
             return Result.FirstFailureOrSuccess(trainerResult, pokemonResult)
                 .Tap(() => AttackerId = attackerId)
-                .Tap(() => AttackerPokemon = attackerPokemon)
+                .Tap(() => AttackerPokemon = new PokemonInFight(attackerPokemon.Stats.Defensive, attackerPokemon.Stats.Offensive))
                 .Map(() => this as IBattleWithAttacker);
         }
 
@@ -46,7 +49,7 @@ namespace Pokens.Battles.Domain
 
             return Result.FirstFailureOrSuccess(trainerResult, pokemonResult)
                 .Tap(() => DefenderId = defenderId)
-                .Tap(() => DefenderPokemon = defenderPokemon)
+                .Tap(() => DefenderPokemon = new PokemonInFight(defenderPokemon.Stats.Defensive, defenderPokemon.Stats.Offensive))
                 .Tap(() => ReactToDomainEvent(new BattleStartedEvent(this)))
                 .Map(() => this);
         }
@@ -55,25 +58,83 @@ namespace Pokens.Battles.Domain
 
         public Guid AttackerId { get; private set; }
 
-        public Pokemon AttackerPokemon { get; private set; }
+        internal PokemonInFight AttackerPokemon { get; private set; }
         
         public Guid DefenderId { get; private set; }
 
-        public Pokemon DefenderPokemon { get; private set; }
+        internal PokemonInFight DefenderPokemon { get; private set; }
 
         public DateTime StartedAt { get; private set; }
 
         public Maybe<DateTime> EndedAt { get; private set; } = Maybe<DateTime>.None;
+
+        public bool IsOnGoing => !HasEnded;
+
+        public bool HasEnded => EndedAt.HasValue;
+
+        private IEnumerable<Guid> Participants => new List<Guid> { AttackerId, DefenderId };
+
+        public Guid ActivePlayer => Participants.ElementAt(turns.Count % Participants.Count());
+        
+        public Guid WaitingPlayer => Participants.ElementAt((turns.Count + 1) % Participants.Count());
+
+        private IEnumerable<PokemonInFight> FightingPokemons => new List<PokemonInFight> { AttackerPokemon, DefenderPokemon };
+
+        private PokemonInFight ActivePokemon => FightingPokemons.ElementAt(turns.Count % FightingPokemons.Count());
+        
+        private PokemonInFight WaitingPokemon => FightingPokemons.ElementAt((turns.Count + 1) % FightingPokemons.Count());
+
+        internal Result TakeTurn(Trainer player, Ability ability)
+        {
+            var playerResult = player.EnsureExists(Messages.InvalidTrainer);
+            var abilityResult = ability.EnsureExists(Messages.InvalidAbility);
+
+            return Result.FirstFailureOrSuccess(playerResult, abilityResult)
+                .Ensure(() => IsOnGoing, Messages.BattleAlreadyEnded)
+                .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
+                .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
+                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, ability.Damage)))
+                .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
+                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ability.Id)));
+        }
+
+        private void ConcludeBattle()
+        {
+            ReactToDomainEvent(new BattleEndedEvent(ActivePlayer, WaitingPlayer));
+        }
 
         private void When(BattleStartedEvent @event)
         {
             Id = @event.Id;
             ArenaId = @event.ArenaId;
             AttackerId = @event.AttackerId;
-            AttackerPokemon = @event.AttackerPokemon;
+
+            var attackerDefensive = new DefensiveStats(@event.AttackerPokemon.Health, @event.AttackerPokemon.Defense, @event.AttackerPokemon.DodgeChange);
+            var attackerOffensive = new OffensiveStats(@event.AttackerPokemon.AttackPower, @event.AttackerPokemon.CriticalStrikeChance);
+            AttackerPokemon = new PokemonInFight(attackerDefensive, attackerOffensive);
             DefenderId = @event.DefenderId;
-            DefenderPokemon = @event.DefenderPokemon;
+
+            var defenderDefensive = new DefensiveStats(@event.DefenderPokemon.Health, @event.DefenderPokemon.Defense, @event.DefenderPokemon.DodgeChange);
+            var defenderOffensive = new OffensiveStats(@event.DefenderPokemon.AttackPower, @event.DefenderPokemon.CriticalStrikeChance);
+            DefenderPokemon = new PokemonInFight(defenderDefensive, defenderOffensive);
             StartedAt = @event.StartedAt;
+        }
+
+        private void When(PlayerUsedAbilityEvent @event)
+        {
+            ActivePokemon.DecrementCooldowns();
+            ActivePokemon.Use(@event.Ability);
+            WaitingPokemon.TakeHit(@event.DamageDealt);
+        }
+
+        private void When(PlayerTookTurnEvent @event)
+        {
+            turns.Add(new BattleTurn(ActivePlayer, @event.AbilityId, @event.TakenAt));
+        }
+
+        private void When(BattleEndedEvent @event)
+        {
+            EndedAt = @event.EndedAt;
         }
     }
 
@@ -90,5 +151,25 @@ namespace Pokens.Battles.Domain
     public interface IBattleWithAttacker
     {
         Result<Battle> WithDefender(Guid defenderId, Pokemon defenderPokemon);
+    }
+
+    internal sealed class BattleTurn
+    {
+        private BattleTurn()
+        {
+        }
+
+        public BattleTurn(Guid playerId, Guid abilityId, DateTime takenAt)
+        {
+            PlayerId = playerId;
+            AbilityId = abilityId;
+            TakenAt = takenAt;
+        }
+
+        public Guid PlayerId { get; private set; }
+
+        public Guid AbilityId { get; private set; }
+
+        public DateTime TakenAt { get; private set; }
     }
 }

@@ -2,7 +2,7 @@
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.Events.Abstractions;
 
-namespace Pokens.Battles.Domain.Events
+namespace Pokens.Battles.Domain
 {
     internal sealed class BattleStartedEvent : IDomainEvent
     {
@@ -16,9 +16,9 @@ namespace Pokens.Battles.Domain.Events
             Id = battle.Id;
             ArenaId = battle.ArenaId;
             AttackerId = battle.AttackerId;
-            AttackerPokemon = battle.AttackerPokemon;
+            AttackerPokemon = new BattlePokemonStats(battle.AttackerPokemon.Offensive, battle.AttackerPokemon.Defensive);
             DefenderId = battle.DefenderId;
-            DefenderPokemon = battle.DefenderPokemon;
+            DefenderPokemon = new BattlePokemonStats(battle.DefenderPokemon.Offensive, battle.DefenderPokemon.Defensive);
             StartedAt = TimeProvider.Instance().UtcNow;
         }
 
@@ -28,12 +28,40 @@ namespace Pokens.Battles.Domain.Events
 
         public Guid AttackerId { get; private set; }
 
-        public Pokemon AttackerPokemon { get; private set; }
+        public BattlePokemonStats AttackerPokemon { get; private set; }
 
-        public Pokemon DefenderPokemon { get; private set; }
+        public BattlePokemonStats DefenderPokemon { get; private set; }
 
         public Guid DefenderId { get; private set; }
 
         public DateTime StartedAt { get; private set; }
+
+
+        internal sealed class BattlePokemonStats
+        {
+            private BattlePokemonStats()
+            {
+            }
+
+            public BattlePokemonStats(OffensiveStats offensive, DefensiveStats defensive)
+                : this()
+            {
+                Health = defensive.Health;
+                Defense = defensive.Defense;
+                DodgeChange = defensive.DodgeChance;
+                AttackPower = offensive.AttackPower;
+                CriticalStrikeChance = offensive.CriticalStrikeChance;
+            }
+
+            public int Health { get; private set; }
+
+            public int Defense { get; private set; }
+
+            public float DodgeChange { get; private set; }
+
+            public int AttackPower { get; private set; }
+
+            public float CriticalStrikeChance { get; private set; }
+        }
     }
 }
