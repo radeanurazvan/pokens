@@ -60,6 +60,19 @@ namespace Pokens.Training.Domain
                 .Tap(p => AddDomainEvent(new PokemonCaughtEvent(p.Id, definition)));
         }
 
+        public Result CollectExperience(string pokemonId, int amount)
+        {
+            return this.CaughtPokemons.FirstOrNothing(p => p.Id == pokemonId).ToResult(Messages.PokemonNotFound)
+                .Tap(p => p.CollectExperience(amount))
+                .Tap(p =>
+                {
+                    while (p.LevelUp().IsSuccess)
+                    {
+                        AddDomainEvent(new PokemonLeveledUpEvent(p));
+                    }
+                });
+        }
+
         public static class Expressions
         {
             public const string CaughtPokemons = nameof(caughtPokemons);

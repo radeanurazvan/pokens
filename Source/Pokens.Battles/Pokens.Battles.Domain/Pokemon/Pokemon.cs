@@ -35,6 +35,8 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<Ability> Abilities => this.abilities;
 
+        internal void GoToLevel(int level) => Level = level;
+
         internal void LevelUp() => Level++;
     }
 }

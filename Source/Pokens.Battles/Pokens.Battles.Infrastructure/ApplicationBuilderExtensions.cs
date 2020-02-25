@@ -44,12 +44,13 @@ namespace Pokens.Battles.Infrastructure
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
-                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>(TrainersTag);
-                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>(TrainingTag);
-                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>(TrainingTag);
-                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>(BattlesTag);
-                subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>(BattlesTag);
-                subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag);
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>(TrainersTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>(TrainingTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>(TrainingTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<PokemonLeveledUpEvent>(TrainingTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag).GetAwaiter().GetResult();
             }
 
             return app;

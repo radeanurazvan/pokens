@@ -85,6 +85,12 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(battleId)));
         }
 
+        public void RaisePokemonLevel(Guid pokemonId, int newLevel)
+        {
+            this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
+                .Execute(_ => ReactToDomainEvent(new TrainerPokemonChangedLevel(pokemonId, newLevel)));
+        }
+
         internal Result LeaveArena()
         {
             return Result.SuccessIf(Enrollment.HasValue, Messages.TrainerIsNotEnrolled)
@@ -225,6 +231,11 @@ namespace Pokens.Battles.Domain
         {
             this.battles.FirstOrNothing(b => b.Id == @event.BattleId)
                 .Execute(b => b.MarkEnding(@event.WonAt));
+        }
+
+        private void When(TrainerPokemonChangedLevel @event)
+        {
+            this.pokemons.FirstOrNothing(p => p.Id == @event.PokemonId).Execute(p => p.GoToLevel(@event.Level));
         }
     }
 }

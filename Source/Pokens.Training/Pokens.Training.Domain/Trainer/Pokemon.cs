@@ -12,10 +12,12 @@ namespace Pokens.Training.Domain
         }
 
         private Pokemon(PokemonDefinition definition)
+             : this()
         {
             Name = definition.Name;
             DefinitionId = definition.Id;
             Image = definition.Image;
+            Level = PokemonLevel.Default();
         }
 
         public static Result<Pokemon> From(PokemonDefinition definition)
@@ -28,6 +30,19 @@ namespace Pokens.Training.Domain
 
         public string Name { get; private set; }
 
+        public PokemonLevel Level { get; private set; }
+
         public byte[] Image { get; set; }
+
+        internal void CollectExperience(int points)
+        {
+            this.Level = this.Level.WithMoreExperience(points);
+        }
+
+        internal Result LevelUp()
+        {
+            return this.Level.Next()
+                .Tap(l => this.Level = l);
+        }
     }
 }

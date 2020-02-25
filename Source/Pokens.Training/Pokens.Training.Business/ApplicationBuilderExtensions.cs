@@ -8,6 +8,7 @@ namespace Pokens.Training.Business
     {
         private const string TrainersTag = "Trainers";
         private const string PokedexTag = "Pokedex";
+        private const string BattlesTag = "Battles";
 
         public static IApplicationBuilder UseTrainingSubscriptions(this IApplicationBuilder app)
         {
@@ -19,6 +20,7 @@ namespace Pokens.Training.Business
                 subscriptions.SubscribeIntegrationEvent<PokemonCreated>(PokedexTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeIntegrationEvent<PokemonStarterChanged>(PokedexTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeIntegrationEvent<PokemonImagesChanged>(PokedexTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeIntegrationEvent<TrainerCollectedExperienceEvent>(BattlesTag).GetAwaiter().GetResult();
             }
             return app;
         }
