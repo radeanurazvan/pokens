@@ -25,5 +25,7 @@ namespace Pokens.Battles.Domain
         public DateTime StartedAt { get; private set; }
 
         public Maybe<DateTime> EndedAt { get; private set; }
+
+        internal void MarkEnding(DateTime ending) => EndedAt = ending;
     }
 }

@@ -4,7 +4,7 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class BattleEndedEvent : IDomainEvent
+    public sealed class BattleEndedEvent : IDomainEvent
     {
         private BattleEndedEvent()
         {

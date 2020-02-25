@@ -93,11 +93,13 @@ namespace Pokens.Battles.Domain
             var playerResult = player.EnsureExists(Messages.InvalidTrainer);
             var abilityResult = ability.EnsureExists(Messages.InvalidAbility);
 
+            var damage = ComputeDamageFor(ability);
             return Result.FirstFailureOrSuccess(playerResult, abilityResult)
                 .Ensure(() => IsOnGoing, Messages.BattleAlreadyEnded)
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
-                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, ability.Damage)))
+                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, damage)))
+                .TapIf(damage == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
                 .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ability.Id)));
         }
@@ -105,6 +107,23 @@ namespace Pokens.Battles.Domain
         private void ConcludeBattle()
         {
             ReactToDomainEvent(new BattleEndedEvent(this));
+        }
+
+        private int ComputeDamageFor(Ability ability)
+        {
+            var hasDodged = Rate.Create(WaitingPokemon.Defensive.DodgeChance).Test();
+            if (hasDodged)
+            {
+                return 0;
+            }
+
+            var isCriticalStrike = Rate.Create(ActivePokemon.Offensive.CriticalStrikeChance).Test();
+            if (isCriticalStrike)
+            {
+                return 2 * ability.Damage;
+            }
+
+            return ability.Damage;
         }
 
         private void When(BattleStartedEvent @event)

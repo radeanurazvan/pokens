@@ -71,6 +71,20 @@ namespace Pokens.Battles.Domain
                 .Bind(a => battle.TakeTurn(this, a));
         }
 
+        public Result AcknowledgeWonBattle(Guid battleId, int experience)
+        {
+            return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
+                .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
+                .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(battleId)));
+        }
+
+        public Result AcknowledgeLostBattle(Guid battleId, int experience)
+        {
+            return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
+                .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
+                .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(battleId)));
+        }
+
         internal Result LeaveArena()
         {
             return Result.SuccessIf(Enrollment.HasValue, Messages.TrainerIsNotEnrolled)
@@ -199,6 +213,18 @@ namespace Pokens.Battles.Domain
             this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
             this.battles.Add(TrainerBattle.Create(@event.ChallengeId, @event.EnemyId, @event.PokemonId));
+        }
+
+        private void When(TrainerLostBattleEvent @event)
+        {
+            this.battles.FirstOrNothing(b => b.Id == @event.BattleId)
+                .Execute(b => b.MarkEnding(@event.LostAt));
+        }
+
+        private void When(TrainerWonBattleEvent @event)
+        {
+            this.battles.FirstOrNothing(b => b.Id == @event.BattleId)
+                .Execute(b => b.MarkEnding(@event.WonAt));
         }
     }
 }

@@ -11,6 +11,10 @@ namespace Pokens.Battles.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
+        private const string TrainersTag = "Trainers";
+        private const string TrainingTag = "Training";
+        private const string BattlesTag = "Battles";
+
         private static readonly Guid NoobGuid = new Guid("C9591069-33E7-45E1-BF71-2166C67397BD");
 
         public static IApplicationBuilder UseDefaultArenas(this IApplicationBuilder app)
@@ -40,10 +44,12 @@ namespace Pokens.Battles.Infrastructure
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();
-                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>("Trainers");
-                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>("Training");
-                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>("Training");
-                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>("Battles");
+                subscriptions.SubscribeIntegrationEvent<TrainerCreatedEvent>(TrainersTag);
+                subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>(TrainingTag);
+                subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>(TrainingTag);
+                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>(BattlesTag);
+                subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>(BattlesTag);
+                subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag);
             }
 
             return app;
