@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>84ea48a6-105d-4ed0-a563-03533681fb9b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200223.2" />
     <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200223.2" />
     <PackageReference Include="Pomelo.Kernel.Infrastructure" Version="1.20200223.2" />

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Pokens.Battles.Reactors": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

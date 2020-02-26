@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.Kernel.Events.Abstractions;
 
@@ -12,6 +15,8 @@ namespace Pokens.Training.Business
 
         public static IApplicationBuilder UseTrainingSubscriptions(this IApplicationBuilder app)
         {
+            Task.Delay(TimeSpan.FromSeconds(5)).GetAwaiter().GetResult();
+
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();

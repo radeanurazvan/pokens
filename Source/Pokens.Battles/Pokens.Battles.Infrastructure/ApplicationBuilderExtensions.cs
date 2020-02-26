@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pokens.Battles.Business;
@@ -41,6 +43,8 @@ namespace Pokens.Battles.Infrastructure
 
         public static IApplicationBuilder UseBattlesSubscriptions(this IApplicationBuilder app)
         {
+            Task.Delay(TimeSpan.FromSeconds(5)).GetAwaiter().GetResult();
+            
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var subscriptions = scope.ServiceProvider.GetService<IEventSubscriptions>();

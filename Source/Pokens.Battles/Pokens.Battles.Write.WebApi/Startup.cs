@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokens.Battles.Business;
+using Pokens.Battles.Domain;
 using Pokens.Battles.Infrastructure;
 using Pomelo.Kernel.Http;
 
@@ -22,6 +23,7 @@ namespace Pokens.Battles.Write.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddBattlesDomain()
                 .AddBattlesBusiness()
                 .AddBattlesInfrastructure()
                 .AddBattlesAuthorization(Configuration)

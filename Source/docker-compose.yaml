@@ -1,6 +1,68 @@
 version: '3.4'
 
 services:
+  pokens.battles.write.webapi:
+    image: ${DOCKER_REGISTRY-}pokensbattleswritewebapi
+    build:
+      context: .
+      dockerfile: Pokens.Battles/Pokens.Battles.Write.WebApi/Dockerfile
+    depends_on:
+      - eventstore
+
+  pokens.battles.read.webapi:
+    image: ${DOCKER_REGISTRY-}pokensbattlesreadwebapi
+    build:
+      context: .
+      dockerfile: Pokens.Battles/Pokens.Battles.Read.WebApi/Dockerfile
+    depends_on:
+      - mongo
+      - eventstore
+  
+  pokens.battles.reactors:
+    image: ${DOCKER_REGISTRY-}pokensbattlesreactors
+    build:
+      context: .
+      dockerfile: Pokens.Battles/Pokens.Battles.Reactors/Dockerfile
+    depends_on:
+      - mongo
+      - eventstore
+
+  pokens.pokedex.api:
+    image: ${DOCKER_REGISTRY-}pokenspokedexapi
+    build:
+      context: .
+      dockerfile: Pokens.Pokedex/Pokens.Pokedex.Api/Dockerfile
+    depends_on:
+      - mongo
+      - eventstore
+
+  pokens.pokedex.office:
+    image: ${DOCKER_REGISTRY-}pokenspokedexoffice
+    build:
+      context: .
+      dockerfile: Pokens.Pokedex/Pokens.Pokedex.Office/Dockerfile
+    depends_on:
+      - mongo
+      - eventstore
+
+  pokens.trainers.api:
+    image: ${DOCKER_REGISTRY-}pokenstrainersapi
+    build:
+      context: .
+      dockerfile: Pokens.Trainers/Pokens.Trainers.Api/Dockerfile
+    depends_on:
+      - sqlserver
+      - eventstore
+
+  pokens.training.api:
+    image: ${DOCKER_REGISTRY-}pokenstrainingapi
+    build:
+      context: .
+      dockerfile: Pokens.Training/Pokens.Training.Api/Dockerfile
+    depends_on:
+      - mongo
+      - eventstore
+
   eventstore:
     image: eventstore/eventstore
     environment:
@@ -35,10 +97,3 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - 1433:1433
-  
-  rabbitmq:
-    image: rabbitmq:3.8.1-management
-    hostname: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"

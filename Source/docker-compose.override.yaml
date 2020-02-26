@@ -1,0 +1,74 @@
+version: '3.4'
+
+services:
+    pokens.battles.write.webapi:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44384:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
+    
+    pokens.battles.read.webapi:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44394:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
+  
+    pokens.pokedex.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44379:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
+
+    pokens.pokedex.office:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44346:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
+    
+    pokens.trainers.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44338:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
+
+    pokens.training.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - Kestrel__Certificates__Default__Path=/root/.aspnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=dev
+        ports:
+            - "44369:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ./DevTools/Certificates:/root/.aspnet/https:ro
