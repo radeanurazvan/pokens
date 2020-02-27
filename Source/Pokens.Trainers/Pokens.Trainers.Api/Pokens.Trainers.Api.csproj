@@ -14,7 +14,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200223.2" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200227.1" />
   </ItemGroup>
 
   <ItemGroup>
