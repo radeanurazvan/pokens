@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +31,7 @@ namespace Pokens.Battles.Infrastructure
 
                 var arenas = Constants.DefaultArenas.ToList();
                 typeof(Arena).GetProperty(nameof(Arena.Id)).SetValue(arenas.First(), NoobGuid);
+                typeof(ArenaOpenedEvent).GetProperty(nameof(ArenaOpenedEvent.Id)).SetValue(arenas.First().Events.First(), NoobGuid);
 
                 var writeRepository = mediator.Write<Arena>();
                 arenas.ForEach(a => writeRepository.Add(a).GetAwaiter().GetResult());
