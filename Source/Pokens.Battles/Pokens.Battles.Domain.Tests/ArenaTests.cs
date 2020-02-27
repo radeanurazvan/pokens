@@ -165,7 +165,7 @@ namespace Pokens.Battles.Domain.Tests
             result.Error.Should().Be(Messages.ArenaAlreadyLeft);
             sut.Events.Should().NotContain(e => e is ChallengeAcceptedEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
-            challenged.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
         }
 
         [Fact]

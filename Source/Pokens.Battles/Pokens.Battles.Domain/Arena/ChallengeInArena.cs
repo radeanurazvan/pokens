@@ -9,9 +9,10 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public ChallengeInArena(Guid challengerId, Guid challengedId)
+        public ChallengeInArena(Guid id, Guid challengerId, Guid challengedId)
             : this()
         {
+            Id = id;
             ChallengerId = challengerId;
             ChallengedId = challengedId;
         }

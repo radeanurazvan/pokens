@@ -5,17 +5,15 @@
     background-position: 0;
     background-size: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
 .trainer-card {
     height: 220px;
-    min-width: 200px;
     display: flex;
     align-items: center;
     border-radius: 5px;
-    width: 100%;
-    margin: 30px;
+    margin: 10px 10px 0 10px;
 
     .trainer-details {
         display: flex;
@@ -28,6 +26,7 @@
         height: 100%;
         width: 100%;
         margin-left: 20px;
+        cursor: pointer;
     }
 }
 

@@ -8,8 +8,8 @@ import { ArenaModel } from '../models/arena.model';
   providedIn: 'root'
 })
 export class ArenaService {
-  private arenaReadEndPoint = environment.apiArenaUrl.read;
-  private arenaWriteEndPoint = environment.apiArenaUrl.write;
+  private arenaReadEndPoint = `${environment.apiArenaUrl.read}/arenas`;
+  private arenaWriteEndPoint = `${environment.apiArenaUrl.write}/arenas`;
   private trainingEndPoint = environment.apiTrainingUrl;
 
   private httpOptions = {
@@ -31,6 +31,25 @@ export class ArenaService {
 
   public getArenaDetails(): Observable<ArenaModel> {
     return this.http.get<ArenaModel>(`${this.arenaReadEndPoint}/me`, this.httpOptions);
+  }
+
+  public getReceivedChallenges(): Observable<any> {
+    return this.http.get<ArenaModel>(`${environment.apiArenaUrl.read}/trainers/me/challenges/received`, this.httpOptions);
+  }
+
+  public challenge(arena: ArenaModel, challengedId: string, challengedPokemon: string, challengerPokemon: string): Observable<any> {
+    const url = `${this.arenaWriteEndPoint}/${arena.id}/trainers/${challengedId}/challenges`;
+    const body = {
+      challengerPokemonId: challengerPokemon,
+      challengedPokemonId: challengedPokemon
+    };
+
+    return this.http.patch(url, body, this.httpOptions);
+  }
+
+  public acceptChallenge(challenge): Observable<any> {
+    const url = `${this.arenaWriteEndPoint}/${challenge.arenaId}/trainers/me/challenges/${challenge.id}`;
+    return this.http.patch(url, {}, this.httpOptions);
   }
 
   public getAllPokemons(ids: string[]): Observable<any> {

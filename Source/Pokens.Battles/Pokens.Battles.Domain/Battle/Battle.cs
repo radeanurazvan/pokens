@@ -93,13 +93,13 @@ namespace Pokens.Battles.Domain
             var playerResult = player.EnsureExists(Messages.InvalidTrainer);
             var abilityResult = ability.EnsureExists(Messages.InvalidAbility);
 
-            var damage = ComputeDamageFor(ability);
-            return Result.FirstFailureOrSuccess(playerResult, abilityResult)
+            var damageResult = ComputeDamageFor(ability);
+            return Result.FirstFailureOrSuccess(playerResult, abilityResult, damageResult)
                 .Ensure(() => IsOnGoing, Messages.BattleAlreadyEnded)
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
-                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, damage)))
-                .TapIf(damage == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
+                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, damageResult.Value)))
+                .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
                 .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ability.Id)));
         }
@@ -109,21 +109,26 @@ namespace Pokens.Battles.Domain
             ReactToDomainEvent(new BattleEndedEvent(this));
         }
 
-        private int ComputeDamageFor(Ability ability)
+        private Result<int> ComputeDamageFor(Ability ability)
         {
+            if (ability == null)
+            {
+                return Result.Failure<int>(Messages.InvalidAbility);
+            }
+
             var hasDodged = Rate.Create(WaitingPokemon.Defensive.DodgeChance).Test();
             if (hasDodged)
             {
-                return 0;
+                return Result.Ok(0);
             }
 
             var isCriticalStrike = Rate.Create(ActivePokemon.Offensive.CriticalStrikeChance).Test();
             if (isCriticalStrike)
             {
-                return 2 * ability.Damage;
+                return Result.Ok(2 * ability.Damage);
             }
 
-            return ability.Damage;
+            return Result.Ok(ability.Damage);
         }
 
         private void When(BattleStartedEvent @event)

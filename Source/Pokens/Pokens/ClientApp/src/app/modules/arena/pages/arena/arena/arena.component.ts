@@ -38,7 +38,9 @@ export class ArenaComponent implements OnInit {
       if (result) {
         this.arenaService.joinArena(arena.id).subscribe(
           () => {
-            this.router.navigate(['/home/arena/details']);
+            setTimeout(() => {
+              this.router.navigate(['/home/arena/details']);
+            }, 1000);
           },
           () => {
             console.log('Something went wrong!');

@@ -9,12 +9,15 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public ChallengeOccurredEvent(Guid challengerId, Guid challengedId)
+        public ChallengeOccurredEvent(ChallengeInArena challenge)
             : this()
         {
-            ChallengerId = challengerId;
-            ChallengedId = challengedId;
+            Id = challenge.Id;
+            ChallengerId = challenge.ChallengerId;
+            ChallengedId = challenge.ChallengedId;
         }
+
+        public Guid Id { get; private set; }
 
         public Guid ChallengerId { get; private set; }
 

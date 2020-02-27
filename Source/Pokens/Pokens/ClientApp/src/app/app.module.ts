@@ -10,6 +10,11 @@ import { FirstLoginGuard } from './shared/core/first-login.guard';
 import { HasPokemonsGuard } from './shared/core/has-pokemons.guard';
 import { AuthGuard } from './shared/core/auth.guard';
 import { IsInArenaGuard } from './shared/core/is-in-arena.guard';
+import { SharedModule } from './shared/shared.module';
+
+export function tokenGetter() {
+  return localStorage.getItem("currentUserToken");
+}
 
 @NgModule({
   declarations: [
@@ -19,9 +24,10 @@ import { IsInArenaGuard } from './shared/core/is-in-arena.guard';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    SharedModule.forChild(),
     JwtModule.forRoot({
       config: {
-        tokenGetter: null,
+        tokenGetter,
         whitelistedDomains: [],
         blacklistedRoutes: []
       }

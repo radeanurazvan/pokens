@@ -1,0 +1,6 @@
+<ol>
+  <li *ngFor="let challenge of challenges">
+    From {{challenge.enemy}} at {{challenge.challengedAt}}
+    <button (click)="accept(challenge)">Accept</button>
+  </li>
+</ol>

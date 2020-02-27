@@ -191,7 +191,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.ChallengeNotFound);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -210,7 +210,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.ChallengeNotFound);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -229,7 +229,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.ChallengeExpired);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -250,7 +250,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.TrainerAlreadyInBattle);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -272,7 +272,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.ArenaAlreadyLeft);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -290,7 +290,25 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(Messages.ChallengeAlreadyAnswered);
-            challenger.Events.Should().NotContain(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
+            challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
+        }
+
+        [Fact]
+        public void Given_AcceptChallenge_When_AcceptingChallenger_Then_ShouldFail()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var challenger = TrainerFactory.EnrolledIn(arena);
+            var challenged = TrainerFactory.ChallengedBy(challenger, arena);
+
+            // Act
+            var result = challenger.AcceptChallenge(challenged, challenged.Challenges.First());
+
+            // Assert
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(Messages.ChallengeNotFound);
+            challenger.Events.Should().NotContain(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().NotContain(e => e is TrainerAcceptedChallengeEvent);
         }
 
@@ -308,7 +326,7 @@ namespace Pokens.Battles.Domain.Tests
             // Assert
             result.IsSuccess.Should().BeTrue();
             challenged.Challenges.Should().ContainSingle(c => c.Status == ChallengeStatus.Accepted);
-            challenger.Events.Should().ContainSingle(e => e is TrainerChallengeAnsweredEvent);
+            challenger.Events.Should().ContainSingle(e => e is TrainerChallengeGotAnsweredEvent);
             challenged.Events.Should().ContainSingle(e => e is TrainerAcceptedChallengeEvent);
         }
         

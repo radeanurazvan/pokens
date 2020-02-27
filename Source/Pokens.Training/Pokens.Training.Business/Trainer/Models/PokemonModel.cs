@@ -10,6 +10,7 @@ namespace Pokens.Training.Business
             TrainerId = trainerId;
             Name = pokemon.Name;
             Image = pokemon.Image;
+            Level = pokemon.Level;
         }
 
         public string Id { get; }
@@ -17,6 +18,8 @@ namespace Pokens.Training.Business
         public string TrainerId { get; }
 
         public string Name { get; }
+
+        public int Level { get; private set; }
 
         public byte[] Image { get; set; }
     }

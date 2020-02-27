@@ -1,0 +1,57 @@
+.challenged-details {
+  .trainer-image {
+    height: 200px;
+  }
+
+  .pokemon-image {
+    height: 150px;
+  }
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.my-selection {
+  .trainer-image {
+    height: 200px;
+  }
+
+  .pokemon-image {
+    height: 150px;
+  }
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.my-options {
+  .pokemon-image {
+    height: 100px;
+  }
+
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.choice-overview {
+  margin-top: 10px;
+}
+
+.actions {
+  display: flex;
+
+  .cancel {
+    flex: 0.2;
+  }
+
+  .reset {
+    flex: 0.4;
+  }
+
+  .go {
+    flex: 0.4;
+  }
+}

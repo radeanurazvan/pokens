@@ -105,17 +105,23 @@ namespace Pokens.Battles.Domain
                 .Where(c => c.IsPending)
                 .Where(c => c.IsNotExpired)
                 .Any(c => c.HasParticipants(this, challenged));
+
+            var challengerPokemonResult = this.pokemons.FirstOrNothing(p => p.Id == challengerPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
+            var challengedPokemonResult = challenged.Pokemons.FirstOrNothing(p => p.Id == challengedPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
+
             return Result.FailureIf(hasAlreadyChallenged, Messages.TrainerAlreadyChallenged)
                 .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
                 .Ensure(() => this.HasPokemon(challengerPokemonId) && challenged.HasPokemon(challengedPokemonId), Messages.TrainerDoesNotOwnPokemon)
-                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged.Id, challengeId, challengerPokemonId, challengedPokemonId)))
-                .Tap(() => challenged.ReceiveChallengeFrom(this, challengeId, challengedPokemonId, challengerPokemonId));
+                .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged, challengeId, challengerPokemonResult.Value, challengedPokemonResult.Value)))
+                .Tap(() => challenged.ReceiveChallengeFrom(this, challengeId, challengedPokemonResult.Value, challengerPokemonResult.Value));
         }
 
         internal Result AcceptChallenge(Trainer challenger, Challenge challenge)
         {
             var challengerResult = challenger.EnsureExists(Messages.InvalidTrainer);
             var challengeResult = this.challenges.FirstOrNothing(c => c == challenge).ToResult(Messages.ChallengeNotFound)
+                .Ensure(c => c.ChallengedId == this.Id, Messages.ChallengeNotFound)
+                .Ensure(c => c.ChallengerId == challenger.Id, Messages.ChallengeNotFound)
                 .Ensure(c => c.IsNotExpired, Messages.ChallengeExpired)
                 .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered)
                 .Ensure(_ => this.IsEnrolled, Messages.ArenaAlreadyLeft)
@@ -127,7 +133,7 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => challenger.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Ensure(() => this.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Tap(() => ReactToDomainEvent(new TrainerAcceptedChallengeEvent(Enrollment.Unwrap(), challenge.Id)))
-                .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeAnsweredEvent.AcceptedFor(challenge.Id)));
+                .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeGotAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
         internal Result StartBattleAgainst(Trainer enemy)
@@ -150,8 +156,8 @@ namespace Pokens.Battles.Domain
                 .Bind(c => ReactToDomainEvent(new TrainerEnteredBattleEvent(c)));
         }
 
-        private void ReceiveChallengeFrom(Trainer challenger, Guid challengeId, Guid challengedPokemonId, Guid challengerPokemonId) 
-            => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challengedPokemonId, challengeId, challenger.Id, challengerPokemonId));
+        private void ReceiveChallengeFrom(Trainer challenger, Guid challengeId, Pokemon challengedPokemon, Pokemon challengerPokemon) 
+            => ReactToDomainEvent(new TrainerHasBeenChallengedEvent(challenger, challengeId, challengerPokemon, challengedPokemon));
 
         private bool HasPokemon(Guid id) => this.pokemons.Any(p => p.Id == id);
 
@@ -200,7 +206,7 @@ namespace Pokens.Battles.Domain
                 .Execute(c => c.MarkAsAccepted());
         }
 
-        private void When(TrainerChallengeAnsweredEvent @event)
+        private void When(TrainerChallengeGotAnsweredEvent @event)
         {
             challenges.FirstOrNothing(c => c.Id == @event.ChallengeId).ToResult(Messages.ChallengeNotFound)
                 .TapIf(@event.Accepted, c => c.MarkAsAccepted())

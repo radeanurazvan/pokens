@@ -44,16 +44,16 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpPatch("{id:Guid}/trainers/{challengedId:Guid}/challenges")]
         public async Task<IActionResult> ChallengeTrainer([FromRoute] Guid id, [FromRoute] Guid challengedId, [FromBody] ChallengeTrainerModel model)
         {
-            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, challengedId, model.ChallengerPokemonId, model.ChallengedPokemonId);
+            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, model.ChallengerPokemonId, challengedId, model.ChallengedPokemonId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
         }
 
         [HttpPatch("{id:Guid}/trainers/me/challenges/{challengeId:Guid}")]
-        public async Task<IActionResult> AcceptChallenge([FromRoute] Guid id, [FromRoute] Guid challengedId)
+        public async Task<IActionResult> AcceptChallenge([FromRoute] Guid id, [FromRoute] Guid challengeId)
         {
-            var command = new AcceptChallengeCommand(id, challengedId);
+            var command = new AcceptChallengeCommand(id, challengeId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);

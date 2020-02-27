@@ -79,7 +79,7 @@ export class PokemonMapComponent implements OnInit, OnDestroy {
 
     const imageLayer = new ImageLayer({
       source: new ImageStatic({
-        url: '../../../../../assets/pictures/map.png',
+        url: '/assets/pictures/map.png',
         imageExtent: mapExtent
       })
     });

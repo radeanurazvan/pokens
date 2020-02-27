@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Challenge {{data.trainer.name}}!</h2>
+<mat-dialog-content>
+
+  <p>Wanna fight {{data.trainer.name}}'s <b>{{data.pokemon.name}}</b>?</p>
+
+  <div class="challenged-details">
+    <div class="challenged-trainer-details">
+        <div class="image-container">
+            <img class="trainer-image" src="assets/pictures/images.jpg">
+        </div>
+    </div>
+    <div class="challenged-pokemon-details">
+        <div class="image-container">
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ data.pokemon.image" >
+        </div>
+    </div>
+  </div>
+
+  <p>Who are you going to choose for that?</p>
+
+  <div class="my-options" *ngIf="!selectedPokemon">
+    <div class="pokemon-option" *ngFor="let pokemon of myPokemons">
+      <img class="pokemon-image" [src]="'data:image/png;base64,'+ pokemon.image" (click)="choosePokemon(pokemon)" >
+    </div>
+  </div>
+
+  <div class="my-selection" *ngIf="selectedPokemon">
+    <div class="challenger-trainer-details">
+      <div class="image-container">
+          <img class="trainer-image" src="assets/pictures/images.jpg">
+      </div>
+    </div>
+    <div class="challenger-pokemon-details">
+        <div class="image-container">
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ selectedPokemon.image" >
+        </div>
+    </div>
+  </div>
+
+  <div class="choice-overview" *ngIf="selectedPokemon">
+    You chose {{selectedPokemon.name}}({{selectedPokemon.level}})
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center" class="actions">
+    <button mat-raised-button  [mat-dialog-close]="false" class="cancel" >Cancel</button>
+    <button mat-flat-button color="warn" class="reset" [disabled]="!selectedPokemon" (click)="reset()">Reset</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="true" class="go" [disabled]="!selectedPokemon" (click)="sendChallenge()">Go!</button>
+</mat-dialog-actions>

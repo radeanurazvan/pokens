@@ -3,15 +3,15 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class TrainerChallengeAnsweredEvent : IDomainEvent
+    internal sealed class TrainerChallengeGotAnsweredEvent : IDomainEvent
     {
-        private TrainerChallengeAnsweredEvent()
+        private TrainerChallengeGotAnsweredEvent()
         {
         }
 
-        public static TrainerChallengeAnsweredEvent AcceptedFor(Guid challengeId)
+        public static TrainerChallengeGotAnsweredEvent AcceptedFor(Guid challengeId)
         {
-            return new TrainerChallengeAnsweredEvent
+            return new TrainerChallengeGotAnsweredEvent
             {
                 ChallengeId = challengeId,
                 Accepted = true
