@@ -29,7 +29,7 @@ namespace Pokens.Battles.Business
             var challengedResult = await challengeResult.Bind(c => mediator.ReadById<Trainer>(c.ChallengedId).ToResult(Messages.TrainerNotFound));
 
             return await Result.FirstFailureOrSuccess(arenaResult, challengedResult, challengerResult)
-                .Tap(() => arenaResult.Value.MediateChallengeApproval(challengerResult.Value, challengedResult.Value, request.ChallengeId))
+                .Bind(() => arenaResult.Value.MediateChallengeApproval(challengerResult.Value, challengedResult.Value, request.ChallengeId))
                 .Tap(() => this.mediator.Write<Arena>().Save());
         }
     }

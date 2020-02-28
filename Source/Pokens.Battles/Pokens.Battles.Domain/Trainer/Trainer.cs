@@ -75,14 +75,14 @@ namespace Pokens.Battles.Domain
         {
             return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
-                .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(battleId)));
+                .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(battleId, experience)));
         }
 
         public Result AcknowledgeLostBattle(Guid battleId, int experience)
         {
             return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
-                .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(battleId)));
+                .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(battleId, experience)));
         }
 
         public void RaisePokemonLevel(Guid pokemonId, int newLevel)
@@ -98,7 +98,7 @@ namespace Pokens.Battles.Domain
                 .Tap(() => ReactToDomainEvent(new TrainerLeftArenaEvent()));
         }
 
-        internal Result Challenge(Trainer challenged, Guid challengerPokemonId, Guid challengedPokemonId)
+        internal Result<Guid> Challenge(Trainer challenged, Guid challengerPokemonId, Guid challengedPokemonId)
         {
             var challengeId = Guid.NewGuid();
             var hasAlreadyChallenged = challenges
@@ -113,7 +113,8 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
                 .Ensure(() => this.HasPokemon(challengerPokemonId) && challenged.HasPokemon(challengedPokemonId), Messages.TrainerDoesNotOwnPokemon)
                 .Tap(() => ReactToDomainEvent(new TrainerChallengedEvent(challenged, challengeId, challengerPokemonResult.Value, challengedPokemonResult.Value)))
-                .Tap(() => challenged.ReceiveChallengeFrom(this, challengeId, challengedPokemonResult.Value, challengerPokemonResult.Value));
+                .Tap(() => challenged.ReceiveChallengeFrom(this, challengeId, challengedPokemonResult.Value, challengerPokemonResult.Value))
+                .Map(() => challengeId);
         }
 
         internal Result AcceptChallenge(Trainer challenger, Challenge challenge)

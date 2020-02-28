@@ -61,7 +61,7 @@ namespace Pokens.Battles.Domain
             return Result.SuccessIf(challenger.IsEnrolled && challenged.IsEnrolled, Messages.TrainerIsNotEnrolled)
                 .Ensure(() => challenger.IsEnrolledIn(this) && challenged.IsEnrolledIn(this), Messages.TrainersDoNotHaveSameEnrollment)
                 .Bind(() => challenger.Challenge(challenged, challengerPokemonId, challengedPokemonId))
-                .Tap(() => ReactToDomainEvent(new ChallengeOccurredEvent(challenger.Id, challenged.Id)));
+                .Tap(challengeId => ReactToDomainEvent(new ChallengeOccurredEvent(challengeId, challenger.Id, challenged.Id)));
         }
 
         public Result MediateChallengeApproval(Trainer challenger, Trainer challenged, Guid challengeId)
@@ -100,7 +100,11 @@ namespace Pokens.Battles.Domain
 
         private void When(ChallengeOccurredEvent @event)
         {
-            this.challenges.Add(new ChallengeInArena(@event.ChallengerId, @event.ChallengedId));
+            this.challenges.Add(new ChallengeInArena(@event.Id, @event.ChallengerId, @event.ChallengedId));
+        }
+
+        private void When(ChallengeAcceptedEvent @event)
+        {
         }
     }
 }

@@ -10,12 +10,15 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public PlayerTookTurnEvent(Guid abilityId) 
+        public PlayerTookTurnEvent(Guid playerId, Guid abilityId) 
             : this()
         {
+            PlayerId = playerId;
             AbilityId = abilityId;
             TakenAt = TimeProvider.Instance().UtcNow;
         }
+
+        public Guid PlayerId { get; private set; }
 
         public Guid AbilityId { get; private set; }
 

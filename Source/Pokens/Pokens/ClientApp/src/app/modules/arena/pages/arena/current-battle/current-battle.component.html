@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="my-stats" *ngIf="myPokemon">
+    <div class="challenger-trainer-details">
+      <div class="image-container">
+          <img class="trainer-image" src="assets/pictures/images.jpg">
+      </div>
+    </div>
+    <div class="challenger-pokemon-details">
+        <div class="image-container">
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image" >
+        </div>
+    </div>
+  </div>
+
+  <div class="enemy-stats" *ngIf="enemyPokemon">
+    <div class="challenger-pokemon-details">
+      <div class="image-container">
+        <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image" >
+      </div>
+    </div>
+    <div class="challenger-trainer-details">
+      <div class="image-container">
+          <img class="trainer-image" src="assets/pictures/images.jpg">
+      </div>
+    </div>
+  </div>
+</div>

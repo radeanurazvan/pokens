@@ -98,10 +98,11 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => IsOnGoing, Messages.BattleAlreadyEnded)
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
-                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ability, damageResult.Value)))
+                .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ActivePlayer, ability, damageResult.Value)))
                 .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
+                .TapIf(damageResult.IsSuccess && damageResult.Value != 0, () => AddDomainEvent(new BattleHealthChangedEvent(WaitingPlayer, WaitingPokemon.Defensive.Health)))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
-                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ability.Id)));
+                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ActivePlayer, ability.Id)));
         }
 
         private void ConcludeBattle()
@@ -165,6 +166,14 @@ namespace Pokens.Battles.Domain
             Winner = @event.Winner;
             Loser = @event.Loser;
             EndedAt = @event.EndedAt;
+        }
+
+        private void When(PokemonDodgedAbility @event)
+        {
+        }
+
+        private void When(BattleHealthChangedEvent @event)
+        {
         }
     }
 

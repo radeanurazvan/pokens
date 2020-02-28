@@ -13,4 +13,10 @@ export class UserService {
 
     return this.jwtHelperService.decodeToken(token).TrainerName;
   }
+
+  public getUserId(): string {
+    const token = localStorage.getItem('currentUserToken');
+
+    return this.jwtHelperService.decodeToken(token).TrainerId;
+  }
 }

@@ -4,6 +4,7 @@ import { ArenaService } from '../../../core/arena.service';
 import { MatDialog } from '@angular/material';
 import { PopupComponent } from 'src/app/shared/components/popup/popup.component';
 import { Router } from '@angular/router';
+import { ToastrService } from '../../../../../shared/core/toastr.service';
 
 @Component({
   selector: 'app-arena',
@@ -17,7 +18,8 @@ export class ArenaComponent implements OnInit {
   constructor(
     private arenaService: ArenaService,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.arenaService.getArenas().subscribe((data: ArenaModel[]) => {
@@ -38,9 +40,10 @@ export class ArenaComponent implements OnInit {
       if (result) {
         this.arenaService.joinArena(arena.id).subscribe(
           () => {
+            this.toastr.openToastr(`Warping you to ${arena.name}`)
             setTimeout(() => {
               this.router.navigate(['/home/arena/details']);
-            }, 1000);
+            }, 500);
           },
           () => {
             console.log('Something went wrong!');

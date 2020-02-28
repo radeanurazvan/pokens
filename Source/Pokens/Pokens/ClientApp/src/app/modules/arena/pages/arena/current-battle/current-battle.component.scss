@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 50px 0px 50px;
+}
+
+.my-stats, .enemy-stats {
+  display: flex;
+}
+
+.trainer-image {
+  height: 200px;
+}
+
+.pokemon-image {
+  height: 150px;
+}
