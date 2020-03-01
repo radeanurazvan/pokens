@@ -45,6 +45,8 @@ namespace Pokens.Training.Business
             public int RequiredLevel { get; private set; }
 
             public int Cooldown { get; private set; }
+
+            public byte[] Image { get; private set; }
         }
     }
 }

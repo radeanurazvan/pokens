@@ -10,7 +10,6 @@ namespace Pokens.Training.Infrastructure
             AutoMap();
 
             UnmapProperty(pd => pd.Abilities);
-
             MapField(PokemonDefinition.Expressions.Abilities).SetElementName(nameof(PokemonDefinition.Abilities));
         }
     }

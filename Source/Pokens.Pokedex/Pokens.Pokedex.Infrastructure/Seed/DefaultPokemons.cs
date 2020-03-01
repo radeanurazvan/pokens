@@ -12,7 +12,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             Name = "Pikachu",
             CatchRate = 35.2,
             Abilities = new List<Ability> { DefaultAbilities.TailWhip },
-            Images = new List<Image>{new Image("Pikachu.png", ImageUrlToBytes(DefaultImages.Pikachu))},
+            Images = new List<Image>{new Image("Pikachu.png", ImageUrlToBytes(DefaultImages.Pokemons.Pikachu))},
             Stats = new Stats
             {
                 Health = 35,
@@ -27,8 +27,8 @@ namespace Pokens.Pokedex.Infrastructure.Seed
         {
             Name = "Bulbasaur",
             CatchRate = 11.9,
-            Abilities = new List<Ability> { DefaultAbilities.Scratch },
-            Images = new List<Image> { new Image("Bulbasaur.png", ImageUrlToBytes(DefaultImages.Bulbasaur)) },
+            Abilities = new List<Ability> { DefaultAbilities.Tackle, DefaultAbilities.VineWhip, DefaultAbilities.RazorLeaf, DefaultAbilities.PowerWhip },
+            Images = new List<Image> { new Image("Bulbasaur.png", ImageUrlToBytes(DefaultImages.Pokemons.Bulbasaur)) },
             Stats = new Stats
             {
                 Health = 45,
@@ -45,7 +45,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             Name = "Squirtle",
             CatchRate = 11.9,
             Abilities = new List<Ability> { DefaultAbilities.Scratch },
-            Images = new List<Image> { new Image("Squirtle.png", ImageUrlToBytes(DefaultImages.Squirtle)) },
+            Images = new List<Image> { new Image("Squirtle.png", ImageUrlToBytes(DefaultImages.Pokemons.Squirtle)) },
             Stats = new Stats
             {
                 Health = 44,
@@ -61,8 +61,8 @@ namespace Pokens.Pokedex.Infrastructure.Seed
         {
             Name = "Charmander",
             CatchRate = 11.9,
-            Abilities = new List<Ability> { DefaultAbilities.Scratch },
-            Images = new List<Image> { new Image("Charmander.png", ImageUrlToBytes(DefaultImages.Charmander)) },
+            Abilities = new List<Ability> { DefaultAbilities.Scratch, DefaultAbilities.Ember, DefaultAbilities.FireFang, DefaultAbilities.FireBurst, DefaultAbilities.FlameThrower },
+            Images = new List<Image> { new Image("Charmander.png", ImageUrlToBytes(DefaultImages.Pokemons.Charmander)) },
             Stats = new Stats
             {
                 Health = 39,

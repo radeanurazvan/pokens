@@ -12,6 +12,8 @@ namespace Pokens.Pokedex.Business
 
         Task<IEnumerable<PokemonModel>> GetPokemonRoulette();
 
+        Task<IEnumerable<AbilityModel>> GetPokemonAbilities(string pokemonId);
+
         Task<string> Create(string name, Stats stats, IEnumerable<string> abilities, double catchRate);
         
         Task ChangeStats(string pokemonId, Stats newStats);

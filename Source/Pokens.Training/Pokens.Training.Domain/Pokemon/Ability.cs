@@ -6,7 +6,7 @@
         {
         }
 
-        public Ability(string id, string name, string description, int damage, int requiredLevel, int cooldown)
+        public Ability(string id, string name, string description, int damage, int requiredLevel, int cooldown, byte[] image)
             : this()
         {
             Id = id;
@@ -15,6 +15,7 @@
             Damage = damage;
             RequiredLevel = requiredLevel;
             Cooldown = cooldown;
+            Image = image;
         }
 
         public string Id { get; private set; }
@@ -29,5 +30,6 @@
 
         public int Cooldown { get; private set; }
 
+        public byte[] Image { get; private set; }
     }
 }

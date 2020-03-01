@@ -1,4 +1,6 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CSharpFunctionalExtensions;
 using Pokens.Training.Resources;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
@@ -18,6 +20,7 @@ namespace Pokens.Training.Domain
             DefinitionId = definition.Id;
             Image = definition.Image;
             Level = PokemonLevel.Default();
+            Abilities = definition.Abilities.ToList();
         }
 
         public static Result<Pokemon> From(PokemonDefinition definition)
@@ -31,6 +34,8 @@ namespace Pokens.Training.Domain
         public string Name { get; private set; }
 
         public PokemonLevel Level { get; private set; }
+
+        public IReadOnlyCollection<Ability> Abilities { get; private set; }
 
         public byte[] Image { get; set; }
 

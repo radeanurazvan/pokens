@@ -27,7 +27,7 @@ namespace Pokens.Training.Business
         {
             EnsureArg.IsNotNull(message);
             var stats = new Stats(message.Data.Health, message.Data.Defense, message.Data.AttackPower, message.Data.CriticalStrikeChance, message.Data.DodgeChance);
-            var abilities = message.Data.Abilities.Select(a => new Ability(a.Id, a.Name, a.Description, a.Damage, a.RequiredLevel, a.Cooldown));
+            var abilities = message.Data.Abilities.Select(a => new Ability(a.Id, a.Name, a.Description, a.Damage, a.RequiredLevel, a.Cooldown, a.Image));
 
             return PokemonDefinition.Create(message.Data.Id, message.Data.Name, stats, message.Data.CatchRate, abilities)
                 .Tap(p => this.repository.Add(p))

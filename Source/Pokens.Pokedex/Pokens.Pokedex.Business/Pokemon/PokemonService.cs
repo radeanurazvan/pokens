@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Pokens.Pokedex.Domain;
 using Pomelo.Kernel.Domain;
 
@@ -33,6 +34,14 @@ namespace Pokens.Pokedex.Business
                 .OrderBy(p => Guid.NewGuid())
                 .Take(rouletteResult)
                 .Select(p => new PokemonModel(p));
+        }
+
+        public async Task<IEnumerable<AbilityModel>> GetPokemonAbilities(string pokemonId)
+        {
+            var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);
+            return pokemonOrNothing.Map(p => p.Abilities)
+                .Map(abilities => abilities.Select(a => new AbilityModel(a)))
+                .Unwrap(new List<AbilityModel>());
         }
 
         public async Task<string> Create(string name, Stats stats, IEnumerable<string> abilitiesIds, double catchRate)
@@ -90,6 +99,7 @@ namespace Pokens.Pokedex.Business
             await this.repository.Update(pokemon);
             await this.repository.Commit();
         }
+
         public async Task AddImage(string pokemonId, byte[] contentImage, string imageName)
         {
             var pokemonOrNothing = await this.repository.FindOne<Pokemon>(p => p.Id == pokemonId);

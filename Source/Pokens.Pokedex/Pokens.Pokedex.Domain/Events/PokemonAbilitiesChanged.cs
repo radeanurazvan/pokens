@@ -36,6 +36,7 @@ namespace Pokens.Pokedex.Domain
                 Damage = ability.Damage;
                 RequiredLevel = ability.RequiredLevel;
                 Cooldown = ability.Cooldown;
+                Image = ability.Image?.ContentImage;
             }
 
             public string Id { get; private set; }
@@ -49,6 +50,8 @@ namespace Pokens.Pokedex.Domain
             public int RequiredLevel { get; private set; }
 
             public int Cooldown { get; private set; }
+
+            public byte[] Image { get; private set; }
         }
     }
 }

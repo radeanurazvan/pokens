@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CSharpFunctionalExtensions;
 using Pokens.Training.Resources;
 using Pomelo.Kernel.Common;
@@ -15,13 +16,14 @@ namespace Pokens.Training.Domain
         {
         }
 
-        private PokemonDefinition(Guid id, string name, Stats stats, double catchRate)
+        private PokemonDefinition(Guid id, string name, Stats stats, double catchRate, IEnumerable<Ability> abilities)
             : this()
         {
             Id = id.ToString();
             Name = name;
             Stats = stats;
             CatchRate = catchRate;
+            this.abilities = abilities.ToList();
         }
 
         public static Result<PokemonDefinition> Create(Guid id, string name, Stats stats, double catchRate, IEnumerable<Ability> abilities)
@@ -31,7 +33,7 @@ namespace Pokens.Training.Domain
             var statsResult = stats.EnsureExists(Messages.NullStats);
 
             return Result.FirstFailureOrSuccess(idResult, nameResult, statsResult)
-                .Map(() => new PokemonDefinition(id, name, stats, catchRate));
+                .Map(() => new PokemonDefinition(id, name, stats, catchRate, abilities));
         }
 
         public string Name { get; private set; }

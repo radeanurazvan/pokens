@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Pokedex.Business;
@@ -36,6 +37,13 @@ namespace Pokens.Pokedex.Api.Controllers
         {
             var result = await pokemonService.GetAll();
             return Ok(result);
+        }
+
+        [HttpGet("{id:Guid}/abilities")]
+        public async Task<IActionResult> GetPokemonAbilities([FromRoute] Guid id)
+        {
+            var abilities = await pokemonService.GetPokemonAbilities(id.ToString());
+            return Ok(abilities);
         }
     }
 }
