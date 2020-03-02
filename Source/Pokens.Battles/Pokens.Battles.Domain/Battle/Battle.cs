@@ -37,7 +37,7 @@ namespace Pokens.Battles.Domain
 
             return Result.FirstFailureOrSuccess(trainerResult, pokemonResult)
                 .Tap(() => AttackerId = attackerId)
-                .Tap(() => AttackerPokemon = new PokemonInFight(attackerPokemon.Stats.Defensive, attackerPokemon.Stats.Offensive))
+                .Tap(() => AttackerPokemon = new PokemonInFight(attackerPokemon.Id, attackerPokemon.Stats.Defensive, attackerPokemon.Stats.Offensive))
                 .Map(() => this as IBattleWithAttacker);
         }
 
@@ -49,7 +49,7 @@ namespace Pokens.Battles.Domain
 
             return Result.FirstFailureOrSuccess(trainerResult, pokemonResult)
                 .Tap(() => DefenderId = defenderId)
-                .Tap(() => DefenderPokemon = new PokemonInFight(defenderPokemon.Stats.Defensive, defenderPokemon.Stats.Offensive))
+                .Tap(() => DefenderPokemon = new PokemonInFight(defenderPokemon.Id, defenderPokemon.Stats.Defensive, defenderPokemon.Stats.Offensive))
                 .Tap(() => ReactToDomainEvent(new BattleStartedEvent(this)))
                 .Map(() => this);
         }
@@ -99,10 +99,12 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
                 .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ActivePlayer, ability, damageResult.Value)))
+                .Tap(() => ActivePokemon.Cooldowns.Select(c => new PlayerCooldownChanged(c.AbilityId, c.Left)).ForEach(a => AddDomainEvent(a)))
                 .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
                 .TapIf(damageResult.IsSuccess && damageResult.Value != 0, () => AddDomainEvent(new BattleHealthChangedEvent(WaitingPlayer, WaitingPokemon.Defensive.Health)))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
-                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ActivePlayer, ability.Id)));
+                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ActivePlayer, ability.Id)))
+                .Tap(() => AddDomainEvent(new ActivePlayerChangedEvent(this)));
         }
 
         private void ConcludeBattle()
@@ -140,12 +142,12 @@ namespace Pokens.Battles.Domain
 
             var attackerDefensive = new DefensiveStats(@event.AttackerPokemon.Health, @event.AttackerPokemon.Defense, @event.AttackerPokemon.DodgeChange);
             var attackerOffensive = new OffensiveStats(@event.AttackerPokemon.AttackPower, @event.AttackerPokemon.CriticalStrikeChance);
-            AttackerPokemon = new PokemonInFight(attackerDefensive, attackerOffensive);
+            AttackerPokemon = new PokemonInFight(@event.AttackerPokemon.Id, attackerDefensive, attackerOffensive);
             DefenderId = @event.DefenderId;
 
             var defenderDefensive = new DefensiveStats(@event.DefenderPokemon.Health, @event.DefenderPokemon.Defense, @event.DefenderPokemon.DodgeChange);
             var defenderOffensive = new OffensiveStats(@event.DefenderPokemon.AttackPower, @event.DefenderPokemon.CriticalStrikeChance);
-            DefenderPokemon = new PokemonInFight(defenderDefensive, defenderOffensive);
+            DefenderPokemon = new PokemonInFight(@event.DefenderPokemon.Id, defenderDefensive, defenderOffensive);
             StartedAt = @event.StartedAt;
         }
 
@@ -173,6 +175,14 @@ namespace Pokens.Battles.Domain
         }
 
         private void When(BattleHealthChangedEvent @event)
+        {
+        }
+
+        private void When(ActivePlayerChangedEvent @event)
+        {
+        }
+
+        private void When(PlayerCooldownChanged @event)
         {
         }
     }

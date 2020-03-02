@@ -4,7 +4,7 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class BattleStartedEvent : IDomainEvent
+    public sealed class BattleStartedEvent : IDomainEvent
     {
         private BattleStartedEvent()
         {
@@ -16,9 +16,9 @@ namespace Pokens.Battles.Domain
             Id = battle.Id;
             ArenaId = battle.ArenaId;
             AttackerId = battle.AttackerId;
-            AttackerPokemon = new BattlePokemonStats(battle.AttackerPokemon.Offensive, battle.AttackerPokemon.Defensive);
+            AttackerPokemon = new BattlePokemonStats(battle.AttackerPokemon);
             DefenderId = battle.DefenderId;
-            DefenderPokemon = new BattlePokemonStats(battle.DefenderPokemon.Offensive, battle.DefenderPokemon.Defensive);
+            DefenderPokemon = new BattlePokemonStats(battle.DefenderPokemon);
             StartedAt = TimeProvider.Instance().UtcNow;
         }
 
@@ -36,22 +36,24 @@ namespace Pokens.Battles.Domain
 
         public DateTime StartedAt { get; private set; }
 
-
-        internal sealed class BattlePokemonStats
+        public sealed class BattlePokemonStats
         {
             private BattlePokemonStats()
             {
             }
 
-            public BattlePokemonStats(OffensiveStats offensive, DefensiveStats defensive)
+            internal BattlePokemonStats(PokemonInFight pokemon)
                 : this()
             {
-                Health = defensive.Health;
-                Defense = defensive.Defense;
-                DodgeChange = defensive.DodgeChance;
-                AttackPower = offensive.AttackPower;
-                CriticalStrikeChance = offensive.CriticalStrikeChance;
+                Id = pokemon.Id;
+                Health = pokemon.Defensive.Health;
+                Defense = pokemon.Defensive.Defense;
+                DodgeChange = pokemon.Defensive.DodgeChance;
+                AttackPower = pokemon.Offensive.AttackPower;
+                CriticalStrikeChance = pokemon.Offensive.CriticalStrikeChance;
             }
+
+            public Guid Id { get; private set; }
 
             public int Health { get; private set; }
 

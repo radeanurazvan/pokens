@@ -189,6 +189,9 @@
   <data name="TrainerNotFound" xml:space="preserve">
     <value>Trainer does not exist!</value>
   </data>
+  <data name="TrainerNotInAutoMode" xml:space="preserve">
+    <value>Trainer is not in auto mode!</value>
+  </data>
   <data name="TrainersDoNotHaveSameEnrollment" xml:space="preserve">
     <value>The trainers are not enrolled in the same arena!</value>
   </data>

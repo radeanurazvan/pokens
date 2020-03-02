@@ -13,6 +13,7 @@ namespace Pokens.Battles.Domain
         public TrainerHasBeenChallengedEvent(Trainer challenger, Guid challengeId, Pokemon challengerPokemon, Pokemon challengedPokemon)
             : this()
         {
+            TrainerId = challengedPokemon.TrainerId;
             PokemonId = challengedPokemon.Id;
             Pokemon = challengedPokemon.Name;
             ChallengeId = challengeId;
@@ -23,6 +24,8 @@ namespace Pokens.Battles.Domain
             ChallengerPokemonName = challengerPokemon.Name;
             ChallengedAt = TimeProvider.Instance().UtcNow;
         }
+
+        public Guid TrainerId { get; private set; }
 
         public Guid ChallengerId { get; private set; }
 

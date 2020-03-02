@@ -14,6 +14,15 @@ namespace Pokens.Battles.Domain.Tests
             return trainer;
         }
 
+        public static Trainer InAutoMode()
+        {
+            var trainer = WithLevel(1);
+            trainer.ToggleAutoMode();
+            
+            trainer.ClearEvents();
+            return trainer;
+        }
+
         public static Trainer EnrolledIn(Arena arena)
         {
             var trainer = WithLevel(arena.RequiredLevel + 1);

@@ -5,6 +5,7 @@ using CSharpFunctionalExtensions;
 using Pokens.Battles.Resources;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
+using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
@@ -33,6 +34,8 @@ namespace Pokens.Battles.Domain
 
         public Maybe<Guid> Enrollment { get; private set; } = Maybe<Guid>.None;
 
+        public bool IsAutoMode { get; private set; } = false;
+
         public bool IsEnrolled => Enrollment.HasValue;
 
         public bool IsEnrolledIn(Arena arena) => IsEnrolledIn(arena.Id);
@@ -46,6 +49,12 @@ namespace Pokens.Battles.Domain
         public IEnumerable<TrainerBattle> Battles => this.battles;
 
         public Maybe<TrainerBattle> CurrentBattle => this.battles.FirstOrNothing(b => b.EndedAt.HasNoValue);
+
+        public void ToggleAutoMode()
+        {
+            var @event = IsAutoMode ? new TrainerDisabledAutoModeEvent() : (IDomainEvent)new TrainerActivatedAutoModeEvent();
+            ReactToDomainEvent(@event);
+        }
 
         public void Catch(Pokemon pokemon)
         {
@@ -88,7 +97,7 @@ namespace Pokens.Battles.Domain
         public void RaisePokemonLevel(Guid pokemonId, int newLevel)
         {
             this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
-                .Execute(_ => ReactToDomainEvent(new TrainerPokemonChangedLevel(pokemonId, newLevel)));
+                .Execute(_ => ReactToDomainEvent(new TrainerPokemonChangedLevelEvent(pokemonId, newLevel)));
         }
 
         internal Result LeaveArena()
@@ -240,9 +249,19 @@ namespace Pokens.Battles.Domain
                 .Execute(b => b.MarkEnding(@event.WonAt));
         }
 
-        private void When(TrainerPokemonChangedLevel @event)
+        private void When(TrainerPokemonChangedLevelEvent @event)
         {
             this.pokemons.FirstOrNothing(p => p.Id == @event.PokemonId).Execute(p => p.GoToLevel(@event.Level));
+        }
+
+        private void When(TrainerActivatedAutoModeEvent @event)
+        {
+            IsAutoMode = true;
+        }
+
+        private void When(TrainerDisabledAutoModeEvent @event)
+        {
+            IsAutoMode = false;
         }
     }
 }

@@ -54,7 +54,10 @@ namespace Pokens.Battles.Infrastructure
                 subscriptions.SubscribeIntegrationEvent<PokemonLeveledUpEvent>(TrainingTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>(BattlesTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleStartedEvent>(BattlesTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerHasBeenChallengedEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<ActivePlayerChangedEvent>(BattlesTag).GetAwaiter().GetResult();
             }
 
             return app;

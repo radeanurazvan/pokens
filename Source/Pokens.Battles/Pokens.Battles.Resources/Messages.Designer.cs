@@ -277,6 +277,15 @@ namespace Pokens.Battles.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trainer is not in auto mode!.
+        /// </summary>
+        public static string TrainerNotInAutoMode {
+            get {
+                return ResourceManager.GetString("TrainerNotInAutoMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The trainers are not enrolled in the same arena!.
         /// </summary>
         public static string TrainersDoNotHaveSameEnrollment {

@@ -29,5 +29,14 @@ namespace Pokens.Battles.Write.WebApi.Controllers
 
             return result.ToActionResult(NoContent);
         }
+
+        [HttpPatch("me/auto")]
+        public async Task<IActionResult> ToggleAutoMode()
+        {
+            var command = new ToggleAutoModeCommand(user.Id.Value);
+            var result = await mediator.Send(command);
+
+            return result.ToActionResult(NoContent);
+        }
     }
 }

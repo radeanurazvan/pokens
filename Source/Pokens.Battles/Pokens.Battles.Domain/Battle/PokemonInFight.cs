@@ -15,18 +15,23 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public PokemonInFight(DefensiveStats defensive, OffensiveStats offensive)
+        public PokemonInFight(Guid pokemonId, DefensiveStats defensive, OffensiveStats offensive)
             : this()
         {
+            Id = pokemonId;
             Defensive = defensive;
             Offensive = offensive;
         }
+
+        public Guid Id { get; private set; }
 
         public DefensiveStats Defensive { get; private set; }
 
         public OffensiveStats Offensive { get; private set; }
 
         public bool HasFainted => Defensive.Health <= 0;
+
+        internal IEnumerable<AbilityOnCooldown> Cooldowns => this.abilitiesOnCooldown;
 
         internal void DecrementCooldowns()
         {
@@ -38,13 +43,14 @@ namespace Pokens.Battles.Domain
         public Result Use(Ability ability)
         {
             return Result.SuccessIf(CanUse(ability), Messages.AbilityIsOnCooldown)
-                .Bind(() => AbilityOnCooldown.From(ability))
+                .Bind(() => abilitiesOnCooldown.FirstOrNothing(a => a.AbilityId == ability.Id).ToResult("Ability not on cooldown yet"))
+                .OnFailureCompensate(() => AbilityOnCooldown.From(ability))
                 .Tap(ac => abilitiesOnCooldown.Add(ac));
         }
 
         public bool CanUse(Ability ability) => !HasCooldownFor(ability.Id);
 
-        private bool HasCooldownFor(Guid ability) => abilitiesOnCooldown.Any(a => a.AbilityId == ability);
+        private bool HasCooldownFor(Guid ability) => abilitiesOnCooldown.Any(a => a.AbilityId == ability && !a.CooldownFinished);
 
         public void TakeHit(int hitDamage)
         {

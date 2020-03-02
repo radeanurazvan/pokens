@@ -423,7 +423,7 @@ namespace Pokens.Battles.Domain.Tests
         }
 
         [Fact]
-        public void Given_UseAbilityIn_When_AbilityCanBeUsed_Then_ShoulSucceed()
+        public void Given_UseAbilityIn_When_AbilityCanBeUsed_Then_ShouldSucceed()
         {
             // Arrange
             var arena = ArenaFactory.WithoutRequirement();
@@ -436,6 +436,34 @@ namespace Pokens.Battles.Domain.Tests
 
             // Assert
             result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Given_ToggleAutoMode_When_NotInAutoMode_Then_ShouldStart()
+        {
+            // Arrange
+            var sut = TrainerFactory.WithLevel(1);
+
+            // Act
+            sut.ToggleAutoMode();
+
+            // Assert
+            sut.IsAutoMode.Should().BeTrue();
+            sut.Events.Should().ContainSingle(e => e is TrainerActivatedAutoModeEvent);
+        }
+
+        [Fact]
+        public void Given_ToggleAutoMode_When_IsInAutoMode_Then_ShouldFinish()
+        {
+            // Arrange
+            var sut = TrainerFactory.InAutoMode();
+
+            // Act
+            sut.ToggleAutoMode();
+
+            // Assert
+            sut.IsAutoMode.Should().BeFalse();
+            sut.Events.Should().ContainSingle(e => e is TrainerDisabledAutoModeEvent);
         }
     }
 }

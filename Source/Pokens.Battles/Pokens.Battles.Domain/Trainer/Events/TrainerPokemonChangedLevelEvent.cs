@@ -3,13 +3,13 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class TrainerPokemonChangedLevel : IDomainEvent
+    internal sealed class TrainerPokemonChangedLevelEvent : IDomainEvent
     {
-        private TrainerPokemonChangedLevel()
+        private TrainerPokemonChangedLevelEvent()
         {
         }
 
-        public TrainerPokemonChangedLevel(Guid pokemonId, int level)    
+        public TrainerPokemonChangedLevelEvent(Guid pokemonId, int level)    
             : this()
         {
             PokemonId = pokemonId;
