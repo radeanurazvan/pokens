@@ -1,24 +1,30 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatListModule, MatSidenavModule, MatTabsModule, MatToolbarModule, MatDialogModule, MatDialogContent } from '@angular/material';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { ModuleWithProviders, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  MatIconModule,
+  MatListModule,
+  MatSidenavModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatDialogModule,
+  MatDialogContent,
+  MatTooltipModule
+} from "@angular/material";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
-import { ErrorInterceptor } from './core/error.interceptor';
-import { ToastrService } from './core/toastr.service';
-import { PopupComponent } from './components/popup/popup.component';
-import { PopupDetailsComponent } from '../modules/pokedex/pages/popup-details/popup-details.component';
-import { CommonModule } from '@angular/common';
+import { ErrorInterceptor } from "./core/error.interceptor";
+import { ToastrService } from "./core/toastr.service";
+import { PopupComponent } from "./components/popup/popup.component";
+import { PopupDetailsComponent } from "../modules/pokedex/pages/popup-details/popup-details.component";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
-  declarations: [
-    PopupComponent,
-    PopupDetailsComponent
-  ],
+  declarations: [PopupComponent, PopupDetailsComponent],
   imports: [
     CommonModule,
     MatInputModule,
@@ -33,6 +39,7 @@ import { CommonModule } from '@angular/common';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
+    MatTooltipModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
@@ -51,15 +58,13 @@ import { CommonModule } from '@angular/common';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
+    MatTooltipModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
     MatIconModule
   ],
-  entryComponents: [
-    PopupComponent,
-    PopupDetailsComponent
-  ]
+  entryComponents: [PopupComponent, PopupDetailsComponent]
 })
 export class SharedModule {
   public static forChild(): ModuleWithProviders {
