@@ -174,5 +174,32 @@ namespace Pokens.Battles.Domain.Tests
             result.IsSuccess.Should().BeTrue();
             sut.DefenderPokemon.Defensive.Health.Should().BeLessThan(initialHealth);
         }
+
+        [Fact]
+        public void Given_TakeTurn_Should_SwitchPlayers()
+        {
+            // Arrange
+            var arena = ArenaFactory.WithoutRequirement();
+            var attacker = TrainerFactory.EnrolledIn(arena);
+            var defender = TrainerFactory.EnrolledIn(arena);
+
+            var attackerPokemon = attacker.Pokemons.First();
+            var defenderPokemon = defender.Pokemons.First();
+
+            var sut = BattleFactory.Started(attacker, defender);
+
+            // Act
+            sut.TakeTurn(attacker, attackerPokemon.Abilities.First());
+            sut.TakeTurn(defender, defenderPokemon.Abilities.First());
+            sut.TakeTurn(attacker, attackerPokemon.Abilities.First());
+
+            // Assert
+            sut.ActivePlayer.Should().Be(sut.DefenderId);
+
+            var playerChangedEvents = sut.Events.Where(e => e is ActivePlayerChangedEvent).Cast<ActivePlayerChangedEvent>().ToList();
+            playerChangedEvents.ElementAt(0).ActivePlayer.Should().Be(sut.DefenderId);
+            playerChangedEvents.ElementAt(1).ActivePlayer.Should().Be(sut.AttackerId);
+            playerChangedEvents.ElementAt(2).ActivePlayer.Should().Be(sut.DefenderId);
+        }
     }
 }

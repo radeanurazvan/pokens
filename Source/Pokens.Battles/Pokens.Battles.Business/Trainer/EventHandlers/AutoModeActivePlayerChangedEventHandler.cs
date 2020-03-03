@@ -27,6 +27,7 @@ namespace Pokens.Battles.Business
 
         public async Task Handle(ActivePlayerChangedEvent @event)
         {
+            this.logger.LogInformation($"Received active player changed event. Active player: {@event.ActivePlayer}, Battle: {@event.BattleId}");
             await mediator.ReadById<Trainer>(@event.ActivePlayer).ToResult(Messages.TrainerNotFound)
                 .Ensure(t => t.IsAutoMode, Messages.TrainerNotInAutoMode)
                 .Bind(t => TakeTurn(t, @event))

@@ -5,7 +5,6 @@ using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 using Pokens.Battles.Domain;
 using Pokens.Battles.Resources;
-using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.Events.Abstractions;
 
