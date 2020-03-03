@@ -12,7 +12,7 @@ namespace Pokens.Battles.Business
 {
     internal sealed class AutoModeActivePlayerChangedEventHandler : IDomainEventHandler<ActivePlayerChangedEvent>
     {
-        private const int Retries = 50;
+        private const int Retries = 150;
 
         private readonly IRepositoryMediator mediator;
         private readonly IBattlesService battlesService;
@@ -42,6 +42,12 @@ namespace Pokens.Battles.Business
                 var ability = GetRandomAbility(trainer, @event.ActivePokemon);
                 var result = await battlesService.TakeTurn(@event.BattleId, trainer.Id, ability);
                 retry++;
+
+                if (result.IsFailure && result.Error != Messages.AbilityIsOnCooldown)
+                {
+                    return result;
+                }
+
                 if (result.IsSuccess)
                 {
                     return result;
