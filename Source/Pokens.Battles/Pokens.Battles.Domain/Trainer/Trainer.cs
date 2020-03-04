@@ -146,6 +146,16 @@ namespace Pokens.Battles.Domain
                 .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeGotAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
+        public Result RejectChallenge(Guid challengeId)
+        {
+            var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound)
+                .Ensure(c => c.ChallengedId == this.Id, Messages.ChallengeNotFound)
+                .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
+
+            return Result.FirstFailureOrSuccess(challengeResult)
+                .Tap(() => ReactToDomainEvent(TrainerChallengeGotAnsweredEvent.RejectedFor(challengeId)));
+        }
+
         internal Result StartBattleAgainst(Trainer enemy, Guid challengeId)
         {
             var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId)

@@ -58,5 +58,14 @@ namespace Pokens.Battles.Write.WebApi.Controllers
 
             return result.ToActionResult(NoContent);
         }
+
+        [HttpDelete("{id:Guid}/trainers/me/challenges/{challengeId:Guid}")]
+        public async Task<IActionResult> RejectChallenge([FromRoute] Guid id, [FromRoute] Guid challengeId)
+        {
+            var command = new RejectChallengeCommand(user.Id.Value, challengeId);
+            var result = await mediator.Send(command);
+
+            return result.ToActionResult(NoContent);
+        }
     }
 }
