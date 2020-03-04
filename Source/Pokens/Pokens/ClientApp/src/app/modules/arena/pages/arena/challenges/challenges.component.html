@@ -1,6 +1,10 @@
-<ol>
+<ol *ngIf="challenges.length > 0">
   <li *ngFor="let challenge of challenges">
-    From {{challenge.enemy}} at {{challenge.challengedAt}}
+    From {{ challenge.enemy }} at {{ challenge.challengedAt }}
     <button (click)="accept(challenge)">Accept</button>
   </li>
 </ol>
+
+<div *ngIf="challenges.length === 0" class="no-challenge">
+  It looks like no one has challenged you yet.
+</div>

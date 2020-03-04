@@ -1,51 +1,85 @@
-.container {
+.header {
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .title {
     width: 100%;
-    height: calc(100vh - 82px);
-    align-content: baseline;
-    background-position: 0;
-    background-size: 100%;
-    display: flex;
-    flex-direction: column;
+    text-align: center;
+    font-size: 30px;
+    color: #646464;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .challanges {
+    width: 140px;
+    margin-right: 10px;
+  }
+
+  .battles {
+    margin-right: 10px;
+    cursor: not-allowed;
+  }
+}
+
+.container {
+  width: 100%;
+  height: calc(100vh - 82px);
+  align-content: baseline;
+  background-position: 0;
+  background-size: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .trainer-card {
-    height: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin: 10px 10px 0 10px;
+
+  .trainer-details {
+    width: 170px;
     display: flex;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    border-radius: 5px;
-    margin: 10px 10px 0 10px;
 
-    .trainer-details {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
+    .trainer-name {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
     }
+  }
 
-    .pokemons-details {
-        height: 100%;
-        width: 100%;
-        margin-left: 20px;
-        cursor: pointer;
-    }
+  .pokemons-details {
+    height: 100%;
+    width: 100%;
+    margin-left: 20px;
+    cursor: pointer;
+  }
 }
 
 .image-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding-top: 10px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 10px;
 }
 
-.trainer-image, .pokemon-image {
-    max-height: 110px;
-    width: auto;
+.trainer-image,
+.pokemon-image {
+  max-height: 110px;
+  width: auto;
 }
 
 .pokemons-container {
-    display: flex;
-    flex-direction: row;
-    border-left: 2px solid #F5F2F0;
+  display: flex;
+  flex-direction: row;
+  border-left: 2px solid #f5f2f0;
 }

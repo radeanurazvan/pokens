@@ -1,3 +1,7 @@
+mat-dialog-content {
+  height: 536px;
+}
+
 .challenged-details {
   .trainer-image {
     height: 200px;
@@ -27,8 +31,9 @@
 }
 
 .my-options {
-  .pokemon-image {
+  .my-pokemon-image {
     height: 100px;
+    cursor: pointer;
   }
 
   display: flex;
@@ -42,6 +47,7 @@
 
 .actions {
   display: flex;
+  justify-content: flex-end;
 
   .cancel {
     flex: 0.2;
@@ -49,9 +55,17 @@
 
   .reset {
     flex: 0.4;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
   }
 
   .go {
     flex: 0.4;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
   }
 }
