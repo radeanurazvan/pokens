@@ -4,19 +4,22 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class PlayerTookTurnEvent : IDomainEvent
+    public sealed class PlayerTookTurnEvent : IDomainEvent
     {
         private PlayerTookTurnEvent()
         {
         }
 
-        public PlayerTookTurnEvent(Guid playerId, Guid abilityId) 
+        public PlayerTookTurnEvent(Guid battleId, Guid playerId, Guid abilityId) 
             : this()
         {
+            BattleId = battleId;
             PlayerId = playerId;
             AbilityId = abilityId;
             TakenAt = TimeProvider.Instance().UtcNow;
         }
+
+        public Guid BattleId { get; private set; }
 
         public Guid PlayerId { get; private set; }
 

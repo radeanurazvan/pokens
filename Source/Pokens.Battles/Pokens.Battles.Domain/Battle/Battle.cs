@@ -99,11 +99,11 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
                 .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ActivePlayer, ability, damageResult.Value)))
-                .Tap(() => ActivePokemon.Cooldowns.Select(c => new PlayerCooldownChanged(c.AbilityId, c.Left)).ForEach(a => AddDomainEvent(a)))
-                .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbility()))
-                .TapIf(damageResult.IsSuccess && damageResult.Value != 0, () => AddDomainEvent(new BattleHealthChangedEvent(WaitingPlayer, WaitingPokemon.Defensive.Health)))
+                .Tap(() => ActivePokemon.Cooldowns.Select(c => new PlayerCooldownChangedEvent(Id, c.AbilityId, c.Left)).ForEach(a => AddDomainEvent(a)))
+                .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbilityEvent(Id, WaitingPlayer)))
+                .TapIf(damageResult.IsSuccess && damageResult.Value != 0, () => AddDomainEvent(new BattleHealthChangedEvent(Id, WaitingPlayer, WaitingPokemon.Defensive.Health)))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)
-                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(ActivePlayer, ability.Id)))
+                .Tap(() => ReactToDomainEvent(new PlayerTookTurnEvent(Id, ActivePlayer, ability.Id)))
                 .Tap(() => AddDomainEvent(new ActivePlayerChangedEvent(this)));
         }
 
@@ -170,7 +170,7 @@ namespace Pokens.Battles.Domain
             EndedAt = @event.EndedAt;
         }
 
-        private void When(PokemonDodgedAbility @event)
+        private void When(PokemonDodgedAbilityEvent @event)
         {
         }
 
@@ -182,7 +182,7 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        private void When(PlayerCooldownChanged @event)
+        private void When(PlayerCooldownChangedEvent @event)
         {
         }
     }

@@ -16,10 +16,12 @@ namespace Pokens.Training.Business
             this.repository = repository;
         }
 
-        public Task Handle(IntegrationEvent<TrainerCollectedExperienceEvent> @event)
+        public async Task Handle(IntegrationEvent<TrainerCollectedExperienceEvent> @event)
         {
-            return repository.FindOne<Trainer>(t => t.Id == @event.Metadata.AggregateId.ToString()).ToResult(Messages.TrainerNotFound)
+            var trainerResult = await repository.FindOne<Trainer>(t => t.Id == @event.Metadata.AggregateId.ToString()).ToResult(Messages.TrainerNotFound);
+            await trainerResult
                 .Bind(t => t.CollectExperience(@event.Data.PokemonId, @event.Data.Amount))
+                .Tap(() => repository.Update(trainerResult.Value))
                 .Tap(() => repository.Commit());
         }
     }

@@ -338,7 +338,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.WithLevel(2);
 
             // Act
-            var result = challenged.StartBattleAgainst(challenger);
+            var result = challenged.StartBattleAgainst(challenger, new Guid("9E3BB491-052E-4C5B-9F76-6D4B6D86A40D"));
 
             // Assert
             result.IsFailure.Should().BeTrue();
@@ -356,7 +356,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenged = TrainerFactory.WithChallengeAcceptedFrom(challenger, arena);
 
             // Act
-            var result = challenger.StartBattleAgainst(challenged);
+            var result = challenger.StartBattleAgainst(challenged, challenged.Challenges.Last().Id);
 
             // Assert
             result.IsSuccess.Should().BeTrue();

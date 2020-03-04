@@ -4,7 +4,7 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class TrainerWonBattleEvent : IDomainEvent
+    public sealed class TrainerWonBattleEvent : IDomainEvent
     {
         private TrainerWonBattleEvent()
         {

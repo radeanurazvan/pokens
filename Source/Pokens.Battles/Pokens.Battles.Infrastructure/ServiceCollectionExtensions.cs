@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pokens.Battles.Business;
 using Pomelo.Kernel.Authentication;
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EventStore;
@@ -21,12 +22,22 @@ namespace Pokens.Battles.Infrastructure
         public static IServiceCollection AddBattlesInfrastructure(this IServiceCollection services)
         {
             return services
+
                 .AddPomeloRepositoryMediator()
                 .AddPomeloEventStore()
                 .AddPomeloEventStoreSubscriptions()
                 .AddPomeloEventSourcedRepositories()
                 .AddPomeloAggregatesContext()
-                .AddPomeloRepositoryMediator();
+                .AddPomeloRepositoryMediator()
+                .AddBattlesSignalR();
+        }
+
+        private static IServiceCollection AddBattlesSignalR(this IServiceCollection services)
+        {
+            services
+                .AddScoped<IBattlesNotifications, BattlesSignalrNotifications>()
+                .AddSignalR();
+            return services;
         }
     }
 }

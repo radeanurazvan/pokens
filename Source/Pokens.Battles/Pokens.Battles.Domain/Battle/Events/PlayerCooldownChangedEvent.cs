@@ -3,17 +3,21 @@ using Pomelo.Kernel.Events.Abstractions;
 
 namespace Pokens.Battles.Domain
 {
-    internal sealed class PlayerCooldownChanged : IDomainEvent
+    public sealed class PlayerCooldownChangedEvent : IDomainEvent
     {
-        private PlayerCooldownChanged()
+        private PlayerCooldownChangedEvent()
         {
         }
 
-        public PlayerCooldownChanged(Guid abilityId, int cooldown)
+        public PlayerCooldownChangedEvent(Guid battleId, Guid abilityId, int cooldown)
+            : this()
         {
+            BattleId = battleId;
             AbilityId = abilityId;
             Cooldown = cooldown;
         }
+
+        public Guid BattleId { get; private set; }
 
         public Guid AbilityId { get; private set; }
 
