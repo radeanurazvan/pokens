@@ -57,6 +57,12 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
     }
   }
 
+  public selectAbility(index: number): void {
+    if (this.myPokemon.level >= this.myPokemon.abilities[index].requiredLevel) {
+      this.selectedAbilityIndex = index;
+    }
+  }
+
   public ngOnInit(): void {
     this.initEvent();
     this.trainerId = this.userService.getUserId();
