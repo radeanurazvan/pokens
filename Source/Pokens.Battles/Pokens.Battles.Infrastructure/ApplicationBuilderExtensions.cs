@@ -72,8 +72,11 @@ namespace Pokens.Battles.Infrastructure
         public static IApplicationBuilder UseBattlesEndpoints(this IApplicationBuilder app)
         {
             return app
-                .UseEndpoints(e => e.MapControllers())
-                .UseEndpoints(e => e.MapHub<BattlesHub>("/hubs/battles"));
+                .UseEndpoints(e => 
+                { 
+                    e.MapControllers();
+                    e.MapHub<BattlesHub>("/hubs/battles");
+                });
         }
     }
 }
