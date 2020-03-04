@@ -1,26 +1,74 @@
 <div class="container">
-  <div class="my-stats" *ngIf="myPokemon">
-    <div class="challenger-trainer-details">
-      <div class="image-container">
-          <img class="trainer-image" src="assets/pictures/images.jpg">
+  <div class="upper">
+
+    <div class="log">
+      <div class="box-container">
+        <div class="box-header">
+          Battle log
+        </div>
+        <div class="box">
+          <ul>
+            <li *ngFor="let comentary of comentaries">
+              {{comentary.body}}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="challenger-pokemon-details">
+
+    <div class="enemy-stats" *ngIf="enemyPokemon">
+      <div class="challenger-pokemon-details">
         <div class="image-container">
-          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image" >
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image">
         </div>
+      </div>
+      <div class="challenger-trainer-details">
+        <div class="image-container">
+          <img class="trainer-image" src="assets/pictures/images.jpg">
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="enemy-stats" *ngIf="enemyPokemon">
-    <div class="challenger-pokemon-details">
-      <div class="image-container">
-        <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image" >
+  <div class="lower">
+    <div class="my-stats" *ngIf="myPokemon">
+      <div class="challenger-trainer-details">
+        <div class="image-container">
+          <img class="trainer-image" src="assets/pictures/images.jpg">
+        </div>
+      </div>
+      <div class="challenger-pokemon-details">
+        <div class="image-container">
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
+        </div>
+        <div class="pokemon-details-container">
+          <span>Pokemon Level: {{myPokemon.level}}</span>
+        </div>
       </div>
     </div>
-    <div class="challenger-trainer-details">
-      <div class="image-container">
-          <img class="trainer-image" src="assets/pictures/images.jpg">
+
+    <div class="my-abilities">
+      <div class="choices-container">
+        <div class="abilities-container" *ngIf="myPokemon">
+          <div *ngFor="let ability of myPokemon.abilities; let i=index">
+            <div class="ability-container"
+              matTooltip='{{ability.description}} Required level: {{ability.requiredLevel}}'
+              [ngClass]="{selected: selectedAbilityIndex === i, disabled: myPokemon.level < ability.requiredLevel}"
+              (click)="selectAbility(i)">
+              <div class="ability-header">
+                <span>{{ability.name}}</span>
+              </div>
+              <div class="ability-image-container">
+                <img class="ability-image" [src]="'data:image/png;base64,'+ ability.image">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="use-button">
+          <button mat-raised-button [disabled]="selectedAbilityIndex === undefined">
+            Use
+          </button>
+        </div>
       </div>
     </div>
   </div>

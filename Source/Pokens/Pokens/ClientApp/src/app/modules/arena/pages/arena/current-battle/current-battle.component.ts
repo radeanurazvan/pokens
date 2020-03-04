@@ -14,11 +14,37 @@ export class CurrentBattleComponent implements OnInit {
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
+  public selectedAbilityIndex;
+
+  public get comentaries() {
+    if (this.battle) {
+      return this.battle.commentaries;
+    }
+    return null;
+  }
+
+  public get myPokemon() {
+    const pokemon = this.pokemons.find(p => p.trainerId === this.trainerId);
+    if (pokemon) {
+      pokemon.abilities = pokemon.abilities.sort((a, b) => (a.requiredLevel > b.requiredLevel) ? 1 : -1);
+    }
+    return pokemon;
+  }
+
+  public get enemyPokemon() {
+    return this.pokemons.find(p => p.trainerId !== this.trainerId);
+  }
 
   constructor(
     private service: BattlesService,
     private arenaService: ArenaService,
     private userService: UserService) {
+  }
+
+  public selectAbility(index: number): void {
+    if (this.myPokemon.level >= this.myPokemon.abilities[index].requiredLevel) {
+      this.selectedAbilityIndex = index;
+    }
   }
 
   public ngOnInit(): void {
@@ -35,13 +61,5 @@ export class CurrentBattleComponent implements OnInit {
         console.log(this.battle);
         console.log(this.pokemons);
       });
-  }
-
-  public get myPokemon() {
-    return this.pokemons.find(p => p.trainerId === this.trainerId);
-  }
-
-  public get enemyPokemon() {
-    return this.pokemons.find(p => p.trainerId !== this.trainerId);
   }
 }

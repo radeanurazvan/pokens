@@ -16,6 +16,8 @@ export class ArenaDetailsComponent implements OnInit {
   public trainersIds: string[];
   public pokemons: any = [];
 
+  private autoMode: boolean = false;
+
   constructor(
     private arenaService: ArenaService,
     private dialog: MatDialog,
@@ -50,6 +52,7 @@ export class ArenaDetailsComponent implements OnInit {
   }
 
   public toggleAutoMode(): void {
+    this.autoMode = !this.autoMode;
     this.arenaService.toggleAutoMode().subscribe();
   }
 }
