@@ -1,8 +1,60 @@
+.body-content {
+  display: flex;
+  justify-content: space-around;
+}
+
 .no-challenge {
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
-  font-size: 30px;
-  color: #646464;
-  font-family: "Roboto", sans-serif;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    color: #646464;
+    font-family: "Roboto", sans-serif;
+}
+
+.image-container {
+    width: 100%;
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.trainer-image,
+.pokemon-image {
+    max-height: 110px;
+    width: auto;
+}
+
+.challenge-card {
+    position: relative;
+    width: 42%;
+    margin: 20px 0;
+    overflow: hidden;
+    
+    .challenge-card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.challenge-button {
+    width: 200px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.corner-ribbon {
+    width: 150px;
+    background: #dd63f2;
+    position: absolute;
+    left: auto;
+    top: 18px;
+    right: -45px;
+    text-align: center;
+    line-height: 30px;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
 }

@@ -56,6 +56,11 @@ export class ArenaService {
     return this.http.patch(url, {}, this.httpOptions);
   }
 
+  public refuseChallenge(challenge): Observable<any> {
+    const url = `${this.arenaWriteEndPoint}/${challenge.arenaId}/trainers/me/challenges/${challenge.id}`;
+    return this.http.delete(url, this.httpOptions);
+  }
+
   public getAllPokemons(ids: string[]): Observable<any> {
     let params = new HttpParams();
     ids.forEach(x => params = params.append('trainersIds', x));
