@@ -15,7 +15,7 @@ namespace Pokens.Battles.Reactors.Denormalizers
         INotificationHandler<NotificationEvent<BattleEndedEvent>>,
         INotificationHandler<NotificationEvent<PlayerTookTurnEvent>>,
         INotificationHandler<NotificationEvent<PlayerUsedAbilityEvent>>,
-        INotificationHandler<NotificationEvent<PokemonDodgedAbility>>
+        INotificationHandler<NotificationEvent<PokemonDodgedAbilityEvent>>
     {
         private readonly ISyncReadRepository<TrainerModel> trainersRead;
         private readonly ISyncStorage storage;
@@ -94,7 +94,7 @@ namespace Pokens.Battles.Reactors.Denormalizers
             });
         }
 
-        public Task Handle(NotificationEvent<PokemonDodgedAbility> notification, CancellationToken cancellationToken)
+        public Task Handle(NotificationEvent<PokemonDodgedAbilityEvent> notification, CancellationToken cancellationToken)
         {
             return storage.Update<BattleModel>(notification.Metadata.AggregateId.ToString(), b => b.Commentaries.Add("Woah, the pokemon dodged the attack!"));
         }

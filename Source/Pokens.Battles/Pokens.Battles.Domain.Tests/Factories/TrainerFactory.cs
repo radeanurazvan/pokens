@@ -73,7 +73,7 @@ namespace Pokens.Battles.Domain.Tests
         {
             challenger.EnrollIn(arena);
             var challenged = WithChallengeAcceptedFrom(challenger, arena);
-            challenger.StartBattleAgainst(challenged);
+            challenger.StartBattleAgainst(challenged, challenged.Challenges.Last().Id);
 
             challenger.ClearEvents();
             challenged.ClearEvents();

@@ -23,7 +23,7 @@ namespace Pokens.Battles.Domain.Tests
             var challenge = attacker.Challenges.First();
 
             defender.AcceptChallenge(attacker, challenge);
-            attacker.StartBattleAgainst(defender);
+            attacker.StartBattleAgainst(defender, challenge.Id);
 
             attacker.ClearEvents();
             defender.ClearEvents();

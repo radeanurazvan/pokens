@@ -146,22 +146,32 @@ namespace Pokens.Battles.Domain
                 .Tap(() => challenger.ReactToDomainEvent(TrainerChallengeGotAnsweredEvent.AcceptedFor(challenge.Id)));
         }
 
-        internal Result StartBattleAgainst(Trainer enemy)
+        public Result RejectChallenge(Guid challengeId)
         {
-            var challengeResult = this.challenges.FirstOrNothing(c => c.IsAccepted && c.HasParticipants(this, enemy))
+            var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound)
+                .Ensure(c => c.ChallengedId == this.Id, Messages.ChallengeNotFound)
+                .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
+
+            return Result.FirstFailureOrSuccess(challengeResult)
+                .Tap(() => ReactToDomainEvent(TrainerChallengeGotAnsweredEvent.RejectedFor(challengeId)));
+        }
+
+        internal Result StartBattleAgainst(Trainer enemy, Guid challengeId)
+        {
+            var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId)
                 .ToResult(Messages.TrainerHasNotAcceptedChallenge);
             var enemyResult = enemy.EnsureExists(Messages.InvalidTrainer);
 
             return Result.FirstFailureOrSuccess(challengeResult, enemyResult)
                 .Ensure(() => CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
                 .Ensure(() => enemy.CurrentBattle.HasNoValue, Messages.TrainerAlreadyInBattle)
-                .Bind(() => enemy.EnterBattleAgainst(this))
+                .Bind(() => enemy.EnterBattleAgainst(challengeId))
                 .Tap(() => ReactToDomainEvent(new TrainerStartedBattleEvent(challengeResult.Value)));
         }
 
-        private Result EnterBattleAgainst(Trainer enemy)
+        private Result EnterBattleAgainst(Guid challengeId)
         {
-            return this.challenges.FirstOrNothing(c => c.IsAccepted && c.HasParticipants(this, enemy))
+            return this.challenges.FirstOrNothing(c => c.Id == challengeId)
                 .ToResult(Messages.TrainerHasNotAcceptedChallenge)
                 .Bind(c => ReactToDomainEvent(new TrainerEnteredBattleEvent(c)));
         }
@@ -262,6 +272,10 @@ namespace Pokens.Battles.Domain
         private void When(TrainerDisabledAutoModeEvent @event)
         {
             IsAutoMode = false;
+        }
+
+        private void When(TrainerCollectedExperienceEvent @event)
+        {
         }
     }
 }

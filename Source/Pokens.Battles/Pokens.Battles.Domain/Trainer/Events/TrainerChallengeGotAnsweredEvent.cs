@@ -18,6 +18,15 @@ namespace Pokens.Battles.Domain
             };
         }
 
+        public static TrainerChallengeGotAnsweredEvent RejectedFor(Guid challengeId)
+        {
+            return new TrainerChallengeGotAnsweredEvent
+            {
+                ChallengeId = challengeId,
+                Accepted = false
+            };
+        }
+
         public Guid ChallengeId { get; private set; }
 
         public bool Accepted { get; private set; }

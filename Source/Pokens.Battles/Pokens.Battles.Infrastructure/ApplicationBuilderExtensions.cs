@@ -58,9 +58,22 @@ namespace Pokens.Battles.Infrastructure
                 subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeDomainEvent<TrainerHasBeenChallengedEvent>(BattlesTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeDomainEvent<ActivePlayerChangedEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PlayerCooldownChangedEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PlayerTookTurnEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleHealthChangedEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PokemonDodgedAbilityEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerLostBattleEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerWonBattleEvent>(BattlesTag).GetAwaiter().GetResult();
             }
 
             return app;
+        }
+
+        public static IApplicationBuilder UseBattlesEndpoints(this IApplicationBuilder app)
+        {
+            return app
+                .UseEndpoints(e => e.MapControllers())
+                .UseEndpoints(e => e.MapHub<BattlesHub>("/hubs/battles"));
         }
     }
 }

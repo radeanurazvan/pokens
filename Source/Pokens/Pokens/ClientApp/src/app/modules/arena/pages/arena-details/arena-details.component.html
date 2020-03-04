@@ -2,9 +2,10 @@
   <div class="title">Welcome to {{ arenaDetails?.name }}</div>
 
   <div class="buttons">
-    <button mat-flat-button color="primary" (click)="toggleAutoMode()">
+    <!-- <button mat-flat-button color="primary" (click)="toggleAutoMode()">
       Toggle auto mode
-    </button>
+    </button> -->
+    <mat-slide-toggle class="auto-mode" (click)="toggleAutoMode()">Auto mode: {{autoMode === true ? 'On' : 'Off'}}</mat-slide-toggle>
 
     <button
       class="challanges"

@@ -51,7 +51,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UsePomeloCors()
                 .UseDefaultArenas()
                 .UsePomeloEventStoreEventsLogging()
-                .UseEndpoints(endpoints => endpoints.MapControllers());
+                .UseBattlesEndpoints();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Pokens.Battles.Business
             var challengedResult = await challengeResult.Bind(c => trainersReadRepository.GetById(c.ChallengedId).ToResult(Messages.TrainerNotFound));
 
             await Result.FirstFailureOrSuccess(arenaResult, challengedResult, challengerResult)
-                .Tap(() => challengerResult.Value.StartBattleAgainst(challengedResult.Value))
+                .Tap(() => challengerResult.Value.StartBattleAgainst(challengedResult.Value, notification.ChallengeId))
                 .Tap(() => this.trainersWriteRepository.Save());
         }
     }
