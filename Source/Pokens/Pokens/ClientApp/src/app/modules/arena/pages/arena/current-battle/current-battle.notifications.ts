@@ -31,8 +31,11 @@ export class CurrentBattleNotifications {
             .build();
     }
 
-    public start(): void {
-        this.startConnection();
+    public start(battleId: string): void {
+        this.startConnection(() => {
+            this.connection.invoke('joinBattleNotifications', battleId)
+                .then(() => console.log(`Subscribed to notifications for battle ${battleId}`));
+        });
 
         this.connection.onclose((e: Error) => {
             if (this.stoppedOnPurpose) {
@@ -44,9 +47,10 @@ export class CurrentBattleNotifications {
         });
     }
 
-    private startConnection(): void {
+    private startConnection(cb: () => void = () => {}): void {
         this.connection.start()
             .then(() => console.log('Connection started'))
+            .then(cb)
             .catch(err => console.log('Error while starting connection: ' + err));
     }
 
