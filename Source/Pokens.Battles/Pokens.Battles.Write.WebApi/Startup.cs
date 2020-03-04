@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Pokens.Battles.Business;
 using Pokens.Battles.Domain;
 using Pokens.Battles.Infrastructure;
+using Pomelo.Kernel.EventStore;
 using Pomelo.Kernel.Http;
 
 namespace Pokens.Battles.Write.WebApi
@@ -49,6 +50,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()
                 .UseDefaultArenas()
+                .UsePomeloEventStoreEventsLogging()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

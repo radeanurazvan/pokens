@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.Kernel.DataSynchronization" Version="1.20200227.1" />
+    <PackageReference Include="Pomelo.Kernel.DataSynchronization" Version="1.20200304.1-merge" />
   </ItemGroup>
 
 </Project>

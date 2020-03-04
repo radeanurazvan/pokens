@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200227.1" />
+    <PackageReference Include="Pomelo.Kernel.Common" Version="1.20200304.1-merge" />
   </ItemGroup>
 
   <ItemGroup>

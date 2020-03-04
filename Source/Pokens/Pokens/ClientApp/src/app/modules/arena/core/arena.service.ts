@@ -21,6 +21,10 @@ export class ArenaService {
 
   constructor(private http: HttpClient) { }
 
+  public toggleAutoMode(): Observable<any> {
+    return this.http.patch(`${environment.apiArenaUrl.write}/trainers/me/auto`, null, this.httpOptions);
+  }
+
   public getArenas(): Observable<ArenaModel[]> {
     return this.http.get<ArenaModel[]>(this.arenaReadEndPoint, this.httpOptions);
   }

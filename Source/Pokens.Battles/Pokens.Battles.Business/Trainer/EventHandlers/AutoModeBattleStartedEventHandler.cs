@@ -25,6 +25,7 @@ namespace Pokens.Battles.Business
 
         public async Task Handle(BattleStartedEvent @event)
         {
+            this.logger.LogError("Auto battle started");
             await mediator.ReadById<Trainer>(@event.AttackerId).ToResult(Messages.TrainerNotFound)
                 .Ensure(t => t.IsAutoMode, Messages.TrainerNotInAutoMode)
                 .Bind(t => this.battlesService.TakeTurn(@event.Id, t.Id, GetRandomAbility(t, @event.AttackerPokemon.Id)))

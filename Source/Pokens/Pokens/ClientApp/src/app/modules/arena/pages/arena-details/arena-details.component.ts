@@ -48,4 +48,8 @@ export class ArenaDetailsComponent implements OnInit {
       height: "680px"
     });
   }
+
+  public toggleAutoMode(): void {
+    this.arenaService.toggleAutoMode().subscribe();
+  }
 }
