@@ -263,5 +263,9 @@ namespace Pokens.Battles.Domain
         {
             IsAutoMode = false;
         }
+
+        private void When(TrainerCollectedExperienceEvent @event)
+        {
+        }
     }
 }
