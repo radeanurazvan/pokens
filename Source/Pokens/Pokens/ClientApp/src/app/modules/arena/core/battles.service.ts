@@ -24,4 +24,8 @@ export class BattlesService {
   public getMyBattles(): Observable<any> {
     return this.http.get<any>(`${environment.apiArenaUrl.read}/battles/me`, this.httpOptions);
   }
+
+  public attack(battleId: string, abilityId: string): Observable<any> {
+    return this.http.patch<any>(`${environment.apiArenaUrl.write}/trainers/me/battles/${battleId}`, { abilityId: abilityId }, this.httpOptions);
+  }
 }

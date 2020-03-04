@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BattlesService } from '../../../core/battles.service';
 import { ArenaService } from '../../../core/arena.service';
 import { tap, switchMap, map } from 'rxjs/operators';
 import { UserService } from '../../../../../shared/core/user.service';
+import { CurrentBattleNotifications } from './current-battle.notifications';
 
 @Component({
   templateUrl: './current-battle.component.html',
   styleUrls: ['./current-battle.component.scss']
 })
-export class CurrentBattleComponent implements OnInit {
+export class CurrentBattleComponent implements OnInit, OnDestroy {
   private trainerId: string;
 
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
   public selectedAbilityIndex;
+  public abilities: any[] = [];
 
   public get comentaries() {
     if (this.battle) {
@@ -38,7 +40,15 @@ export class CurrentBattleComponent implements OnInit {
   constructor(
     private service: BattlesService,
     private arenaService: ArenaService,
-    private userService: UserService) {
+    private userService: UserService,
+    private currentBattleNotifications: CurrentBattleNotifications) {
+  }
+
+  private initEvent(): void {
+    this.currentBattleNotifications
+      .onCooldownChanged(x => {
+        this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
+      });
   }
 
   public selectAbility(index: number): void {
@@ -48,8 +58,10 @@ export class CurrentBattleComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.initEvent();
     this.trainerId = this.userService.getUserId();
     this.trainerName = this.userService.getUserName();
+    this.currentBattleNotifications.start();
     this.service.getCurrentBattle()
       .pipe(
         tap(b => this.battle = b),
@@ -58,8 +70,17 @@ export class CurrentBattleComponent implements OnInit {
         tap(pokemons => this.pokemons = pokemons)
       )
       .subscribe(() => {
+        this.abilities = this.myPokemon.abilities;
         console.log(this.battle);
         console.log(this.pokemons);
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.currentBattleNotifications.stop();
+  }
+
+  public attack(): void {
+    this.service.attack(this.battle.id, this.abilities[this.selectedAbilityIndex].id).subscribe();
   }
 }
