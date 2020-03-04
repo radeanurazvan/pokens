@@ -16,9 +16,9 @@ export class HeaderComponent implements OnInit {
     "/home/arena/current-battle": "Fight until death!"
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getTitle(): string {
     return this.titles[this.router.routerState.snapshot.url];

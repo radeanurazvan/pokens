@@ -9,7 +9,8 @@ import {
   MatToolbarModule,
   MatDialogModule,
   MatDialogContent,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSlideToggleModule
 } from "@angular/material";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -40,6 +41,7 @@ import { CommonModule } from "@angular/common";
     MatListModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatSlideToggleModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
@@ -59,6 +61,7 @@ import { CommonModule } from "@angular/common";
     MatListModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatSlideToggleModule,
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
