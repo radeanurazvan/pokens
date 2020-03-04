@@ -22,6 +22,7 @@
         "@angular/platform-browser": "~8.2.14",
         "@angular/platform-browser-dynamic": "~8.2.14",
         "@angular/router": "~8.2.14",
+        "@aspnet/signalr": "^1.1.4",
         "@auth0/angular-jwt": "^3.0.1",
         "@types/ol": "^5.3.6",
         "guid-typescript": "^1.0.9",
