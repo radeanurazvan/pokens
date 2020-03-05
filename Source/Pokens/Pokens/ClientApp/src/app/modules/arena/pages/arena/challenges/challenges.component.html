@@ -9,7 +9,7 @@
                         <img class="pokemon-image" [src]="'data:image/png;base64,' + findPokemonByTrainer(challenge.enemyId).image" />
                     </div>
                     <ng-container *ngIf="challenge.status === 'Pending'; else accepted">
-                        <button mat-raised-button color="primary" class="challenge-button" (click)="accept(challenge)">Accept</button>
+                        <button mat-raised-button color="primary" class="challenge-button" [disabled]="hasCurrentBattle" (click)="accept(challenge)">Accept</button>
                         <button mat-raised-button color="warn" class="challenge-button" (click)="refuse(challenge)">Refuse</button>
                     </ng-container>
                     <ng-template #accepted>

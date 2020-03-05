@@ -3,6 +3,7 @@ import { ArenaService } from "../../../core/arena.service";
 import { ToastrService } from "../../../../../shared/core/toastr.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map } from 'rxjs/operators';
+import { BattlesService } from '../../../core/battles.service';
 
 @Component({
   templateUrl: "./challenges.component.html",
@@ -11,9 +12,11 @@ import { map } from 'rxjs/operators';
 export class ChallengesComponent implements OnInit {
   public challenges: any[] = [];
   public pokemons: any[] = [];
+  public hasCurrentBattle = false;
 
   constructor(
     private service: ArenaService,
+    private battlesService: BattlesService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router
@@ -28,13 +31,20 @@ export class ChallengesComponent implements OnInit {
         console.log(this.challenges);
         this.getEnemyPokemons();
       });
+    this.battlesService.getCurrentBattle().subscribe(() => {
+      this.hasCurrentBattle = true;
+    }, () => {
+      this.hasCurrentBattle = false;
+    })
   }
 
   public accept(challenge) {
     this.service
       .acceptChallenge(challenge)
-      .subscribe(() =>
+      .subscribe(() => {
         this.toastr.openToastr("You successfully accepted the challenge!")
+        this.goToBattle();
+      }
       );
   }
 
@@ -42,8 +52,8 @@ export class ChallengesComponent implements OnInit {
     // this.service
     //   .refuseChallenge(challenge)
     //   .subscribe(() => {
-        this.toastr.openToastr("You refused the challenge :(")
-      // });
+    this.toastr.openToastr("You refused the challenge :(")
+    // });
   }
 
   public goToBattle() {
