@@ -16,34 +16,46 @@
       </div>
     </div>
 
-    <div class="enemy-stats" *ngIf="enemyPokemon">
-      <div class="challenger-pokemon-details">
-        <div class="image-container">
-          <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image">
-        </div>
+    <div class="enemy-stats stats" *ngIf="enemyPokemon">
+      <div class="health-container">
+        <span class="value">100</span>
+        <progress class="health" value="100" max="100"></progress>
       </div>
-      <div class="challenger-trainer-details">
-        <div class="image-container">
-          <img class="trainer-image" src="assets/pictures/images.jpg">
+      <div class="images">
+        <div class="challenger-pokemon-details">
+          <div class="image-container">
+            <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image">
+          </div>
+        </div>
+        <div class="challenger-trainer-details">
+          <div class="image-container">
+            <img class="trainer-image" src="assets/pictures/images.jpg">
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="lower">
-    <div class="my-stats" *ngIf="myPokemon">
-      <div class="challenger-trainer-details">
-        <div class="image-container">
-          <img class="trainer-image" src="assets/pictures/images.jpg">
+    <div class="my-stats stats" *ngIf="myPokemon">
+      <div class="images">
+        <div class="challenger-trainer-details">
+          <div class="image-container">
+            <img class="trainer-image" src="assets/pictures/images.jpg">
+          </div>
+        </div>
+        <div class="challenger-pokemon-details">
+          <div class="image-container">
+            <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
+          </div>
+          <div class="pokemon-details-container">
+            <span>Pokemon Level: {{myPokemon.level}}</span>
+          </div>
         </div>
       </div>
-      <div class="challenger-pokemon-details">
-        <div class="image-container">
-          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
-        </div>
-        <div class="pokemon-details-container">
-          <span>Pokemon Level: {{myPokemon.level}}</span>
-        </div>
+      <div class="health-container">
+        <span class="value">100</span>
+        <progress class="health" value="70" max="100"></progress>
       </div>
     </div>
 
@@ -66,6 +78,7 @@
         </div>
         <div class="use-button">
           <button mat-raised-button [disabled]="selectedAbilityIndex === undefined" (click)="attack()">
+            Use
           </button>
         </div>
       </div>
