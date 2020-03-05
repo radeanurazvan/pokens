@@ -10,10 +10,19 @@ import { ChallengePopupComponent } from './pages/arena-details/challenge-popup/c
 import { ChallengesComponent } from './pages/arena/challenges/challenges.component';
 import { CurrentBattleComponent } from './pages/arena/current-battle/current-battle.component';
 import { CurrentBattleNotifications } from './pages/arena/current-battle/current-battle.notifications';
+import { BattleWonPopupComponent } from './pages/arena/current-battle/battle-won/battle-won.popup.component';
+import { BattleLostPopupComponent } from './pages/arena/current-battle/battle-lost/battle-lost.popup.component';
 
 @NgModule({
-  declarations: [ArenaComponent, ArenaDetailsComponent, ChallengePopupComponent, ChallengesComponent, CurrentBattleComponent],
-  entryComponents: [ChallengePopupComponent],
+  declarations: [
+    ArenaComponent,
+    ArenaDetailsComponent,
+    ChallengePopupComponent,
+    ChallengesComponent,
+    CurrentBattleComponent,
+    BattleWonPopupComponent,
+    BattleLostPopupComponent],
+  entryComponents: [ChallengePopupComponent, BattleWonPopupComponent, BattleLostPopupComponent],
   imports: [
     CommonModule,
     SharedModule.forChild(),

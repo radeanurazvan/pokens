@@ -21,7 +21,12 @@ interface PokemonDodged {
   trainerId: string;
 }
 
-interface BattleEnded {
+interface BattleLost {
+  trainerId: string;
+  experience: number;
+}
+
+interface BattleWon {
   trainerId: string;
   experience: number;
 }
@@ -80,12 +85,12 @@ export class CurrentBattleNotifications {
     return this;
   }
 
-  public onBattleLost(cb: (BattleEnded) => void): CurrentBattleNotifications {
+  public onBattleLost(cb: (BattleLost) => void): CurrentBattleNotifications {
     this.connection.on('TrainerLostBattleEvent', cb);
     return this;
   }
 
-  public onBattleWon(cb: (BattleEnded) => void): CurrentBattleNotifications {
+  public onBattleWon(cb: (BattleWon) => void): CurrentBattleNotifications {
     this.connection.on('TrainerWonBattleEvent', cb);
     return this;
   }

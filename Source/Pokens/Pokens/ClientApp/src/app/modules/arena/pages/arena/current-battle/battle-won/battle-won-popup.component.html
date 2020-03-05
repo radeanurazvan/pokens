@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>You won!!!</h2>
+<mat-dialog-content>
+
+  <h2>Congratulations!</h2>
+
+  <div class="result-details">
+    <div class="image-container">
+      <img src="assets/pictures/battle-won.gif" alt="">
+    </div>
+    <div class="text">
+      You really are going to be the very best! Here's some experience to help you along.
+    </div>
+  </div>
+
+  <p><b>Your pokemon gained {{data.experience}} experience points.</b></p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center" class="actions">
+  <button (click)="close()" [mat-dialog-close]="false" mat-raised-button routerLink="/home/arena" class="cancel" color="primary">
+    Alright!
+  </button>
+</mat-dialog-actions>

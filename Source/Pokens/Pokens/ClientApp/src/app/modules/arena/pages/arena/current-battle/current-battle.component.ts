@@ -5,6 +5,9 @@ import { tap, switchMap, map, delay } from 'rxjs/operators';
 import { UserService } from '../../../../../shared/core/user.service';
 import { CurrentBattleNotifications } from './current-battle.notifications';
 import { state, trigger, style, animate, transition, keyframes } from '@angular/animations';
+import { MatDialog } from '@angular/material';
+import { BattleWonPopupComponent } from './battle-won/battle-won.popup.component';
+import { BattleLostPopupComponent } from './battle-lost/battle-lost.popup.component';
 
 @Component({
   templateUrl: './current-battle.component.html',
@@ -100,7 +103,8 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
     private service: BattlesService,
     private arenaService: ArenaService,
     private userService: UserService,
-    private currentBattleNotifications: CurrentBattleNotifications) {
+    private currentBattleNotifications: CurrentBattleNotifications,
+    private dialog: MatDialog) {
   }
 
   private changeCurrentState() {
@@ -149,22 +153,32 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
         }
       })
       .onBattleWon((x) => {
-        console.log('You won');
-        console.log(x);
-
-        if (this.trainerId === x.trainerId) {
-          this.changeEnemyDeadState();
-          console.log('You won');
+        if (this.trainerId !== x.trainerId) {
+          return;
         }
+
+        this.changeEnemyDeadState();
+        setTimeout(() => {
+          this.dialog.open(BattleWonPopupComponent, {
+            data: x,
+            width: "900px"
+          });
+        }, 1200);
+        console.log('You won');
       })
       .onBattleLost((x) => {
-        console.log('You lose');
-        console.log(x);
-
-        if (this.trainerId === x.trainerId) {
-          this.changeCurrentDeadState();
-          console.log('You lose');
+        if (this.trainerId !== x.trainerId) {
+          return;
         }
+
+        this.changeCurrentDeadState();
+        setTimeout(() => {
+          this.dialog.open(BattleLostPopupComponent, {
+            data: x,
+            width: "900px"
+          });
+        }, 1200);
+        console.log('You lose');
       });
   }
 
