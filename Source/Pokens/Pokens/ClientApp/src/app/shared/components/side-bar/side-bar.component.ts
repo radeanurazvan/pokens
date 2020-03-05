@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../core/user.service';
 import { SideMenuItem } from '../../models/side-menu-item.model';
+import { AuthService } from 'src/app/modules/auth/core/auth.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -18,6 +19,7 @@ export class SideBarComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private router: Router) { }
 
   public ngOnInit(): void {
@@ -35,6 +37,11 @@ export class SideBarComponent implements OnInit {
     });
     this.sideMenuItems[index].isSelected = true;
     this.router.navigateByUrl(this.sideMenuItems[index].route);
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 
   private setUserName(): void {
