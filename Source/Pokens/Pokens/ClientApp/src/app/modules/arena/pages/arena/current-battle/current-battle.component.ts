@@ -12,10 +12,10 @@ import { state, trigger, style, animate, transition, keyframes } from '@angular/
   animations: [
     trigger('shakeit', [
       state('shakestart', style({
-        transform: 'scale(1)',
+        transform: 'scaleX(1)',
       })),
       state('shakeend', style({
-        transform: 'scale(1)',
+        transform: 'scaleX(1)',
       })),
       transition('shakestart => shakeend', animate('1000ms ease-in', keyframes([
         style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
@@ -28,14 +28,39 @@ import { state, trigger, style, animate, transition, keyframes } from '@angular/
         style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
         style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
       ]))),
-    ])]
+      transition('shakeend => shakestart', animate('1000ms ease-in', keyframes([
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.2 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.3 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.4 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.5 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.6 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.7 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
+      ])))
+    ]),
+    trigger('dead', [
+      state('deadstart', style({
+        transform: 'scale(1)',
+      })),
+      state('deadend', style({
+        transform: 'scale(-1)',
+      })),
+      transition('deadstart => deadend', animate('1000ms ease-in'))
+    ])
+  ]
 })
 export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('box', { static: false }) private myScrollContainer: ElementRef;
 
   private trainerId: string;
 
-  public currentState = 'shakestart';
+  public myCurrentState = 'shakestart';
+  public myEnemyState = 'shakestart';
+  public myCurrentDeadState = 'deadstart';
+  public myEnemyDeadState = 'deadstart';
+
   public myMaxHealth: number = 100;
   public enemyMaxHealth: number = 100;
 
@@ -76,8 +101,20 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
     private currentBattleNotifications: CurrentBattleNotifications) {
   }
 
-  private changeState() {
-    this.currentState = this.currentState === 'shakestart' ? 'shakeend' : 'shakestart';
+  private changeCurrentState() {
+    this.myCurrentState = this.myCurrentState === 'shakestart' ? 'shakeend' : 'shakestart';
+  }
+
+  private changeEnemyState() {
+    this.myEnemyState = this.myEnemyState === 'shakestart' ? 'shakeend' : 'shakestart';
+  }
+
+  private changeCurrentDeadState() {
+    this.myCurrentDeadState = this.myCurrentDeadState === 'deadstart' ? 'deadend' : 'deadstart';
+  }
+
+  private changeEnemyDeadState() {
+    this.myEnemyDeadState = this.myEnemyDeadState === 'deadstart' ? 'deadend' : 'deadstart';
   }
 
   private initEvent(): void {
@@ -92,9 +129,10 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
       })
       .onHealthChanged(x => {
         if (this.trainerId === x.trainerId) {
-          this.changeState();
+          this.changeCurrentState();
           this.myHealth = x.newHealth;
         } else {
+          this.changeEnemyState();
           this.enemyHealth = x.newHealth;
         }
       })
@@ -104,12 +142,20 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
         }
       })
       .onBattleWon((x) => {
+        console.log('You won');
+        console.log(x);
+
         if (this.trainerId === x.trainerId) {
+          this.changeEnemyDeadState();
           console.log('You won');
         }
       })
       .onBattleLost((x) => {
+        console.log('You lose');
+        console.log(x);
+
         if (this.trainerId === x.trainerId) {
+          this.changeCurrentDeadState();
           console.log('You lose');
         }
       });
