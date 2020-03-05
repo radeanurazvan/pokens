@@ -19,11 +19,11 @@ export class CurrentBattleGuard implements CanActivate {
             catchError(() => of(null)),
             map((data: any) => {
                 if (data) {
-                    this.router.navigate(['/home/arena/current-battle']);
-                    return false;
+                    return true;
                 }
 
-                return true;
+                this.router.navigate(['/home/arena']);
+                return false;
             }));
     }
 }
