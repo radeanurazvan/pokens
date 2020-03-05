@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card">
+  <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card" [ngStyle]="{'background-color': pokemon.color}">
     <div class="image-container">
       <img class="pokemon-image" mat-card-image [src]="'data:image/png;base64,'+ pokemon.images[0].contentImage"
         [alt]="pokemon.name">
