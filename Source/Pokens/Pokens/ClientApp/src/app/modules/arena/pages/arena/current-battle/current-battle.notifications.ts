@@ -3,6 +3,7 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { environment } from 'src/environments/environment';
 
 interface CooldownChanged {
+  playerId: string;
   abilityId: string;
   cooldown: number;
 }

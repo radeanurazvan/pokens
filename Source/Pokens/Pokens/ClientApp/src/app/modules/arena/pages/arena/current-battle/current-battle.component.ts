@@ -122,6 +122,10 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
   private initEvent(): void {
     this.currentBattleNotifications
       .onCooldownChanged(x => {
+        if (this.trainerId !== x.playerId) {
+          return;
+        }
+
         this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
       })
       .onTurnTaken(x => {

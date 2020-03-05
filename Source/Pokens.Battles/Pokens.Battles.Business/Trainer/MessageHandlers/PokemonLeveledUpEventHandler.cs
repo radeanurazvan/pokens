@@ -30,7 +30,7 @@ namespace Pokens.Battles.Business
         }
     }
 
-    internal sealed class PokemonHealthLeveledUpEventHandler : IIntegrationEventHandler<PokemonLeveledUpEvent>
+    internal sealed class PokemonHealthLeveledUpEventHandler //: IIntegrationEventHandler<PokemonLeveledUpEvent>
     {
         private readonly IRepositoryMediator mediator;
 
