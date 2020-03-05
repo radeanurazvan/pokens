@@ -27,7 +27,7 @@
         "@types/ol": "^5.3.6",
         "guid-typescript": "^1.0.9",
         "hammerjs": "^2.0.8",
-        "ngx-toastr": "^12.0.0",
+        "ngx-toastr": "^10.0.4",
         "ol-hashed": "^2.0.0",
         "rxjs": "~6.4.0",
         "tslib": "^1.10.0",
