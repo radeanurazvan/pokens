@@ -4,6 +4,7 @@ import { PokedexPokemonModel } from '../../models/pokedex-pokemon.model';
 import { MatDialog } from '@angular/material';
 import { PopupComponent } from 'src/app/shared/components/popup/popup.component';
 import { PopupDetailsComponent } from '../popup-details/popup-details.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pokedex',
@@ -16,8 +17,15 @@ export class PokedexComponent implements OnInit {
     private dialog: MatDialog) 
     { }
 
+  private palette: string[] = ['#F5E97E', '#A2D7D5', '#DF807E', '#55A3AB', '#CC6310'];
+
+
   ngOnInit() {
-    this.pokedexService.getAllPokemons().subscribe((pokens: PokedexPokemonModel[]) => {
+    this.pokedexService.getAllPokemons()
+    .pipe(
+      map(data => data.map(x => { x.color = this.getBackGroundColor(x.name.charCodeAt(0)); return x; }))
+    )
+    .subscribe((pokens: PokedexPokemonModel[]) => {
       this.pokemons = pokens
     });
   }
@@ -39,5 +47,14 @@ export class PokedexComponent implements OnInit {
           abilities: pokemon.abilities
       }
     });
+  }
+
+  
+  private getBackGroundColor(code: number): string {
+    return this.palette[this.getRandomInt(code)];
+  }
+
+  private getRandomInt(code: number) {
+    return Math.floor(code % 5);
   }
 }

@@ -1,28 +1,70 @@
-.icon-stats{
+.icon-stats {
     display: flex;
     align-items: center;
-
     img {
-    width: 25px;
-    height: 25px;
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
     }
-  }
-  .abilities-container{
+}
+
+.abilities-container {
     display: flex;
     justify-content: space-evenly;
-    padding: 50px;
-  }
-  .ability-image{
+    flex-wrap: wrap;
+}
+
+.ability-image {
     width: 50px;
     height: 50px;
-  }
+}
 
-  .card-ability{
-      border:solid rgb(211, 25, 25);
-  }
+.card-ability {
+    margin: 10px;
+    width: 250px;
+}
 
-.pokemon-image{
+.pokemon-image {
     width: auto;
     height: 250px;
-    padding: 50px;
+    margin: 0 50px;
+}
+
+.stats-container {
+  width: 400px;
+}
+
+mat-card {
+    padding: 0;
+    border-radius: 15px;
+    mat-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        
+        padding: 5px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background: #edf2ef;
+        height: 50px;
+        font-weight: 600;
+
+        .mat-card-header-text {
+          margin: 16px 0;
+        }
+    }
+
+    mat-card-content {
+      padding: 5px;
+    }
+}
+
+.pokemon-name {
+    font-weight: 600;
+}
+
+.popup-content {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
