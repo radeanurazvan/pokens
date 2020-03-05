@@ -200,7 +200,10 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
         tap(pokemons => this.pokemons = pokemons)
       )
       .subscribe(() => {
-        this.abilities = this.myPokemon.abilities;
+        this.abilities = this.myPokemon.abilities.map(a => {
+          a.cooldown = 0;
+          return a;
+        });
         this.currentBattleNotifications.start(this.battle.id);
 
         const isMeAttacker = this.battle.attackerId === this.trainerId;

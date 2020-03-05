@@ -71,7 +71,7 @@ namespace Pokens.Pokedex.Infrastructure.Seed
             Damage = 50,
             Description = "The user bites with flame-cloaked fangs. It may also make the foe flinch or sustain a burn.",
             Image = new Image("FireFang.png", ImageUrlToBytes(DefaultImages.Abilities.CharmanderFireFang)),
-            Cooldown = 1,
+            Cooldown = 2,
             RequiredLevel = 6
         };
 

@@ -36,8 +36,8 @@ namespace Pokens.Battles.Domain
         internal void DecrementCooldowns()
         {
             abilitiesOnCooldown.ForEach(a => a.Decrement());
-            abilitiesOnCooldown.Where(a => a.CooldownFinished).ToList()
-                .ForEach(a => abilitiesOnCooldown.Remove(a));
+            //abilitiesOnCooldown.Where(a => a.CooldownFinished).ToList()
+            //    .ForEach(a => abilitiesOnCooldown.Remove(a));
         }
 
         public Result Use(Ability ability)

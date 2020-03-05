@@ -154,8 +154,20 @@
           align-items: center;
           overflow: hidden;
 
+          position: relative;
+
+          .cooldown {
+            position: absolute;
+            font-weight: bold;
+            font-size: 20px;
+          }
+
           .ability-image {
             height: 120px;
+
+            &.on-cooldown {
+              opacity: 0.2;
+            }
           }
         }
       }

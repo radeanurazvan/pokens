@@ -71,7 +71,8 @@
                 <span>{{ability.name}}</span>
               </div>
               <div class="ability-image-container">
-                <img class="ability-image" [src]="'data:image/png;base64,'+ ability.image">
+                <span class="cooldown" *ngIf="ability.cooldown > 0">{{ability.cooldown}}</span>
+                <img class="ability-image" [class.on-cooldown]="ability.cooldown > 0" [src]="'data:image/png;base64,'+ ability.image">
               </div>
             </div>
           </div>
