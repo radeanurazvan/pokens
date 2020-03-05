@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { BattlesService } from '../../../core/battles.service';
 import { ArenaService } from '../../../core/arena.service';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { tap, switchMap, map, delay } from 'rxjs/operators';
 import { UserService } from '../../../../../shared/core/user.service';
 import { CurrentBattleNotifications } from './current-battle.notifications';
 
@@ -9,7 +9,9 @@ import { CurrentBattleNotifications } from './current-battle.notifications';
   templateUrl: './current-battle.component.html',
   styleUrls: ['./current-battle.component.scss']
 })
-export class CurrentBattleComponent implements OnInit, OnDestroy {
+export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('box', { static: false }) private myScrollContainer: ElementRef;
+
   private trainerId: string;
 
   public trainerName: string;
@@ -17,6 +19,8 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
   public pokemons: any[] = [];
   public selectedAbilityIndex;
   public abilities: any[] = [];
+  public myPokemonHealth: number;
+  public enemyPokemonHealth: number;
 
   public get comentaries() {
     if (this.battle) {
@@ -48,6 +52,27 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
     this.currentBattleNotifications
       .onCooldownChanged(x => {
         this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
+      })
+      .onTurnTaken(x => {
+        setTimeout(() => {
+          this.service.getCurrentBattle().subscribe(b => this.battle = b);
+        }, 300);
+      })
+      .onHealthChanged(x => {
+        if (this.trainerId === x.trainerId) {
+          console.log('Took damage');
+        }
+      })
+      .onAbilityDodged(x => {
+        if (this.trainerId === x.trainerId) {
+          console.log('Dodged');
+        }
+      })
+      .onBattleWon(() => {
+        console.log('You won');
+      })
+      .onBattleLost(() => {
+        console.log('You lose');
       });
   }
 
@@ -61,7 +86,6 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
     this.initEvent();
     this.trainerId = this.userService.getUserId();
     this.trainerName = this.userService.getUserName();
-    this.currentBattleNotifications.start();
     this.service.getCurrentBattle()
       .pipe(
         tap(b => this.battle = b),
@@ -71,9 +95,14 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.abilities = this.myPokemon.abilities;
+        this.currentBattleNotifications.start(this.battle.id);
         console.log(this.battle);
         console.log(this.pokemons);
       });
+  }
+
+  public ngAfterViewChecked(): void {
+    this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
   }
 
   public ngOnDestroy(): void {
