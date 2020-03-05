@@ -14,6 +14,13 @@ namespace Pokens.Battles.Infrastructure
             this.hubContext = hubContext;
         }
 
+        public Task NotifyBattleStarted(BattleStartedEvent @event)
+        {
+            return Task.WhenAll(
+                this.hubContext.Clients.Group(@event.AttackerId.ToString()).SendAsync(nameof(BattleStartedEvent)),
+                this.hubContext.Clients.Group(@event.DefenderId.ToString()).SendAsync(nameof(BattleStartedEvent)));
+        }
+
         public Task NotifyCooldownChanged(PlayerCooldownChangedEvent @event)
         {
             return this.hubContext.Clients.Group(@event.BattleId.ToString()).SendAsync(nameof(PlayerCooldownChangedEvent), @event);

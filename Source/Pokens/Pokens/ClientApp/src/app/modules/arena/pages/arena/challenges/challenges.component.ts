@@ -45,9 +45,6 @@ export class ChallengesComponent implements OnInit {
       .acceptChallenge(challenge)
       .subscribe(() => {
         this.toastr.openToastr("You successfully accepted the challenge!");
-        setTimeout(() => {
-          this.goToBattle();
-        }, 200);
       }
       );
   }

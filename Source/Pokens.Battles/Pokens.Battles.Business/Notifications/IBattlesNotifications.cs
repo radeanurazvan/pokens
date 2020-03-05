@@ -5,6 +5,7 @@ namespace Pokens.Battles.Business
 {
     public interface IBattlesNotifications
     {
+        Task NotifyBattleStarted(BattleStartedEvent @event);
         Task NotifyCooldownChanged(PlayerCooldownChangedEvent @event);
         Task NotifyTookTurn(PlayerTookTurnEvent @event);
         Task NotifyHealthChanged(BattleHealthChangedEvent @event);

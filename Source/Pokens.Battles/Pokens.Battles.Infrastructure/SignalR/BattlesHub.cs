@@ -9,5 +9,10 @@ namespace Pokens.Battles.Infrastructure
         {
             return this.Groups.AddToGroupAsync(this.Context.ConnectionId, battleId);
         }
+
+        public Task JoinTrainerNotifications(string trainerId)
+        {
+            return this.Groups.AddToGroupAsync(this.Context.ConnectionId, trainerId);
+        }
     }
 }

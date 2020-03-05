@@ -9,7 +9,8 @@ namespace Pokens.Battles.Business
         IDomainEventHandler<BattleHealthChangedEvent>, 
         IDomainEventHandler<PokemonDodgedAbilityEvent>,
         IDomainEventHandler<TrainerLostBattleEvent>,
-        IDomainEventHandler<TrainerWonBattleEvent>
+        IDomainEventHandler<TrainerWonBattleEvent>,
+        IDomainEventHandler<BattleStartedEvent>
     {
         private readonly IBattlesNotifications notifications;
 
@@ -29,5 +30,6 @@ namespace Pokens.Battles.Business
         public Task Handle(TrainerLostBattleEvent @event) => notifications.NotifyBattleLost(@event);
 
         public Task Handle(TrainerWonBattleEvent @event) => notifications.NotifyBattleWon(@event);
+        public Task Handle(BattleStartedEvent @event) => notifications.NotifyBattleStarted(@event);
     }
 }

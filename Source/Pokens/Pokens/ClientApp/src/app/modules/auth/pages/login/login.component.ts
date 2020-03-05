@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
 import { ToastrService } from 'src/app/shared/core/toastr.service';
+import { AppNotifications } from 'src/app/app.notifications';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastrService: ToastrService,
-    private router: Router) { }
+    private router: Router,
+    private notifications: AppNotifications) { }
 
   public ngOnInit(): void {
     this.initForm();
@@ -34,6 +37,8 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('currentUserToken', JSON.stringify(data.value.token));
           this.isLoaded = true;
           this.loggedIn();
+          const trainerId = new JwtHelperService().decodeToken(data.value.token).TrainerId;
+          this.notifications.start(trainerId);
         },
         (error) => {
           this.isLoaded = true;
