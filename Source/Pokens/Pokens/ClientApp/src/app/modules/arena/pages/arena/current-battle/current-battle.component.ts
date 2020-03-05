@@ -67,6 +67,8 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
   public myHealth: number = 100;
   public enemyHealth: number = 100;
 
+  public isMeActivePlayer = false;
+
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
@@ -123,6 +125,7 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
         this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
       })
       .onTurnTaken(x => {
+        this.isMeActivePlayer = x.playerId !== this.trainerId;
         setTimeout(() => {
           this.service.getCurrentBattle().subscribe(b => this.battle = b);
         }, 300);

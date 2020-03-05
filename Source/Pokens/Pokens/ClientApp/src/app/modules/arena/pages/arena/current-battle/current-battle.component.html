@@ -24,7 +24,7 @@
       <div class="images">
         <div class="challenger-pokemon-details">
           <div class="image-container" [@shakeit]="myEnemyState" [@dead]="myEnemyDeadState">
-            <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image">
+            <img class="pokemon-image" [class.active-pokemon]="!isMeActivePlayer" [src]="'data:image/png;base64,'+ enemyPokemon.image">
           </div>
         </div>
         <div class="challenger-trainer-details">
@@ -46,7 +46,7 @@
         </div>
         <div class="challenger-pokemon-details">
           <div class="image-container" [@shakeit]="myCurrentState" [@dead]="myCurrentDeadState">
-            <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
+            <img class="pokemon-image" [class.active-pokemon]="isMeActivePlayer" [src]="'data:image/png;base64,'+ myPokemon.image">
           </div>
           <div class="pokemon-details-container">
             <span>Pokemon Level: {{myPokemon.level}}</span>

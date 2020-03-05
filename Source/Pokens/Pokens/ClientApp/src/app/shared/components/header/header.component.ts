@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
     "/home/arena/details": "Here you can see the players in this arena",
     "/home/profile": "These are all the pokemons that you have",
     "/home/pokedex": "Want to know more about pokemons?",
-    "/home/arena/current-battle": "Fight until death!"
+    "/home/arena/current-battle": "You gotta be the very best!"
   };
 
   constructor(private router: Router) { }
