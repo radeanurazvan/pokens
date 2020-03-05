@@ -97,7 +97,13 @@ namespace Pokens.Battles.Domain
         public void RaisePokemonLevel(Guid pokemonId, int newLevel)
         {
             this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
-                .Execute(_ => ReactToDomainEvent(new TrainerPokemonChangedLevelEvent(pokemonId, newLevel)));
+                .Execute(p => ReactToDomainEvent(new TrainerPokemonChangedLevelEvent(pokemonId, newLevel)));
+        }
+
+        public void RaisePokemonHealth(Guid pokemonId, int newLevel)
+        {
+            this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
+                .Execute(_ => ReactToDomainEvent(new TrainerPokemonHealthLevelChangedEvent(pokemonId, newLevel)));
         }
 
         internal Result LeaveArena()
@@ -276,6 +282,12 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerCollectedExperienceEvent @event)
         {
+        }
+
+        private void When(TrainerPokemonHealthLevelChangedEvent @event)
+        {
+            this.pokemons.FirstOrNothing(p => p.Id == @event.PokemonId)
+                .Execute(p => p.EmbraceHealthBonus(@event.BonusHealth));
         }
     }
 }

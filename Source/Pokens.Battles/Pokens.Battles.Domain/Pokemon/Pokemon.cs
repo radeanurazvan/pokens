@@ -38,5 +38,10 @@ namespace Pokens.Battles.Domain
         internal void GoToLevel(int level) => Level = level;
 
         internal void LevelUp() => Level++;
+
+        internal void EmbraceHealthBonus(int bonusHealth)
+        {
+            Stats = Stats.ChangingDefensive(old => old.WithMoreHealth(bonusHealth));
+        }
     }
 }

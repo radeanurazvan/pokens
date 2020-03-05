@@ -99,7 +99,7 @@ namespace Pokens.Battles.Domain
                 .Ensure(() => ActivePlayer == player.Id, Messages.YouAreNotTheActivePlayer)
                 .Ensure(() => ActivePokemon.CanUse(ability), Messages.AbilityIsOnCooldown)
                 .Tap(() => ReactToDomainEvent(new PlayerUsedAbilityEvent(ActivePlayer, ability, damageResult.Value)))
-                .Tap(() => ActivePokemon.Cooldowns.Select(c => new PlayerCooldownChangedEvent(Id, c.AbilityId, c.Left)).ForEach(a => AddDomainEvent(a)))
+                .Tap(() => ActivePokemon.Cooldowns.Select(c => new PlayerCooldownChangedEvent(Id, ActivePlayer, c.AbilityId, c.Left)).ForEach(a => AddDomainEvent(a)))
                 .TapIf(damageResult.IsSuccess && damageResult.Value == 0, () => AddDomainEvent(new PokemonDodgedAbilityEvent(Id, WaitingPlayer)))
                 .TapIf(damageResult.IsSuccess && damageResult.Value != 0, () => AddDomainEvent(new BattleHealthChangedEvent(Id, WaitingPlayer, WaitingPokemon.Defensive.Health)))
                 .TapIf(WaitingPokemon.HasFainted, ConcludeBattle)

@@ -22,7 +22,12 @@ namespace Pokens.Battles.Domain
         {
             return new DefensiveStats(this.Health - healthToSubtract, Defense, DodgeChance);
         }
-        
+
+        public DefensiveStats WithMoreHealth(int healthToAdd)
+        {
+            return new DefensiveStats(this.Health + healthToAdd, Defense, DodgeChance);
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Health;
