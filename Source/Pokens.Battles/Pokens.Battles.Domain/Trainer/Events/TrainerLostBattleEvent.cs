@@ -10,13 +10,16 @@ namespace Pokens.Battles.Domain
         {
         }
 
-        public TrainerLostBattleEvent(Guid battleId, int experience)
+        public TrainerLostBattleEvent(Guid trainerId, Guid battleId, int experience)
             : this()
         {
+            TrainerId = trainerId;
             Experience = experience;
             BattleId = battleId;
             LostAt = TimeProvider.Instance().UtcNow;
         }
+
+        public Guid TrainerId { get; private set; }
 
         public int Experience { get; private set; }
 
