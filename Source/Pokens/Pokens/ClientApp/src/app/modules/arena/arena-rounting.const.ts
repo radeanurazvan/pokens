@@ -16,7 +16,6 @@ export const routes: Routes = [
     {
         path: 'details',
         component: ArenaDetailsComponent,
-        canActivate: [CurrentBattleGuard]
     },
     {
       path: ':id/challenges',

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatCardModule, MatButtonModule } from '@angular/material';
+
 import { ArenaComponent } from './pages/arena/arena/arena.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ArenaRoutingModule } from './arena-routing.module';
@@ -15,7 +17,9 @@ import { CurrentBattleNotifications } from './pages/arena/current-battle/current
   imports: [
     CommonModule,
     SharedModule.forChild(),
-    ArenaRoutingModule
+    ArenaRoutingModule,
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [CurrentBattleNotifications]
 })
