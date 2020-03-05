@@ -23,4 +23,21 @@ namespace Pokens.Battles.Business
                 .Tap(() => mediator.Write<Trainer>().Save());
         }
     }
+
+    internal sealed class PokemonHealthLeveledUpEventHandler : IIntegrationEventHandler<PokemonLeveledUpEvent>
+    {
+        private readonly IRepositoryMediator mediator;
+
+        public PokemonHealthLeveledUpEventHandler(IRepositoryMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+
+        public Task Handle(IntegrationEvent<PokemonLeveledUpEvent> @event)
+        {
+            return mediator.ReadById<Trainer>(@event.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
+                .Tap(t => t.RaisePokemonHealth(@event.Data.PokemonId, @event.Data.Level))
+                .Tap(() => mediator.Write<Trainer>().Save());
+        }
+    }
 }
