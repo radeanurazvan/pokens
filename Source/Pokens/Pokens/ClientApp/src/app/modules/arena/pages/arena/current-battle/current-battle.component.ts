@@ -12,6 +12,12 @@ import { CurrentBattleNotifications } from './current-battle.notifications';
 export class CurrentBattleComponent implements OnInit, OnDestroy {
   private trainerId: string;
 
+  public myMaxHealth: number = 100;
+  public enemyMaxHealth: number = 100;
+
+  public myHealth: number = 100;
+  public enemyHealth: number = 100;
+
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
@@ -46,8 +52,13 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
 
   private initEvent(): void {
     this.currentBattleNotifications
-      .onCooldownChanged(x => {
-        this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
+      .onCooldownChanged(x => this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown)
+      .onHealthChanged(hc => {
+        if (hc.trainerId === this.trainerId) {
+          this.myHealth = hc.newHealth;
+        } else {
+          this.enemyHealth = hc.newHealth;
+        }
       });
   }
 
@@ -71,6 +82,15 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.abilities = this.myPokemon.abilities;
         this.currentBattleNotifications.start(this.battle.id);
+
+        const isMeAttacker = this.battle.attackerId === this.trainerId;
+
+        this.myMaxHealth = isMeAttacker ? this.battle.initialAttackerHealth : this.battle.initialDefenderHealth;
+        this.enemyMaxHealth = isMeAttacker ? this.battle.initialDefenderHealth : this.battle.initialAttackerHealth;
+
+        this.myHealth = isMeAttacker ? this.battle.attackerHealth : this.battle.defenderHealth;
+        this.enemyHealth = isMeAttacker ? this.battle.defenderHealth : this.battle.attackerHealth;
+
         console.log(this.battle);
         console.log(this.pokemons);
       });
