@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using EnsureThat;
+using Microsoft.Extensions.Logging;
 using Pokens.Battles.Domain;
 using Pokens.Battles.Resources;
 using Pomelo.Kernel.Domain;
@@ -13,10 +14,12 @@ namespace Pokens.Battles.Business
     internal sealed class PokemonCaughtEventHandler : IIntegrationEventHandler<PokemonCaughtEvent>
     {
         private readonly IRepositoryMediator mediator;
+        private readonly ILogger logger;
 
-        public PokemonCaughtEventHandler(IRepositoryMediator mediator)
+        public PokemonCaughtEventHandler(IRepositoryMediator mediator, ILogger<PokemonCaughtEventHandler> logger)
         {
             this.mediator = mediator;
+            this.logger = logger;
         }
 
         public Task Handle(IntegrationEvent<PokemonCaughtEvent> message)
@@ -25,7 +28,9 @@ namespace Pokens.Battles.Business
 
             return mediator.ReadById<Trainer>(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
                 .Tap(t => t.Catch(GetPokemon(message.Metadata.AggregateId, message.Data)))
-                .Tap(_ => this.mediator.Write<Trainer>().Save());
+                .Tap(_ => this.mediator.Write<Trainer>().Save())
+                .OnFailure(e => this.logger.LogError(e))
+                .OnFailure(e => throw new InvalidOperationException(e));
         }
 
         private Pokemon GetPokemon(Guid trainerId, PokemonCaughtEvent @event)
