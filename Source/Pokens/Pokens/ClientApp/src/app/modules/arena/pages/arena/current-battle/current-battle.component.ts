@@ -36,6 +36,12 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
   private trainerId: string;
 
   public currentState = 'shakestart';
+  public myMaxHealth: number = 100;
+  public enemyMaxHealth: number = 100;
+
+  public myHealth: number = 100;
+  public enemyHealth: number = 100;
+
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
@@ -87,6 +93,9 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
       .onHealthChanged(x => {
         if (this.trainerId === x.trainerId) {
           this.changeState();
+          this.myHealth = x.newHealth;
+        } else {
+          this.enemyHealth = x.newHealth;
         }
       })
       .onAbilityDodged(x => {
@@ -126,6 +135,15 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
       .subscribe(() => {
         this.abilities = this.myPokemon.abilities;
         this.currentBattleNotifications.start(this.battle.id);
+
+        const isMeAttacker = this.battle.attackerId === this.trainerId;
+
+        this.myMaxHealth = isMeAttacker ? this.battle.initialAttackerHealth : this.battle.initialDefenderHealth;
+        this.enemyMaxHealth = isMeAttacker ? this.battle.initialDefenderHealth : this.battle.initialAttackerHealth;
+
+        this.myHealth = isMeAttacker ? this.battle.attackerHealth : this.battle.defenderHealth;
+        this.enemyHealth = isMeAttacker ? this.battle.defenderHealth : this.battle.attackerHealth;
+
         console.log(this.battle);
         console.log(this.pokemons);
       });

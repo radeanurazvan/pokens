@@ -38,7 +38,11 @@ export class ArenaService {
   }
 
   public getReceivedChallenges(): Observable<any> {
-    return this.http.get<ArenaModel>(`${environment.apiArenaUrl.read}/trainers/me/challenges/received`, this.httpOptions);
+    return this.http.get<any>(`${environment.apiArenaUrl.read}/trainers/me/challenges/received`, this.httpOptions);
+  }
+
+  public getSentChallenges(): Observable<any> {
+    return this.http.get<any>(`${environment.apiArenaUrl.read}/trainers/me/challenges/sent`, this.httpOptions);
   }
 
   public challenge(arena: ArenaModel, challengedId: string, challengedPokemon: string, challengerPokemon: string): Observable<any> {

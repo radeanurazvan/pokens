@@ -39,9 +39,11 @@ namespace Pokens.Battles.Reactors.Denormalizers
                 ArenaId = notification.Data.ArenaId.ToString(),
                 AttackerId = notification.Data.AttackerId.ToString(),
                 AttackerPokemonId = challenge.PokemonId,
+                InitialAttackerHealth = notification.Data.AttackerPokemon.Health,
                 AttackerHealth = notification.Data.AttackerPokemon.Health,
                 DefenderId = notification.Data.DefenderId.ToString(),
                 DefenderPokemonId = challenge.EnemyPokemonId,
+                InitialDefenderHealth = notification.Data.DefenderPokemon.Health,
                 DefenderHealth = notification.Data.DefenderPokemon.Health,
                 StartedAt = notification.Data.StartedAt
             });
