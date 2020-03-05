@@ -11,6 +11,7 @@ import { BattlesService } from '../../../core/battles.service';
 })
 export class ChallengesComponent implements OnInit {
   public challenges: any[] = [];
+  public sentChallenges: any[] = [];
   public pokemons: any[] = [];
   public hasCurrentBattle = false;
 
@@ -33,6 +34,7 @@ export class ChallengesComponent implements OnInit {
       });
     this.battlesService.getCurrentBattle().subscribe(() => {
       this.hasCurrentBattle = true;
+      this.goToBattle();
     }, () => {
       this.hasCurrentBattle = false;
     })
@@ -42,8 +44,10 @@ export class ChallengesComponent implements OnInit {
     this.service
       .acceptChallenge(challenge)
       .subscribe(() => {
-        this.toastr.openToastr("You successfully accepted the challenge!")
-        this.goToBattle();
+        this.toastr.openToastr("You successfully accepted the challenge!");
+        setTimeout(() => {
+          this.goToBattle();
+        }, 200);
       }
       );
   }
@@ -68,10 +72,10 @@ export class ChallengesComponent implements OnInit {
     this.challenges.forEach(c => {
       this.service.getAllPokemons([c.enemyId])
         .pipe(
-          map(pokemons => pokemons.filter(p => p.id === c.enemyPokemonId))
+          map(pokemons => pokemons.find(p => p.id === c.enemyPokemonId))
         )
         .subscribe(res => {
-          this.pokemons.push(res[0]);
+          this.pokemons.push(res);
         });
     })
   }
