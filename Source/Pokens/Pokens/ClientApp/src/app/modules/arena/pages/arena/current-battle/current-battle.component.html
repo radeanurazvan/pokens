@@ -18,8 +18,8 @@
 
     <div class="enemy-stats stats" *ngIf="enemyPokemon">
       <div class="health-container">
-        <span class="value">100</span>
-        <progress class="health" value="100" max="100"></progress>
+        <span class="value">{{enemyHealth}}</span>
+        <progress class="health" [value]="enemyHealth" [max]="enemyMaxHealth"></progress>
       </div>
       <div class="images">
         <div class="challenger-pokemon-details">
@@ -54,8 +54,8 @@
         </div>
       </div>
       <div class="health-container">
-        <span class="value">100</span>
-        <progress class="health" value="70" max="100"></progress>
+        <span class="value">{{myHealth}}</span>
+        <progress class="health" [value]="myHealth" [max]="myMaxHealth"></progress>
       </div>
     </div>
 

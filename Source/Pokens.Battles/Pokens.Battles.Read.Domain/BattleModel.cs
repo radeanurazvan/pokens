@@ -17,11 +17,15 @@ namespace Pokens.Battles.Read.Domain
 
         public string AttackerPokemonId { get; set; }
 
+        public int InitialAttackerHealth { get; set; }
+
         public int AttackerHealth { get; set; }
 
         public string DefenderId { get; set; }
 
         public string DefenderPokemonId { get; set; }
+
+        public int InitialDefenderHealth { get; set; }
 
         public int DefenderHealth { get; set; }
 

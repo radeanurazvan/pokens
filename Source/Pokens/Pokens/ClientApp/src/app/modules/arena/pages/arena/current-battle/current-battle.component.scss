@@ -11,6 +11,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   position: relative;
   padding: 10px 0;
@@ -23,6 +24,7 @@
 
 .health {
   width: 75%;
+  height: 20px;
   background-color: #66923d;
 }
 
