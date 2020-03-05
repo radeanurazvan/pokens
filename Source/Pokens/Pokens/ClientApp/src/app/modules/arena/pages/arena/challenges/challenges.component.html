@@ -13,7 +13,7 @@
                         <button mat-raised-button color="warn" class="challenge-button" (click)="refuse(challenge)">Refuse</button>
                     </ng-container>
                     <ng-template #accepted>
-                        <button mat-raised-button color="primary" class="challenge-button" (click)="goToBattle()">Go to battle</button>
+                        <!-- <button mat-raised-button color="primary" class="challenge-button" (click)="goToBattle()">Go to battle</button> -->
                     </ng-template>
                 </mat-card-content>
                 <div class="corner-ribbon" [style.background]="challenge.status === 'Accepted' ? '#21d961' : '#dd63f2'">{{challenge.status}}</div>

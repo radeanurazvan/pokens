@@ -84,14 +84,14 @@ namespace Pokens.Battles.Domain
         {
             return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
-                .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(battleId, experience)));
+                .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(Id, battleId, experience)));
         }
 
         public Result AcknowledgeLostBattle(Guid battleId, int experience)
         {
             return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
-                .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(battleId, experience)));
+                .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(Id, battleId, experience)));
         }
 
         public void RaisePokemonLevel(Guid pokemonId, int newLevel)
