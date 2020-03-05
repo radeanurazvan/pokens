@@ -11,6 +11,7 @@ import { HasPokemonsGuard } from './shared/core/has-pokemons.guard';
 import { AuthGuard } from './shared/core/auth.guard';
 import { IsInArenaGuard } from './shared/core/is-in-arena.guard';
 import { SharedModule } from './shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
 
 export function tokenGetter() {
   return localStorage.getItem("currentUserToken");
@@ -24,6 +25,10 @@ export function tokenGetter() {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-full-width'
+    }),
     SharedModule.forChild(),
     JwtModule.forRoot({
       config: {

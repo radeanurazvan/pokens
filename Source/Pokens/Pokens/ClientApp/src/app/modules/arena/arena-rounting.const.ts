@@ -23,6 +23,7 @@ export const routes: Routes = [
     },
     {
       path: 'current-battle',
-      component: CurrentBattleComponent
+      component: CurrentBattleComponent,
+      canActivate: [CurrentBattleGuard]
     }
 ];
