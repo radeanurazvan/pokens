@@ -97,10 +97,87 @@ namespace Pokens.Pokedex.Infrastructure.Seed
 
         public static Ability TailWhip { get; } = new Ability
         {
-            Name = "Tail Whip",
+            Name = "TailWhip",
             Damage = 1,
-            Description = "Hits the opponent with the tail"
+            Description = "Hits the opponent with the tail",
+            Image = new Image("TailWhip.png", ImageUrlToBytes(DefaultImages.Abilities.TailWhip)),
+            Cooldown = 8,
         };
+
+        public static Ability Overgrow { get; } = new Ability
+        {
+            Name = "Overgrow",
+            Damage = 2,
+            Description = "Raises Attack when HP is low.",
+            Image = new Image("Overgrow.png", ImageUrlToBytes(DefaultImages.Abilities.Overgrow)),
+            Cooldown = 20,
+        };
+
+        public static Ability Chlorophyll { get; } = new Ability
+        {
+            Name = "Chlorophyll",
+            Damage = 4,
+            Description = "Boosts attack frequency if the weather is sunny.",
+            Image = new Image("Chlorophyll.png", ImageUrlToBytes(DefaultImages.Abilities.Chlorophyll)),
+            Cooldown = 5,
+            RequiredLevel = 15
+        };
+
+        public static Ability ThickFat { get; } = new Ability
+        {
+            Name = "ThickFat",
+            Damage = 1,
+            Description = "Resistant to Fire- and Ice-type moves.",
+            Image = new Image("ThickFat.png", ImageUrlToBytes(DefaultImages.Abilities.ThickFat))
+        };
+
+        public static Ability LightningRod { get; } = new Ability
+        {
+            Name = "LightningRod",
+            Damage = 3,
+            Description = "Absorbs all Electric-type moves to raise Attack.",
+            Image = new Image("LightningRod.png", ImageUrlToBytes(DefaultImages.Abilities.LightningRod)),
+            Cooldown = 10,
+            RequiredLevel = 8
+        };
+
+        public static Ability Blaze { get; } = new Ability
+        {
+            Name = "Blaze",
+            Damage = 1,
+            Description = "Boosts the power of Fire-type moves when HP is low.",
+            Image = new Image("Blaze.png", ImageUrlToBytes(DefaultImages.Abilities.Blaze))
+        };
+
+        public static Ability SolarPower { get; } = new Ability
+        {
+            Name = "SolarPower",
+            Damage = 2,
+            Description = "Boosts Special Attack in sunny weather, also loses HP.",
+            Image = new Image("SolarPower.png", ImageUrlToBytes(DefaultImages.Abilities.SolarPower)),
+            Cooldown = 12,
+            RequiredLevel = 18
+        };
+
+        public static Ability Torrent { get; } = new Ability
+        {
+            Name = "Torrent",
+            Damage = 3,
+            Description = "Raises Attack when HP is low.",
+            Image = new Image("Torrent.png", ImageUrlToBytes(DefaultImages.Abilities.Torrent)),
+            Cooldown = 5,
+            RequiredLevel = 6
+        };
+
+        public static Ability KeenEye { get; } = new Ability
+        {
+            Name = "KeenEye",
+            Damage = 0,
+            Description = "Prevents the Pokémon from losing health.",
+            Image = new Image("KeenEye.png", ImageUrlToBytes(DefaultImages.Abilities.KeenEye)),
+            Cooldown = 3,
+        };
+
 
         public static IEnumerable<Ability> All => typeof(DefaultAbilities).GetProperties(BindingFlags.Public | BindingFlags.Static)
             .Where(p => p.PropertyType == typeof(Ability))
