@@ -4,16 +4,38 @@ import { ArenaService } from '../../../core/arena.service';
 import { tap, switchMap, map, delay } from 'rxjs/operators';
 import { UserService } from '../../../../../shared/core/user.service';
 import { CurrentBattleNotifications } from './current-battle.notifications';
+import { state, trigger, style, animate, transition, keyframes } from '@angular/animations';
 
 @Component({
   templateUrl: './current-battle.component.html',
-  styleUrls: ['./current-battle.component.scss']
+  styleUrls: ['./current-battle.component.scss'],
+  animations: [
+    trigger('shakeit', [
+      state('shakestart', style({
+        transform: 'scale(1)',
+      })),
+      state('shakeend', style({
+        transform: 'scale(1)',
+      })),
+      transition('shakestart => shakeend', animate('1000ms ease-in', keyframes([
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.2 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.3 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.4 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.5 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.6 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.7 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
+      ]))),
+    ])]
 })
 export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('box', { static: false }) private myScrollContainer: ElementRef;
 
   private trainerId: string;
 
+  public currentState = 'shakestart';
   public trainerName: string;
   public battle: any;
   public pokemons: any[] = [];
@@ -48,6 +70,10 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
     private currentBattleNotifications: CurrentBattleNotifications) {
   }
 
+  private changeState() {
+    this.currentState = this.currentState === 'shakestart' ? 'shakeend' : 'shakestart';
+  }
+
   private initEvent(): void {
     this.currentBattleNotifications
       .onCooldownChanged(x => {
@@ -60,7 +86,7 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
       })
       .onHealthChanged(x => {
         if (this.trainerId === x.trainerId) {
-          console.log('Took damage');
+          this.changeState();
         }
       })
       .onAbilityDodged(x => {
@@ -68,11 +94,15 @@ export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewCheck
           console.log('Dodged');
         }
       })
-      .onBattleWon(() => {
-        console.log('You won');
+      .onBattleWon((x) => {
+        if (this.trainerId === x.trainerId) {
+          console.log('You won');
+        }
       })
-      .onBattleLost(() => {
-        console.log('You lose');
+      .onBattleLost((x) => {
+        if (this.trainerId === x.trainerId) {
+          console.log('You lose');
+        }
       });
   }
 

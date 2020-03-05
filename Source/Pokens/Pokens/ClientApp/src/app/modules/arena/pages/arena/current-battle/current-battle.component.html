@@ -39,7 +39,7 @@
       </div>
       <div class="challenger-pokemon-details">
         <div class="image-container">
-          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
+          <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image" [@shakeit]="currentState">
         </div>
         <div class="pokemon-details-container">
           <span>Pokemon Level: {{myPokemon.level}}</span>

@@ -20,6 +20,11 @@ interface PokemonDodged {
   trainerId: string;
 }
 
+interface BattleEnded {
+  trainerId: string;
+  experience: number;
+}
+
 @Injectable()
 export class CurrentBattleNotifications {
   private stoppedOnPurpose = false;
@@ -74,12 +79,12 @@ export class CurrentBattleNotifications {
     return this;
   }
 
-  public onBattleLost(cb: () => void): CurrentBattleNotifications {
+  public onBattleLost(cb: (BattleEnded) => void): CurrentBattleNotifications {
     this.connection.on('TrainerLostBattleEvent', cb);
     return this;
   }
 
-  public onBattleWon(cb: () => void): CurrentBattleNotifications {
+  public onBattleWon(cb: (BattleEnded) => void): CurrentBattleNotifications {
     this.connection.on('TrainerWonBattleEvent', cb);
     return this;
   }
