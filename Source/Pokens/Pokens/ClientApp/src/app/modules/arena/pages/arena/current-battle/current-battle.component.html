@@ -6,7 +6,7 @@
         <div class="box-header">
           Battle log
         </div>
-        <div class="box">
+        <div #box class="box">
           <ul>
             <li *ngFor="let comentary of comentaries">
               {{comentary.body}}
@@ -23,7 +23,7 @@
       </div>
       <div class="images">
         <div class="challenger-pokemon-details">
-          <div class="image-container">
+          <div class="image-container" [@shakeit]="myEnemyState" [@dead]="myEnemyDeadState">
             <img class="pokemon-image" [src]="'data:image/png;base64,'+ enemyPokemon.image">
           </div>
         </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="challenger-pokemon-details">
-          <div class="image-container">
+          <div class="image-container" [@shakeit]="myCurrentState" [@dead]="myCurrentDeadState">
             <img class="pokemon-image" [src]="'data:image/png;base64,'+ myPokemon.image">
           </div>
           <div class="pokemon-details-container">

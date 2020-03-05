@@ -1,16 +1,65 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { BattlesService } from '../../../core/battles.service';
 import { ArenaService } from '../../../core/arena.service';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { tap, switchMap, map, delay } from 'rxjs/operators';
 import { UserService } from '../../../../../shared/core/user.service';
 import { CurrentBattleNotifications } from './current-battle.notifications';
+import { state, trigger, style, animate, transition, keyframes } from '@angular/animations';
 
 @Component({
   templateUrl: './current-battle.component.html',
-  styleUrls: ['./current-battle.component.scss']
+  styleUrls: ['./current-battle.component.scss'],
+  animations: [
+    trigger('shakeit', [
+      state('shakestart', style({
+        transform: 'scaleX(1)',
+      })),
+      state('shakeend', style({
+        transform: 'scaleX(1)',
+      })),
+      transition('shakestart => shakeend', animate('1000ms ease-in', keyframes([
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.2 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.3 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.4 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.5 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.6 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.7 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
+      ]))),
+      transition('shakeend => shakestart', animate('1000ms ease-in', keyframes([
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.1 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.2 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.3 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.4 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.5 }),
+        style({ transform: 'translate3d(4px, 0, 0)', offset: 0.6 }),
+        style({ transform: 'translate3d(-4px, 0, 0)', offset: 0.7 }),
+        style({ transform: 'translate3d(2px, 0, 0)', offset: 0.8 }),
+        style({ transform: 'translate3d(-1px, 0, 0)', offset: 0.9 }),
+      ])))
+    ]),
+    trigger('dead', [
+      state('deadstart', style({
+        transform: 'scale(1)',
+      })),
+      state('deadend', style({
+        transform: 'scale(-1)',
+      })),
+      transition('deadstart => deadend', animate('1000ms ease-in'))
+    ])
+  ]
 })
-export class CurrentBattleComponent implements OnInit, OnDestroy {
+export class CurrentBattleComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('box', { static: false }) private myScrollContainer: ElementRef;
+
   private trainerId: string;
+
+  public myCurrentState = 'shakestart';
+  public myEnemyState = 'shakestart';
+  public myCurrentDeadState = 'deadstart';
+  public myEnemyDeadState = 'deadstart';
 
   public myMaxHealth: number = 100;
   public enemyMaxHealth: number = 100;
@@ -23,6 +72,8 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
   public pokemons: any[] = [];
   public selectedAbilityIndex;
   public abilities: any[] = [];
+  public myPokemonHealth: number;
+  public enemyPokemonHealth: number;
 
   public get comentaries() {
     if (this.battle) {
@@ -50,14 +101,62 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
     private currentBattleNotifications: CurrentBattleNotifications) {
   }
 
+  private changeCurrentState() {
+    this.myCurrentState = this.myCurrentState === 'shakestart' ? 'shakeend' : 'shakestart';
+  }
+
+  private changeEnemyState() {
+    this.myEnemyState = this.myEnemyState === 'shakestart' ? 'shakeend' : 'shakestart';
+  }
+
+  private changeCurrentDeadState() {
+    this.myCurrentDeadState = this.myCurrentDeadState === 'deadstart' ? 'deadend' : 'deadstart';
+  }
+
+  private changeEnemyDeadState() {
+    this.myEnemyDeadState = this.myEnemyDeadState === 'deadstart' ? 'deadend' : 'deadstart';
+  }
+
   private initEvent(): void {
     this.currentBattleNotifications
-      .onCooldownChanged(x => this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown)
-      .onHealthChanged(hc => {
-        if (hc.trainerId === this.trainerId) {
-          this.myHealth = hc.newHealth;
+      .onCooldownChanged(x => {
+        this.abilities.find(a => a.id === x.abilityId).cooldown = x.cooldown;
+      })
+      .onTurnTaken(x => {
+        setTimeout(() => {
+          this.service.getCurrentBattle().subscribe(b => this.battle = b);
+        }, 300);
+      })
+      .onHealthChanged(x => {
+        if (this.trainerId === x.trainerId) {
+          this.changeCurrentState();
+          this.myHealth = x.newHealth;
         } else {
-          this.enemyHealth = hc.newHealth;
+          this.changeEnemyState();
+          this.enemyHealth = x.newHealth;
+        }
+      })
+      .onAbilityDodged(x => {
+        if (this.trainerId === x.trainerId) {
+          console.log('Dodged');
+        }
+      })
+      .onBattleWon((x) => {
+        console.log('You won');
+        console.log(x);
+
+        if (this.trainerId === x.trainerId) {
+          this.changeEnemyDeadState();
+          console.log('You won');
+        }
+      })
+      .onBattleLost((x) => {
+        console.log('You lose');
+        console.log(x);
+
+        if (this.trainerId === x.trainerId) {
+          this.changeCurrentDeadState();
+          console.log('You lose');
         }
       });
   }
@@ -94,6 +193,10 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
         console.log(this.battle);
         console.log(this.pokemons);
       });
+  }
+
+  public ngAfterViewChecked(): void {
+    this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
   }
 
   public ngOnDestroy(): void {
