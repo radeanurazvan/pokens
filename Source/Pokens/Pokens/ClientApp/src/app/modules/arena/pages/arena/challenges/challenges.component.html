@@ -1,10 +1,27 @@
-<ol *ngIf="challenges.length > 0">
-  <li *ngFor="let challenge of challenges">
-    From {{ challenge.enemy }} at {{ challenge.challengedAt }}
-    <button (click)="accept(challenge)">Accept</button>
-  </li>
-</ol>
+<div class="body-content">
+    <ng-container *ngIf="challenges.length > 0">
+        <ng-container *ngFor="let challenge of challenges; let i = index">
+            <mat-card class="challenge-card">
+                <mat-card-title>You have been challenged by: {{ challenge.enemy }} </mat-card-title>
+                <mat-card-content class="challenge-card-content">
+                    <div class="image-container">
+                        <img class="trainer-image" src="assets/pictures/images.jpg" />
+                        <img class="pokemon-image" [src]="'data:image/png;base64,' + findPokemonByTrainer(challenge.enemyId).image" />
+                    </div>
+                    <ng-container *ngIf="challenge.status === 'Pending'; else accepted">
+                        <button mat-raised-button color="primary" class="challenge-button" [disabled]="hasCurrentBattle" (click)="accept(challenge)">Accept</button>
+                        <button mat-raised-button color="warn" class="challenge-button" (click)="refuse(challenge)">Refuse</button>
+                    </ng-container>
+                    <ng-template #accepted>
+                        <button mat-raised-button color="primary" class="challenge-button" (click)="goToBattle()">Go to battle</button>
+                    </ng-template>
+                </mat-card-content>
+                <div class="corner-ribbon" [style.background]="challenge.status === 'Accepted' ? '#21d961' : '#dd63f2'">{{challenge.status}}</div>
+            </mat-card>
+        </ng-container>
+    </ng-container>
+</div>
 
 <div *ngIf="challenges.length === 0" class="no-challenge">
-  It looks like no one has challenged you yet.
+    It looks like no one has challenged you yet.
 </div>

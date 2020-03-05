@@ -61,7 +61,6 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
     this.initEvent();
     this.trainerId = this.userService.getUserId();
     this.trainerName = this.userService.getUserName();
-    this.currentBattleNotifications.start();
     this.service.getCurrentBattle()
       .pipe(
         tap(b => this.battle = b),
@@ -71,6 +70,7 @@ export class CurrentBattleComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.abilities = this.myPokemon.abilities;
+        this.currentBattleNotifications.start(this.battle.id);
         console.log(this.battle);
         console.log(this.pokemons);
       });
