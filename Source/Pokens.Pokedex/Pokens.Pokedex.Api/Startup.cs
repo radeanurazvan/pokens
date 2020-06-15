@@ -23,7 +23,7 @@ namespace Pokens.Pokedex.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddPokedexInfrastructure()
+                .AddPokedexInfrastructure("Pokedex.Api")
                 .AddPokedexServices()
                 .AddPomeloJwtAuthentication(Configuration.GetJwtSettings())
                 .AddPomeloSwagger("Pokens Pokemons Api")

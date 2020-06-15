@@ -22,7 +22,7 @@ namespace Pokens.Pokedex.Office
         {
             services
                 .AddPokedexServices()
-                .AddPokedexInfrastructure()
+                .AddPokedexInfrastructure("Pokedex.Office")
                 .AddRazorPages();
         }
 
