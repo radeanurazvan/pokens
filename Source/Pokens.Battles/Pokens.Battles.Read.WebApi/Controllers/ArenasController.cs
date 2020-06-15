@@ -30,7 +30,7 @@ namespace Pokens.Battles.Read.WebApi
         [HttpGet("me")]
         public async Task<IActionResult> GetMyArena()
         {
-            var arena = (await readRepository.Find(a => a.HasTrainer(this.user.Id.Value.ToString()))).FirstOrDefault();
+            var arena = (await readRepository.Find(a => a.HasTrainer(this.user.Property("Id").Value.ToString()))).FirstOrDefault();
             if (arena == null)
             {
                 return NotFound();

@@ -9,6 +9,7 @@ using Pokens.Battles.Domain;
 using Pomelo.Kernel.Common;
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.EventStore.Subscriptions;
 
 namespace Pokens.Battles.Reactors
 {
@@ -31,7 +32,8 @@ namespace Pokens.Battles.Reactors
 
             var subscriptions = DomainAssembly.Value.GetTypes()
                 .Where(t => !t.IsAbstract && typeof(AggregateRoot).IsAssignableFrom(t))
-                .Select(a => this.subscriptionBuilder.WithGroup("catalog-reactors")
+                .Select(a => this.subscriptionBuilder.Persistent()
+                    .WithGroup("catalog-reactors")
                     .ForStream($"$ce-{BattlesTag}{a.GetFriendlyName()}")
                     .WithCheckpointTag($"{BattlesTag}{a.GetFriendlyName()}")
                     .WithConsumer(PublishNotification)

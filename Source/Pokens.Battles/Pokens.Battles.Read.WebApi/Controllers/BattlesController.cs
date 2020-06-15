@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pokens.Battles.Read.Domain;
@@ -25,7 +26,7 @@ namespace Pokens.Battles.Read.WebApi
         [HttpGet("me/current")]
         public async Task<IActionResult> GetCurrentBattle()
         {
-            var trainerId = user.Id.Value.ToString();
+            var trainerId = user.Property("Id").Value.ToString();
             var battleOrNothing = (await repository.Find(b => b.AttackerId == trainerId || b.DefenderId == trainerId)).TryFirst(b => !b.EndedAt.HasValue);
             if (battleOrNothing.HasNoValue)
             {
@@ -38,7 +39,7 @@ namespace Pokens.Battles.Read.WebApi
         [HttpGet("me")]
         public async Task<IActionResult> GeMyBattles()
         {
-            var trainerId = user.Id.Value.ToString();
+            var trainerId = user.Property("Id").Value.ToString();
             var battles = await repository.Find(b => b.AttackerId == trainerId || b.DefenderId == trainerId);
             return Ok(battles.ToList());
         }

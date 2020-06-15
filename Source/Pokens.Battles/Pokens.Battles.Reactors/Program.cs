@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pomelo.Kernel.EventStore;
+using Pomelo.Kernel.EventStore.Subscriptions;
 using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Infrastructure;
 using Pomelo.Kernel.Mongo;
@@ -22,9 +23,11 @@ namespace Pokens.Battles.Reactors
                         .AddMediatR(typeof(Program))
                         .AddJsonAppSettings()
                         .AddPomeloMongoSyncStorage()
-                        .AddPomeloDefaultJsonSettings()
+                        .AddPomeloDefaultJsonSettings(new PrivatePropertyContractResolver())
                         .AddPomeloEventStore()
-                        .AddPomeloEventStoreSubscriptions();
+                        .AddConfigurationSettings()
+                        .AddPomeloTracing()
+                        .AddEventStoreSubscriptions();
                 });
 
             return builder.UseConsoleLifetime()

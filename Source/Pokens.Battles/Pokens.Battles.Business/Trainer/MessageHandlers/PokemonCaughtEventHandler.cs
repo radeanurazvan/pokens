@@ -26,8 +26,8 @@ namespace Pokens.Battles.Business
         {
             EnsureArg.IsNotNull(message);
 
-            return mediator.ReadById<Trainer>(message.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
-                .Tap(t => t.Catch(GetPokemon(message.Metadata.AggregateId, message.Data)))
+            return mediator.ReadById<Trainer>(new Guid(message.Metadata.AggregateId)).ToResult(Messages.TrainerNotFound)
+                .Tap(t => t.Catch(GetPokemon(new Guid(message.Metadata.AggregateId), message.Data)))
                 .Tap(_ => this.mediator.Write<Trainer>().Save())
                 .OnFailure(e => this.logger.LogError(e))
                 .OnFailure(e => throw new InvalidOperationException(e));

@@ -34,8 +34,6 @@ namespace Pokens.Battles.Read.Domain
         public DateTime? EndedAt { get; set; } = null;
 
         public ICollection<BattleCommentary> Commentaries { get; set; } = new List<BattleCommentary>();
-
-        public override string GetCollectionName() => "Battles";
     }
 
     public sealed class BattleCommentary

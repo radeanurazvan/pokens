@@ -7,6 +7,7 @@ using Pokens.Battles.Business;
 using Pokens.Battles.Domain;
 using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.Events.Abstractions;
+using Pomelo.Kernel.EventStore;
 
 namespace Pokens.Battles.Infrastructure
 {
@@ -52,18 +53,18 @@ namespace Pokens.Battles.Infrastructure
                 subscriptions.SubscribeIntegrationEvent<PokemonCaughtEvent>(TrainingTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeIntegrationEvent<StarterPokemonChosenEvent>(TrainingTag).GetAwaiter().GetResult();
                 subscriptions.SubscribeIntegrationEvent<PokemonLeveledUpEvent>(TrainingTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<BattleStartedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<BattleEndedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<TrainerHasBeenChallengedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<ActivePlayerChangedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<PlayerCooldownChangedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<PlayerTookTurnEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<BattleHealthChangedEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<PokemonDodgedAbilityEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<TrainerLostBattleEvent>(BattlesTag).GetAwaiter().GetResult();
-                subscriptions.SubscribeDomainEvent<TrainerWonBattleEvent>(BattlesTag).GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerAcceptedChallengeEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerStartedBattleEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleStartedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleEndedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerHasBeenChallengedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<ActivePlayerChangedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PlayerCooldownChangedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PlayerTookTurnEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<BattleHealthChangedEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<PokemonDodgedAbilityEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerLostBattleEvent>().GetAwaiter().GetResult();
+                subscriptions.SubscribeDomainEvent<TrainerWonBattleEvent>().GetAwaiter().GetResult();
             }
 
             return app;

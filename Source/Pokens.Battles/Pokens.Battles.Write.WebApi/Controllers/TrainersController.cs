@@ -24,7 +24,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpPatch("me/battles/{battleId:Guid}")]
         public async Task<IActionResult> UseAbility([FromRoute] Guid battleId, [FromBody] UseAbilityModel model)
         {
-            var command = new UseAbilityCommand(battleId, user.Id.Value, model.AbilityId);
+            var command = new UseAbilityCommand(battleId, new Guid(user.Property("Id").Value), model.AbilityId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
@@ -33,7 +33,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpPatch("me/auto")]
         public async Task<IActionResult> ToggleAutoMode()
         {
-            var command = new ToggleAutoModeCommand(user.Id.Value);
+            var command = new ToggleAutoModeCommand(new Guid(user.Property("Id").Value));
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);

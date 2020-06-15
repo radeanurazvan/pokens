@@ -22,7 +22,7 @@ namespace Pokens.Battles.Business
 
         public Task Handle(IntegrationEvent<PokemonLeveledUpEvent> @event)
         {
-            return mediator.ReadById<Trainer>(@event.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
+            return mediator.ReadById<Trainer>(new Guid(@event.Metadata.AggregateId)).ToResult(Messages.TrainerNotFound)
                 .Tap(t => t.RaisePokemonLevel(@event.Data.PokemonId, @event.Data.Level))
                 .Tap(() => mediator.Write<Trainer>().Save())
                 .OnFailure(e => this.logger.LogError(e))
@@ -41,7 +41,7 @@ namespace Pokens.Battles.Business
 
         public Task Handle(IntegrationEvent<PokemonLeveledUpEvent> @event)
         {
-            return mediator.ReadById<Trainer>(@event.Metadata.AggregateId).ToResult(Messages.TrainerNotFound)
+            return mediator.ReadById<Trainer>(new Guid(@event.Metadata.AggregateId)).ToResult(Messages.TrainerNotFound)
                 .Tap(t => t.RaisePokemonHealth(@event.Data.PokemonId, @event.Data.Level))
                 .Tap(() => mediator.Write<Trainer>().Save());
         }

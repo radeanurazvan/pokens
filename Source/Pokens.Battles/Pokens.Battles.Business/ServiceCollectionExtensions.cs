@@ -9,7 +9,7 @@ namespace Pokens.Battles.Business
         public static IServiceCollection AddBattlesBusiness(this IServiceCollection services)
         {
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
-            return services.AddEventHandlers(assembly)
+            return services.AddPomeloEventHandlers(assembly)
                 .AddMediatR(assembly);
         }
     }

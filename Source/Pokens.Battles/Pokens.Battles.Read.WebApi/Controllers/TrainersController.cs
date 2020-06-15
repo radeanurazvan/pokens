@@ -26,7 +26,7 @@ namespace Pokens.Battles.Read.WebApi
         [HttpGet("me/challenges/received")]
         public async Task<IActionResult> GetReceivedChallenges()
         {
-            var trainerOrNothing = await repository.GetById(user.Id.Value.ToString());
+            var trainerOrNothing = await repository.GetById(user.Property("Id").Value.ToString());
             var challenges = trainerOrNothing.Map(t => t.Challenges.Where(c => c.ChallengerId != t.Id))
                 .Unwrap(new List<ChallengeModel>());
 
@@ -36,7 +36,7 @@ namespace Pokens.Battles.Read.WebApi
         [HttpGet("me/challenges/sent")]
         public async Task<IActionResult> GetSentChallenges()
         {
-            var trainerOrNothing = await repository.GetById(user.Id.Value.ToString());
+            var trainerOrNothing = await repository.GetById(user.Property("Id").Value.ToString());
             var challenges = trainerOrNothing.Map(t => t.Challenges.Where(c => c.ChallengerId == t.Id))
                 .Unwrap(new List<ChallengeModel>());
 

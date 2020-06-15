@@ -7,8 +7,6 @@ namespace Pokens.Battles.Read.Domain
 {
     public class TrainerModel : SynchronizationModel
     {
-        public override string GetCollectionName() => "Trainers";
-
         public string Name { get; set; }
 
         public ICollection<ChallengeModel> Challenges { get; set; } = new List<ChallengeModel>();

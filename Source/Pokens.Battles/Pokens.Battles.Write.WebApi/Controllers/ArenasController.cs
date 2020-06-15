@@ -26,7 +26,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpPatch("{id:Guid}/enrollments")]
         public async Task<IActionResult> Enroll([FromRoute] Guid id)
         {
-            var command = new EnrollTrainerCommand(id, user.Id.Value);
+            var command = new EnrollTrainerCommand(id, new Guid(user.Property("Id").Value));
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
@@ -35,7 +35,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpDelete("{id:Guid}/enrollments")]
         public async Task<IActionResult> EndEnrollment([FromRoute] Guid id)
         {
-            var command = new EndTrainerEnrollmentCommand(id, user.Id.Value);
+            var command = new EndTrainerEnrollmentCommand(id, new Guid(user.Property("Id").Value));
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
@@ -44,7 +44,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpPatch("{id:Guid}/trainers/{challengedId:Guid}/challenges")]
         public async Task<IActionResult> ChallengeTrainer([FromRoute] Guid id, [FromRoute] Guid challengedId, [FromBody] ChallengeTrainerModel model)
         {
-            var command = new ChallengeTrainerCommand(id, this.user.Id.Value, model.ChallengerPokemonId, challengedId, model.ChallengedPokemonId);
+            var command = new ChallengeTrainerCommand(id, new Guid(user.Property("Id").Value), model.ChallengerPokemonId, challengedId, model.ChallengedPokemonId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
@@ -62,7 +62,7 @@ namespace Pokens.Battles.Write.WebApi.Controllers
         [HttpDelete("{id:Guid}/trainers/me/challenges/{challengeId:Guid}")]
         public async Task<IActionResult> RejectChallenge([FromRoute] Guid id, [FromRoute] Guid challengeId)
         {
-            var command = new RejectChallengeCommand(user.Id.Value, challengeId);
+            var command = new RejectChallengeCommand(new Guid(user.Property("Id").Value), challengeId);
             var result = await mediator.Send(command);
 
             return result.ToActionResult(NoContent);
