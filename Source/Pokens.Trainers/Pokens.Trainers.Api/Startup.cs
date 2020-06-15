@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Pokemons.Trainers.Business;
 using Pokens.Trainers.Infrastructure;
 using Pokens.Trainers.Persistence.EntityFramework;
+using Pomelo.Kernel.EventStore;
 using Pomelo.Kernel.Http;
 
 namespace Pokens.Trainers.Api
@@ -55,7 +56,8 @@ namespace Pokens.Trainers.Api
                 {
                     endpoints.MapControllers();
                 })
-                .UseTrainersMigrations();
+                .UseTrainersMigrations()
+                .UsePomeloEventStoreConnection();
         }
     }
 }

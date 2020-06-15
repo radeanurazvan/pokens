@@ -19,13 +19,13 @@ namespace Pokens.Trainers.Infrastructure
             this.settings = settings;
         }
 
-        public Result<AuthenticationToken> Exchange(User user)
+        public Result<Domain.AuthenticationToken> Exchange(User user)
         {
             return user.EnsureExists("Invalid credentials!")
                 .Map(CreateToken);
         }
 
-        private AuthenticationToken CreateToken(User user)
+        private Domain.AuthenticationToken CreateToken(User user)
         {
             var now = DateTime.Now;
             var expirationTime = now.Add(settings.TokenValidity);
@@ -41,7 +41,7 @@ namespace Pokens.Trainers.Infrastructure
                 signingCredentials);
 
             var encodedToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-            return new AuthenticationToken(encodedToken, expirationTime);
+            return new Domain.AuthenticationToken(encodedToken, expirationTime);
         }
 
         private IEnumerable<Claim> GetClaims(User user)

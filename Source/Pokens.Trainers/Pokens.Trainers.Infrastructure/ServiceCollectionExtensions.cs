@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Pokens.Trainers.Domain;
 using Pomelo.Kernel.Authentication;
 using Pomelo.Kernel.Common;
-using Pomelo.Kernel.Domain;
 using Pomelo.Kernel.EntityFramework;
 using Pomelo.Kernel.EventStore;
 
@@ -17,8 +16,10 @@ namespace Pokens.Trainers.Infrastructure
                 .AddScoped<IUsersService, IdentityUsersService>()
                 .AddPomeloSingletonSettings<JwtSettings>()
                 .AddPomeloEntityFrameworkRepositories()
-                .AddPomeloEventStore()
-                .AddPomeloAggregatesContext();
+                .AddPomeloEventStore("Trainers.Api")
+                .AddConfigurationSettings()
+                .AddPomeloTracing()
+                .Services;
         }
 
         public static IServiceCollection AddTrainersJwtAuthentication(this IServiceCollection services,
