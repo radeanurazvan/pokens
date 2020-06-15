@@ -24,9 +24,7 @@ export class AuthService {
   }
 
   public logout(): void {
-    if (localStorage.getItem('currentUserToken')) {
-      localStorage.removeItem('currentUserToken');
-    }
+    localStorage.removeItem('currentUserToken');
   }
 
   public login(loginModel: LoginModel): Observable<any> {
