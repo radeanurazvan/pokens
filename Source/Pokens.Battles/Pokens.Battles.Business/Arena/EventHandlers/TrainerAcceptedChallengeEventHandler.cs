@@ -27,7 +27,7 @@ namespace Pokens.Battles.Business
             EnsureArg.IsNotNull(notification);
 
             var arenaResult = await arenasReadRepository.GetById(notification.ArenaId).ToResult(Messages.ArenaNotFound);
-            var challengeResult = arenaResult.Bind(a => a.Challenges.FirstOrNothing(c => c.Id == notification.ChallengeId).ToResult(Messages.ChallengeNotFound));
+            var challengeResult = arenaResult.Bind(a => a.Challenges.TryFirst(c => c.Id == notification.ChallengeId).ToResult(Messages.ChallengeNotFound));
             var challengerResult = await challengeResult.Bind(c => trainersReadRepository.GetById(c.ChallengerId).ToResult(Messages.TrainerNotFound));
             var challengedResult = await challengeResult.Bind(c => trainersReadRepository.GetById(c.ChallengedId).ToResult(Messages.TrainerNotFound));
 

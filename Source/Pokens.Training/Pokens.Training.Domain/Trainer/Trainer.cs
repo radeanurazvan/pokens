@@ -62,7 +62,7 @@ namespace Pokens.Training.Domain
 
         public Result CollectExperience(string pokemonId, int amount)
         {
-            return this.CaughtPokemons.FirstOrNothing(p => p.Id == pokemonId).ToResult(Messages.PokemonNotFound)
+            return this.CaughtPokemons.TryFirst(p => p.Id == pokemonId).ToResult(Messages.PokemonNotFound)
                 .Tap(p => p.CollectExperience(amount))
                 .Tap(p =>
                 {

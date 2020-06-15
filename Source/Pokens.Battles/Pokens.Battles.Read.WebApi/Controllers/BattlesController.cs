@@ -26,7 +26,7 @@ namespace Pokens.Battles.Read.WebApi
         public async Task<IActionResult> GetCurrentBattle()
         {
             var trainerId = user.Id.Value.ToString();
-            var battleOrNothing = (await repository.Find(b => b.AttackerId == trainerId || b.DefenderId == trainerId)).FirstOrNothing(b => !b.EndedAt.HasValue);
+            var battleOrNothing = (await repository.Find(b => b.AttackerId == trainerId || b.DefenderId == trainerId)).TryFirst(b => !b.EndedAt.HasValue);
             if (battleOrNothing.HasNoValue)
             {
                 return NotFound();

@@ -47,7 +47,7 @@ namespace Pokens.Battles.Reactors.Denormalizers
         public Task Handle(NotificationEvent<ArenaEnrollmentEndedEvent> notification, CancellationToken cancellationToken)
         {
             EnsureArg.IsNotNull(notification);
-            return storage.Update<ArenaModel>(notification.Metadata.AggregateId.ToString(), a => a.Trainers.FirstOrNothing(t => t.Id == notification.Data.TrainerId.ToString())
+            return storage.Update<ArenaModel>(notification.Metadata.AggregateId.ToString(), a => a.Trainers.TryFirst(t => t.Id == notification.Data.TrainerId.ToString())
                 .Execute(t => a.Trainers.Remove(t)));
         }
     }

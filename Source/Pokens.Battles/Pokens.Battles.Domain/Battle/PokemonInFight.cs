@@ -43,7 +43,7 @@ namespace Pokens.Battles.Domain
         public Result Use(Ability ability)
         {
             return Result.SuccessIf(CanUse(ability), Messages.AbilityIsOnCooldown)
-                .Bind(() => abilitiesOnCooldown.FirstOrNothing(a => a.AbilityId == ability.Id).ToResult("Ability not on cooldown yet"))
+                .Bind(() => abilitiesOnCooldown.TryFirst(a => a.AbilityId == ability.Id).ToResult("Ability not on cooldown yet"))
                 .OnFailureCompensate(() => AbilityOnCooldown.From(ability))
                 .Tap(ac => abilitiesOnCooldown.Add(ac));
         }

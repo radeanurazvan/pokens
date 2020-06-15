@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200304.1-merge" />
-    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200304.1-merge" />
-    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200304.1-merge" />
-    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200304.1-merge" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200607.2" />
+    <PackageReference Include="Pomelo.Kernel.EventStore" Version="1.20200607.2" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200607.2" />
+    <PackageReference Include="Pomelo.Kernel.Mongo" Version="1.20200607.2" />
   </ItemGroup>
 
   <ItemGroup>

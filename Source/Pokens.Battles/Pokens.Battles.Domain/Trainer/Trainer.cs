@@ -48,7 +48,7 @@ namespace Pokens.Battles.Domain
 
         public IEnumerable<TrainerBattle> Battles => this.battles;
 
-        public Maybe<TrainerBattle> CurrentBattle => this.battles.FirstOrNothing(b => b.EndedAt.HasNoValue);
+        public Maybe<TrainerBattle> CurrentBattle => this.battles.TryFirst(b => b.EndedAt.HasNoValue);
 
         public void ToggleAutoMode()
         {
@@ -72,37 +72,37 @@ namespace Pokens.Battles.Domain
         public Result UseAbilityIn(Battle battle, Guid abilityId)
         {
             var pokemonResult = battle.EnsureExists(Messages.BattleNotFound)
-                .Bind(_ => battles.FirstOrNothing(b => b.Id == battle.Id).ToResult(Messages.BattleNotFound))
-                .Bind(b => pokemons.FirstOrNothing(p => p.Id == b.Pokemon).ToResult(Messages.InvalidPokemon));
+                .Bind(_ => battles.TryFirst(b => b.Id == battle.Id).ToResult(Messages.BattleNotFound))
+                .Bind(b => pokemons.TryFirst(p => p.Id == b.Pokemon).ToResult(Messages.InvalidPokemon));
             return pokemonResult
-                .Bind(p => p.Abilities.FirstOrNothing(a => a.Id == abilityId).ToResult(Messages.InvalidAbility))
+                .Bind(p => p.Abilities.TryFirst(a => a.Id == abilityId).ToResult(Messages.InvalidAbility))
                 .Ensure(a => a.RequiredLevel <= pokemonResult.Value.Level, Messages.AbilityRequiresLevel)
                 .Bind(a => battle.TakeTurn(this, a));
         }
 
         public Result AcknowledgeWonBattle(Guid battleId, int experience)
         {
-            return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
+            return battles.TryFirst(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
                 .Tap(() => ReactToDomainEvent(new TrainerWonBattleEvent(Id, battleId, experience)));
         }
 
         public Result AcknowledgeLostBattle(Guid battleId, int experience)
         {
-            return battles.FirstOrNothing(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
+            return battles.TryFirst(b => b.Id == battleId).ToResult(Messages.BattleNotFound)
                 .Tap(b => AddDomainEvent(new TrainerCollectedExperienceEvent(b.Pokemon, experience)))
                 .Tap(() => ReactToDomainEvent(new TrainerLostBattleEvent(Id, battleId, experience)));
         }
 
         public void RaisePokemonLevel(Guid pokemonId, int newLevel)
         {
-            this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
+            this.pokemons.TryFirst(p => p.Id == pokemonId)
                 .Execute(p => ReactToDomainEvent(new TrainerPokemonChangedLevelEvent(pokemonId, newLevel)));
         }
 
         public void RaisePokemonHealth(Guid pokemonId, int newLevel)
         {
-            this.pokemons.FirstOrNothing(p => p.Id == pokemonId)
+            this.pokemons.TryFirst(p => p.Id == pokemonId)
                 .Execute(_ => ReactToDomainEvent(new TrainerPokemonHealthLevelChangedEvent(pokemonId, newLevel)));
         }
 
@@ -121,8 +121,8 @@ namespace Pokens.Battles.Domain
                 .Where(c => c.IsNotExpired)
                 .Any(c => c.HasParticipants(this, challenged));
 
-            var challengerPokemonResult = this.pokemons.FirstOrNothing(p => p.Id == challengerPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
-            var challengedPokemonResult = challenged.Pokemons.FirstOrNothing(p => p.Id == challengedPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
+            var challengerPokemonResult = this.pokemons.TryFirst(p => p.Id == challengerPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
+            var challengedPokemonResult = challenged.Pokemons.TryFirst(p => p.Id == challengedPokemonId).ToResult(Messages.TrainerDoesNotOwnPokemon); 
 
             return Result.FailureIf(hasAlreadyChallenged, Messages.TrainerAlreadyChallenged)
                 .Ensure(() => this != challenged, Messages.CannotChallengeSelf)
@@ -135,7 +135,7 @@ namespace Pokens.Battles.Domain
         internal Result AcceptChallenge(Trainer challenger, Challenge challenge)
         {
             var challengerResult = challenger.EnsureExists(Messages.InvalidTrainer);
-            var challengeResult = this.challenges.FirstOrNothing(c => c == challenge).ToResult(Messages.ChallengeNotFound)
+            var challengeResult = this.challenges.TryFirst(c => c == challenge).ToResult(Messages.ChallengeNotFound)
                 .Ensure(c => c.ChallengedId == this.Id, Messages.ChallengeNotFound)
                 .Ensure(c => c.ChallengerId == challenger.Id, Messages.ChallengeNotFound)
                 .Ensure(c => c.IsNotExpired, Messages.ChallengeExpired)
@@ -154,7 +154,7 @@ namespace Pokens.Battles.Domain
 
         public Result RejectChallenge(Guid challengeId)
         {
-            var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound)
+            var challengeResult = this.challenges.TryFirst(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound)
                 .Ensure(c => c.ChallengedId == this.Id, Messages.ChallengeNotFound)
                 .Ensure(c => c.IsPending, Messages.ChallengeAlreadyAnswered);
 
@@ -164,7 +164,7 @@ namespace Pokens.Battles.Domain
 
         internal Result StartBattleAgainst(Trainer enemy, Guid challengeId)
         {
-            var challengeResult = this.challenges.FirstOrNothing(c => c.Id == challengeId)
+            var challengeResult = this.challenges.TryFirst(c => c.Id == challengeId)
                 .ToResult(Messages.TrainerHasNotAcceptedChallenge);
             var enemyResult = enemy.EnsureExists(Messages.InvalidTrainer);
 
@@ -177,7 +177,7 @@ namespace Pokens.Battles.Domain
 
         private Result EnterBattleAgainst(Guid challengeId)
         {
-            return this.challenges.FirstOrNothing(c => c.Id == challengeId)
+            return this.challenges.TryFirst(c => c.Id == challengeId)
                 .ToResult(Messages.TrainerHasNotAcceptedChallenge)
                 .Bind(c => ReactToDomainEvent(new TrainerEnteredBattleEvent(c)));
         }
@@ -228,46 +228,46 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerAcceptedChallengeEvent @event)
         {
-            challenges.FirstOrNothing(c => c.Id == @event.ChallengeId)
+            challenges.TryFirst(c => c.Id == @event.ChallengeId)
                 .Execute(c => c.MarkAsAccepted());
         }
 
         private void When(TrainerChallengeGotAnsweredEvent @event)
         {
-            challenges.FirstOrNothing(c => c.Id == @event.ChallengeId).ToResult(Messages.ChallengeNotFound)
+            challenges.TryFirst(c => c.Id == @event.ChallengeId).ToResult(Messages.ChallengeNotFound)
                 .TapIf(@event.Accepted, c => c.MarkAsAccepted())
                 .TapIf(@event.Rejected, c => c.MarkAsRejected());
         }
 
         private void When(TrainerStartedBattleEvent @event)
         {
-            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
+            this.challenges.TryFirst(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
             this.battles.Add(TrainerBattle.Create(@event.ChallengeId, @event.EnemyId, @event.PokemonId));
         }
 
         private void When(TrainerEnteredBattleEvent @event)
         {
-            this.challenges.FirstOrNothing(c => c.HasParticipants(this.Id, @event.EnemyId))
+            this.challenges.TryFirst(c => c.HasParticipants(this.Id, @event.EnemyId))
                 .Execute(c => c.MarkAsHonored());
             this.battles.Add(TrainerBattle.Create(@event.ChallengeId, @event.EnemyId, @event.PokemonId));
         }
 
         private void When(TrainerLostBattleEvent @event)
         {
-            this.battles.FirstOrNothing(b => b.Id == @event.BattleId)
+            this.battles.TryFirst(b => b.Id == @event.BattleId)
                 .Execute(b => b.MarkEnding(@event.LostAt));
         }
 
         private void When(TrainerWonBattleEvent @event)
         {
-            this.battles.FirstOrNothing(b => b.Id == @event.BattleId)
+            this.battles.TryFirst(b => b.Id == @event.BattleId)
                 .Execute(b => b.MarkEnding(@event.WonAt));
         }
 
         private void When(TrainerPokemonChangedLevelEvent @event)
         {
-            this.pokemons.FirstOrNothing(p => p.Id == @event.PokemonId).Execute(p => p.GoToLevel(@event.Level));
+            this.pokemons.TryFirst(p => p.Id == @event.PokemonId).Execute(p => p.GoToLevel(@event.Level));
         }
 
         private void When(TrainerActivatedAutoModeEvent @event)
@@ -286,7 +286,7 @@ namespace Pokens.Battles.Domain
 
         private void When(TrainerPokemonHealthLevelChangedEvent @event)
         {
-            this.pokemons.FirstOrNothing(p => p.Id == @event.PokemonId)
+            this.pokemons.TryFirst(p => p.Id == @event.PokemonId)
                 .Execute(p => p.EmbraceHealthBonus(@event.BonusHealth));
         }
     }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>4f758ec2-5474-42a0-aabf-91aea313049c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
@@ -20,8 +20,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200304.1-merge" />
-    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200304.1-merge" />
+    <PackageReference Include="Pomelo.Kernel.Authentication" Version="1.20200607.2" />
+    <PackageReference Include="Pomelo.Kernel.Http" Version="1.20200607.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -30,7 +30,7 @@ namespace Pokens.Battles.Reactors.Denormalizers
         {
             var challenge = (await trainersRead.GetById(notification.Data.AttackerId.ToString()))
                 .Select(a => a.Challenges)
-                .Bind(list => list.FirstOrNothing(c => c.Id == notification.Data.Id.ToString()))
+                .Bind(list => list.TryFirst(c => c.Id == notification.Data.Id.ToString()))
                 .Value;
 
             await storage.Create(new BattleModel

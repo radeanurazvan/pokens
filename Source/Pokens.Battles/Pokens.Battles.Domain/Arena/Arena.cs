@@ -70,7 +70,7 @@ namespace Pokens.Battles.Domain
             var challengedResult = challenged.EnsureExists(Messages.InvalidTrainer);
 
             return Result.FirstFailureOrSuccess(challengedResult, challengerResult)
-                .Bind(() => challenged.Challenges.FirstOrNothing(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound))
+                .Bind(() => challenged.Challenges.TryFirst(c => c.Id == challengeId).ToResult(Messages.ChallengeNotFound))
                 .Ensure(c => c.ArenaId == this.Id, Messages.ArenaAlreadyLeft)
                 .Ensure(c => challenged.IsEnrolledIn(c.ArenaId), Messages.ArenaAlreadyLeft)
                 .Ensure(c => challenger.IsEnrolledIn(c.ArenaId), Messages.ArenaAlreadyLeft)
@@ -94,7 +94,7 @@ namespace Pokens.Battles.Domain
 
         private void When(ArenaEnrollmentEndedEvent @event)
         {
-            trainers.FirstOrNothing(t => t.Id == @event.TrainerId)
+            trainers.TryFirst(t => t.Id == @event.TrainerId)
                 .Execute(t => trainers.Remove(t));
         }
 
