@@ -4,6 +4,7 @@ using Pokens.Battles.Business;
 using Pomelo.Kernel.Authentication;
 using Pomelo.Kernel.EventStore;
 using Pomelo.Kernel.EventStore.Repositories;
+using Pomelo.Kernel.EventStore.Subscriptions;
 using Pomelo.Kernel.Http;
 using Pomelo.Kernel.Infrastructure;
 
@@ -24,10 +25,11 @@ namespace Pokens.Battles.Infrastructure
             return services
 
                 .AddPomeloRepositoryMediator()
-                .AddPomeloEventStore()
+                .AddPomeloEventStore("Battles.Api")
                 .AddConfigurationSettings()
                 .AddPomeloTracing()
                 .AddEventSourcedRepositories()
+                .AddEventStoreSubscriptions()
                 .Services
                 .AddPomeloRepositoryMediator()
                 .AddBattlesSignalR();

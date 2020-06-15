@@ -46,6 +46,7 @@ namespace Pokens.Battles.Write.WebApi
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
+                .UsePomeloEventStoreConnection()
                 .UseBattlesSubscriptions()
                 .UsePomeloSwagger("Pokens Battle Write API")
                 .UsePomeloCors()

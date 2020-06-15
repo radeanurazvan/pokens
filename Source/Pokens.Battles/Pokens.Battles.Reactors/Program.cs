@@ -24,7 +24,7 @@ namespace Pokens.Battles.Reactors
                         .AddJsonAppSettings()
                         .AddPomeloMongoSyncStorage()
                         .AddPomeloDefaultJsonSettings(new PrivatePropertyContractResolver())
-                        .AddPomeloEventStore()
+                        .AddPomeloEventStore("Battles.Reactors")
                         .AddConfigurationSettings()
                         .AddPomeloTracing()
                         .AddEventStoreSubscriptions();
@@ -32,6 +32,7 @@ namespace Pokens.Battles.Reactors
 
             return builder.UseConsoleLifetime()
                 .Build()
+                .UsePomeloEventStoreConnection()
                 .UsePomeloEventStoreEventsLogging()
                 .RunAsync();
         }
